@@ -1,18 +1,19 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { products, CATEGORIES, Category, Product } from '@/data/products'
+import { products, CATEGORIES, Category } from '@/data/products'
 import { useCart } from '@/context/CartContext'
 
 const PILL_CLASS: Record<Category, string> = {
   'Roczek':             'pill-roczek',
-  '18-ka':             'pill-18-ka',
-  'Urodziny':          'pill-urodziny',
-  'Dla niej':          'pill-dla-niej',
-  'Dla niego':         'pill-dla-niego',
-  'Chrzest & Komunia': 'pill-chrzest',
-  'Biznes':            'pill-biznes',
+  '18-ka':              'pill-18-ka',
+  'Urodziny':           'pill-urodziny',
+  'Dla niej':           'pill-dla-niej',
+  'Dla niego':          'pill-dla-niego',
+  'Chrzest & Komunia':  'pill-chrzest',
+  'Biznes':             'pill-biznes',
 }
 
 const PAGE_SIZE = 6
@@ -21,8 +22,8 @@ type Props = { initialCategory?: Category | null }
 
 export default function ProductsSection({ initialCategory }: Props) {
   const [activeFilter, setActiveFilter] = useState<Category | null>(initialCategory ?? null)
-  const [showAll, setShowAll] = useState(false)
-  const [added, setAdded] = useState<number | null>(null)
+  const [showAll, setShowAll]           = useState(false)
+  const [added, setAdded]               = useState<number | null>(null)
   const { addItem } = useCart()
 
   useEffect(() => {
@@ -35,10 +36,12 @@ export default function ProductsSection({ initialCategory }: Props) {
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
   const visible  = showAll ? filtered : filtered.slice(0, PAGE_SIZE)
 
-  function handleAdd(e: React.MouseEvent, product: Product) {
+  function handleAdd(e: React.MouseEvent, productId: number) {
+    e.preventDefault()
     e.stopPropagation()
+    const product = products.find(p => p.id === productId)!
     addItem(product)
-    setAdded(product.id)
+    setAdded(productId)
     setTimeout(() => setAdded(null), 1400)
   }
 
@@ -55,11 +58,14 @@ export default function ProductsSection({ initialCategory }: Props) {
             <p className="eyebrow">Katalog</p>
             <h2 className="section-title">
               {activeFilter ? activeFilter : 'Najpopularniejsze'}
-              <em>{activeFilter ? 'w naszej ofercie' : 'w naszej ofercie'}</em>
+              <em>w naszej ofercie</em>
             </h2>
           </div>
           <div className="filters">
-            <button className={`filter-btn${activeFilter === null ? ' active' : ''}`} onClick={() => handleFilter(null)}>
+            <button
+              className={`filter-btn${activeFilter === null ? ' active' : ''}`}
+              onClick={() => handleFilter(null)}
+            >
               Wszystkie
             </button>
             {CATEGORIES.map(cat => (
@@ -94,13 +100,19 @@ export default function ProductsSection({ initialCategory }: Props) {
                 <h3 className="prod-name">{product.name}</h3>
                 <div className="prod-foot">
                   <span className="prod-price">{product.price} <small>zł</small></span>
-                  <button
-                    className={`detail-btn${added === product.id ? ' added' : ''}`}
-                    onClick={e => handleAdd(e, product)}
-                    style={added === product.id ? { background: '#2d7a3a', borderColor: '#2d7a3a', color: 'white' } : {}}
-                  >
-                    {added === product.id ? '✓ Dodano' : 'Szczegóły →'}
-                  </button>
+                  <div className="prod-btns">
+                    <Link href={`/product/${product.id}`} className="detail-btn">
+                      Szczegóły →
+                    </Link>
+                    <button
+                      className={`add-cart-btn${added === product.id ? ' added' : ''}`}
+                      onClick={e => handleAdd(e, product.id)}
+                      title="Dodaj do koszyka"
+                      aria-label="Dodaj do koszyka"
+                    >
+                      {added === product.id ? '✓' : '🛒'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </article>
@@ -114,7 +126,9 @@ export default function ProductsSection({ initialCategory }: Props) {
         {filtered.length > PAGE_SIZE && (
           <div className="show-more-wrap">
             <button className="show-more-btn" onClick={() => setShowAll(v => !v)}>
-              {showAll ? `Pokaż mniej ↑` : `Pokaż więcej ↓ (${filtered.length - PAGE_SIZE} produktów)`}
+              {showAll
+                ? 'Pokaż mniej ↑'
+                : `Pokaż więcej ↓ (${filtered.length - PAGE_SIZE} produktów)`}
             </button>
           </div>
         )}
