@@ -1176,18 +1176,18 @@ a {
 }
 
 .faq-a {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows .3s ease;
+  max-height: 0;
   overflow: hidden;
+  transition: max-height .35s ease, opacity .25s ease;
+  opacity: 0;
 }
 
 .faq-item.open .faq-a {
-  grid-template-rows: 1fr;
+  max-height: 300px;
+  opacity: 1;
 }
 
 .faq-a p {
-  overflow: hidden;
   padding: 0 20px 18px;
   font-size: .86rem;
   color: var(--text-mid);

@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: 'raw.githubusercontent.com',
         pathname: '/Vobzilla/on.balon/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/dnyevihh7/**',
+      },
     ],
   },
 }
