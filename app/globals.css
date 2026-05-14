@@ -433,13 +433,6 @@ a {
   display: block;
 }
 
-.hero-tagline {
-  font-size: .92rem;
-  color: var(--text-soft);
-  margin-bottom: 16px;
-  font-style: italic;
-}
-
 .hero-desc {
   font-size: .98rem;
   line-height: 1.75;
