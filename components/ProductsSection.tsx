@@ -1,0 +1,124 @@
+'use client'
+
+import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { products, CATEGORIES, Category, Product } from '@/data/products'
+import { useCart } from '@/context/CartContext'
+
+const PILL_CLASS: Record<Category, string> = {
+  'Roczek':             'pill-roczek',
+  '18-ka':             'pill-18-ka',
+  'Urodziny':          'pill-urodziny',
+  'Dla niej':          'pill-dla-niej',
+  'Dla niego':         'pill-dla-niego',
+  'Chrzest & Komunia': 'pill-chrzest',
+  'Biznes':            'pill-biznes',
+}
+
+const PAGE_SIZE = 6
+
+type Props = { initialCategory?: Category | null }
+
+export default function ProductsSection({ initialCategory }: Props) {
+  const [activeFilter, setActiveFilter] = useState<Category | null>(initialCategory ?? null)
+  const [showAll, setShowAll] = useState(false)
+  const [added, setAdded] = useState<number | null>(null)
+  const { addItem } = useCart()
+
+  useEffect(() => {
+    if (initialCategory !== undefined) {
+      setActiveFilter(initialCategory)
+      setShowAll(false)
+    }
+  }, [initialCategory])
+
+  const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
+  const visible  = showAll ? filtered : filtered.slice(0, PAGE_SIZE)
+
+  function handleAdd(e: React.MouseEvent, product: Product) {
+    e.stopPropagation()
+    addItem(product)
+    setAdded(product.id)
+    setTimeout(() => setAdded(null), 1400)
+  }
+
+  function handleFilter(cat: Category | null) {
+    setActiveFilter(cat)
+    setShowAll(false)
+  }
+
+  return (
+    <section className="products-section" id="products">
+      <div className="section-inner">
+        <div className="products-header">
+          <div className="prod-title-block">
+            <p className="eyebrow">Katalog</p>
+            <h2 className="section-title">
+              {activeFilter ? activeFilter : 'Najpopularniejsze'}
+              <em>{activeFilter ? 'w naszej ofercie' : 'w naszej ofercie'}</em>
+            </h2>
+          </div>
+          <div className="filters">
+            <button className={`filter-btn${activeFilter === null ? ' active' : ''}`} onClick={() => handleFilter(null)}>
+              Wszystkie
+            </button>
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                className={`filter-btn${activeFilter === cat ? ' active' : ''}`}
+                onClick={() => handleFilter(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="prod-grid">
+          {visible.map(product => (
+            <article key={product.id} className="prod-card">
+              <div className="prod-img-wrap">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="prod-img"
+                />
+                <span className={`prod-category-pill ${PILL_CLASS[product.category]}`}>
+                  {product.category}
+                </span>
+              </div>
+              <div className="prod-body">
+                <p className="prod-cat-label">{product.category}</p>
+                <h3 className="prod-name">{product.name}</h3>
+                <div className="prod-foot">
+                  <span className="prod-price">{product.price} <small>zł</small></span>
+                  <button
+                    className={`detail-btn${added === product.id ? ' added' : ''}`}
+                    onClick={e => handleAdd(e, product)}
+                    style={added === product.id ? { background: '#2d7a3a', borderColor: '#2d7a3a', color: 'white' } : {}}
+                  >
+                    {added === product.id ? '✓ Dodano' : 'Szczegóły →'}
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <p className="no-results">Brak produktów w tej kategorii.</p>
+        )}
+
+        {filtered.length > PAGE_SIZE && (
+          <div className="show-more-wrap">
+            <button className="show-more-btn" onClick={() => setShowAll(v => !v)}>
+              {showAll ? `Pokaż mniej ↑` : `Pokaż więcej ↓ (${filtered.length - PAGE_SIZE} produktów)`}
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
