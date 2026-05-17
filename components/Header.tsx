@@ -8,36 +8,31 @@ const CONTACTS = [
     label: 'Telefon',
     value: '+48 732-977-561',
     href: 'tel:+48732977561',
-    bg: '#22c55e',
-    icon: '📞',
+    icon: 'phone',
   },
   {
     label: 'E-mail',
     value: 'kontakt@onbalon.pl',
     href: 'mailto:kontakt@onbalon.pl',
-    bg: '#f97316',
-    icon: '✉️',
+    icon: 'mail',
   },
   {
     label: 'Telegram',
     value: '@onbalon',
     href: 'https://t.me/vobzilla_bot',
-    bg: '#0ea5e9',
-    icon: '✈️',
+    icon: 'telegram',
   },
   {
     label: 'Facebook',
     value: 'on.balon',
     href: 'https://facebook.com/onbalon',
-    bg: '#3b82f6',
-    icon: 'f',
+    icon: 'facebook',
   },
   {
     label: 'Instagram',
     value: '@on.balon',
     href: 'https://instagram.com/on.balon',
-    bg: '#ec4899',
-    icon: '◎',
+    icon: 'instagram',
   },
 ]
 
@@ -71,7 +66,7 @@ export default function Header() {
           <a href="/#products" className="nav-link">Katalog</a>
           <a href="/#how"      className="nav-link">Jak zamówić</a>
           <a href="/#faq"      className="nav-link">FAQ</a>
-          <a href="/#footer"   className="nav-link">O nas</a>
+          <a href="/o-nas"    className="nav-link">O nas</a>
         </nav>
 
         <div className="header-actions">
@@ -98,11 +93,8 @@ export default function Header() {
                   className="contact-dropdown-item"
                   onClick={() => setContactOpen(false)}
                 >
-                  <span
-                    className="contact-dropdown-icon"
-                    style={{ background: c.bg, color: 'white' }}
-                  >
-                    {c.icon}
+                  <span className="contact-dropdown-icon">
+                    <ContactIcon type={c.icon} />
                   </span>
                   <span className="contact-dropdown-text">
                     <span className="contact-dropdown-label">{c.label}</span>
@@ -123,6 +115,39 @@ export default function Header() {
       </div>
     </header>
   )
+}
+
+function ContactIcon({ type }: { type: string }) {
+  const props = { width: 17, height: 17, fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+  if (type === 'phone') return (
+    <svg viewBox="0 0 24 24" {...props}>
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.2 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14v2.92z"/>
+    </svg>
+  )
+  if (type === 'mail') return (
+    <svg viewBox="0 0 24 24" {...props}>
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="M2 7l10 7 10-7"/>
+    </svg>
+  )
+  if (type === 'telegram') return (
+    <svg viewBox="0 0 24 24" {...props} stroke="none" fill="currentColor">
+      <path d="M11.944 0A12 12 0 1 0 24 12 12 12 0 0 0 11.944 0zm3.882 8.027-1.77 8.444c-.13.58-.47.722-.953.449l-2.625-1.946-1.267 1.227c-.14.14-.258.258-.53.258l.19-2.672 4.867-4.42c.212-.19-.046-.295-.327-.106L7.48 14.52l-2.58-.81c-.561-.175-.571-.561.117-.83l10.082-3.896c.468-.169.878.113.727.843z"/>
+    </svg>
+  )
+  if (type === 'facebook') return (
+    <svg viewBox="0 0 24 24" {...props} stroke="none" fill="currentColor">
+      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.885v2.27h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+    </svg>
+  )
+  if (type === 'instagram') return (
+    <svg viewBox="0 0 24 24" {...props}>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <circle cx="12" cy="12" r="4.5"/>
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+  )
+  return null
 }
 
 function PhoneIcon() {

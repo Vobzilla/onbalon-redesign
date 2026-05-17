@@ -3,7 +3,13 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <span className="footer-logo"><em>on.</em>balon</span>
+          <a href="/" className="footer-logo-img-wrap">
+            <img
+              src="https://raw.githubusercontent.com/Vobzilla/on.balon/main/img/logo.png"
+              alt="on.balon logo"
+              className="footer-logo-img"
+            />
+          </a>
           <p className="footer-tagline">i jesteś gotowy na każdą uroczystość.<br />Dekoracje balonowe z dostawą 24/7 w Szczecinie.</p>
           <div className="footer-socials">
             <a href="https://t.me/vobzilla_bot" target="_blank" aria-label="Telegram">

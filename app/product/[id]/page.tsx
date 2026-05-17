@@ -12,8 +12,9 @@ import Cart from '@/components/Cart'
 import OrderModal from '@/components/OrderModal'
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  const [added, setAdded]       = useState(false)
+  const [added, setAdded]         = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [lightbox, setLightbox]   = useState(false)
   const { addItem } = useCart()
 
   const product = products.find(p => p.id === Number(params.id))
@@ -30,6 +31,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }
 
   const details = getProductDetails(product)
+  const isDekoracja = /^(Girlanda|Dekoracja|Brama|Kolumna|Ściana|Łuk|Arch)/.test(product.name)
 
   function handleAdd() {
     addItem(product!)
@@ -64,16 +66,37 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
             {/* ── Left: image ── */}
             <div className="prod-page-img-col">
-              <div className="prod-page-img-frame">
+              <div
+                className="prod-page-img-frame prod-page-img-clickable"
+                onClick={() => setLightbox(true)}
+                title="Kliknij, aby powiększyć"
+              >
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 560px"
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'contain' }}
                 />
+                <span className="prod-page-zoom-hint">🔍</span>
               </div>
             </div>
+
+            {/* ── Lightbox ── */}
+            {lightbox && (
+              <div className="lightbox-overlay" onClick={() => setLightbox(false)}>
+                <button className="lightbox-close" onClick={() => setLightbox(false)}>✕</button>
+                <div className="lightbox-img-wrap" onClick={e => e.stopPropagation()}>
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="100vw"
+                    style={{ objectFit: 'contain' }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* ── Right: details ── */}
             <div className="prod-page-info">
@@ -85,19 +108,23 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 {product.price}<span className="prod-page-currency">zł</span>
               </div>
 
-              {/* Composition */}
-              <p className="prod-page-section-label">Skład zestawu</p>
-              <div className="prod-page-contents">
-                {details.contents.map((item, i) => (
-                  <div key={i} className="prod-content-item">
-                    <div className="prod-content-item-info">
-                      <span className="prod-content-item-name">{item.name}</span>
-                      <span className="prod-content-item-detail">{item.detail}</span>
-                    </div>
-                    <span className="prod-content-item-qty">× {item.qty}</span>
+              {/* Composition — only for bouquets */}
+              {!isDekoracja && (
+                <>
+                  <p className="prod-page-section-label">Skład zestawu</p>
+                  <div className="prod-page-contents">
+                    {details.contents.map((item, i) => (
+                      <div key={i} className="prod-content-item">
+                        <div className="prod-content-item-info">
+                          <span className="prod-content-item-name">{item.name}</span>
+                          <span className="prod-content-item-detail">{item.detail}</span>
+                        </div>
+                        <span className="prod-content-item-qty">× {item.qty}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </>
+              )}
 
               {/* Includes */}
               <p className="prod-page-section-label">W zestawie</p>

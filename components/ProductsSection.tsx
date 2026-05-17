@@ -9,6 +9,7 @@ import { useCart } from '@/context/CartContext'
 const PILL_CLASS: Record<Category, string> = {
   'Roczek':             'pill-roczek',
   '18-ka':              'pill-18-ka',
+  'Dla dziecka':        'pill-dziecka',
   'Urodziny':           'pill-urodziny',
   'Dla niej':           'pill-dla-niej',
   'Dla niego':          'pill-dla-niego',
@@ -22,19 +23,19 @@ type Props = { initialCategory?: Category | null }
 
 export default function ProductsSection({ initialCategory }: Props) {
   const [activeFilter, setActiveFilter] = useState<Category | null>(initialCategory ?? null)
-  const [showAll, setShowAll]           = useState(false)
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [added, setAdded]               = useState<number | null>(null)
   const { addItem } = useCart()
 
   useEffect(() => {
     if (initialCategory !== undefined) {
       setActiveFilter(initialCategory)
-      setShowAll(false)
+      setVisibleCount(PAGE_SIZE)
     }
   }, [initialCategory])
 
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
-  const visible  = showAll ? filtered : filtered.slice(0, PAGE_SIZE)
+  const visible  = filtered.slice(0, visibleCount)
 
   function handleAdd(e: React.MouseEvent, productId: number) {
     e.preventDefault()
@@ -47,7 +48,7 @@ export default function ProductsSection({ initialCategory }: Props) {
 
   function handleFilter(cat: Category | null) {
     setActiveFilter(cat)
-    setShowAll(false)
+    setVisibleCount(PAGE_SIZE)
   }
 
   return (
@@ -123,12 +124,13 @@ export default function ProductsSection({ initialCategory }: Props) {
           <p className="no-results">Brak produktów w tej kategorii.</p>
         )}
 
-        {filtered.length > PAGE_SIZE && (
+        {visibleCount < filtered.length && (
           <div className="show-more-wrap">
-            <button className="show-more-btn" onClick={() => setShowAll(v => !v)}>
-              {showAll
-                ? 'Pokaż mniej ↑'
-                : `Pokaż więcej ↓ (${filtered.length - PAGE_SIZE} produktów)`}
+            <button
+              className="show-more-btn"
+              onClick={() => setVisibleCount(v => Math.min(v + PAGE_SIZE, filtered.length))}
+            >
+              {`Pokaż więcej ↓ (${Math.min(PAGE_SIZE, filtered.length - visibleCount)} z ${filtered.length - visibleCount} pozostałych)`}
             </button>
           </div>
         )}

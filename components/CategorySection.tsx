@@ -7,7 +7,8 @@ import { Category } from "@/data/products";
 const CATEGORY_META: Record<Category, { label: string; sub: string }> = {
   Roczek: { label: "Roczek", sub: "Pierwsze urodziny" },
   "18-ka": { label: "18-ka", sub: "Osiemnastka" },
-  Urodziny: { label: "Urodziny", sub: "Dla dzieci" },
+  "Dla dziecka": { label: "Dla dziecka", sub: "Postacie & charaktery" },
+  Urodziny: { label: "Urodziny", sub: "Dekoracje urodzinowe" },
   "Dla niej": { label: "Dla niej", sub: "Kobiece zestawy" },
   "Dla niego": { label: "Dla niego", sub: "Męskie zestawy" },
   "Chrzest & Komunia": { label: "Chrzest & Komunia", sub: "Sakramenty" },
