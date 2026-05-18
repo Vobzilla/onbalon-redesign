@@ -477,6 +477,10 @@ a {
   letter-spacing: .5px;
 }
 
+.stat--text {
+  text-align: center;
+}
+
 .stat-sep {
   width: 1px;
   height: 30px;
@@ -491,12 +495,22 @@ a {
 }
 
 .hero-main-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.hero-main-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl, var(--shadow-lg));
 }
 
 .hero-card-img {
@@ -562,6 +576,8 @@ a {
 }
 
 .hero-mini-card {
+  text-decoration: none;
+  color: inherit;
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   border: 1px solid var(--border);
@@ -669,6 +685,12 @@ a {
   gap: 20px;
 }
 
+.prod-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .prod-card {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
@@ -723,10 +745,6 @@ a {
   background: #c8954a;
 }
 
-.pill-urodziny {
-  background: #e05594;
-}
-
 .pill-dla-niej {
   background: #d946a8;
 }
@@ -735,16 +753,16 @@ a {
   background: #2563eb;
 }
 
-.pill-chrzest {
-  background: #10b981;
-}
-
 .pill-dziecka {
   background: #f97316;
 }
 
-.pill-biznes {
-  background: #6b35b0;
+.pill-dekoracje {
+  background: #10b981;
+}
+
+.pill-hello-baby {
+  background: #e05594;
 }
 
 .prod-body {
@@ -1609,6 +1627,70 @@ a {
   resize: vertical;
 }
 
+.form-hint {
+  display: block;
+  font-size: .75rem;
+  color: var(--text-muted, #888);
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+.form-checkbox-label {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 400 !important;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.form-checkbox-label input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 15px !important;
+  min-width: 15px !important;
+  height: 15px !important;
+  padding: 0 !important;
+  margin-top: 2px;
+  border: 1.5px solid var(--accent) !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  cursor: pointer;
+  position: relative;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+
+.form-checkbox-label input[type="checkbox"]:checked {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.form-checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 4px;
+  height: 8px;
+  border: 1.5px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.form-checkbox-label span {
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--text-mid);
+}
+
+.form-checkbox-label a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
 .form-error {
   color: #c0392b;
   font-size: .8rem;
@@ -1870,6 +1952,43 @@ a {
   color: var(--text-mid);
 }
 
+/* ─── Privacy Page ───────────────────────────────────────────────────────── */
+.privacy-page {
+  padding: 120px 0 80px;
+}
+
+.privacy-page h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: var(--text-dark);
+}
+
+.privacy-page h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 32px 0 12px;
+  color: var(--text-dark);
+}
+
+.privacy-page ol,
+.privacy-page ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.privacy-page li {
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+}
+
+.privacy-page a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
 /* ─── About Page ─────────────────────────────────────────────────────────── */
 .about-hero {
   padding: 48px 0 32px;
@@ -1982,6 +2101,15 @@ a {
   font-weight: 700;
   color: var(--accent-dark);
   line-height: 1;
+}
+
+.about-stat--text .about-stat-label {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .about-stat-label {

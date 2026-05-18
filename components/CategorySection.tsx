@@ -7,12 +7,11 @@ import { Category } from "@/data/products";
 const CATEGORY_META: Record<Category, { label: string; sub: string }> = {
   Roczek: { label: "Roczek", sub: "Pierwsze urodziny" },
   "18-ka": { label: "18-ka", sub: "Osiemnastka" },
-  "Dla dziecka": { label: "Dla dziecka", sub: "Postacie & charaktery" },
-  Urodziny: { label: "Urodziny", sub: "Dekoracje urodzinowe" },
   "Dla niej": { label: "Dla niej", sub: "Kobiece zestawy" },
   "Dla niego": { label: "Dla niego", sub: "Męskie zestawy" },
-  "Chrzest & Komunia": { label: "Chrzest & Komunia", sub: "Sakramenty" },
-  Biznes: { label: "Biznes", sub: "Eventy & otwarcia" },
+  "Dla dziecka": { label: "Dla dziecka", sub: "Postacie & charaktery" },
+  "Dekoracje balonowe": { label: "Dekoracje balonowe", sub: "Girlandy & ściany" },
+  "Hello Baby": { label: "Hello Baby", sub: "Narodziny & baby shower" },
 };
 
 type Props = { onFilter: (cat: Category | null) => void };

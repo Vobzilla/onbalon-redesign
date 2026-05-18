@@ -3,7 +3,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 import { products } from "@/data/products";
 
 // Featured products shown in the hero card
@@ -11,7 +11,6 @@ const FEATURED_ID = 96; // Dekoracja Granatowo-Różowa (Biznes)
 const MINI_IDS = [30, 82]; // Dekoracja 18-tka, Komunia
 
 export default function Hero() {
-  const { addItem } = useCart();
   const featured = products.find((p) => p.id === FEATURED_ID)!;
   const minis = MINI_IDS.map((id) => products.find((p) => p.id === id)!);
 
@@ -22,13 +21,12 @@ export default function Hero() {
         <div className="hero-left">
           <div className="hero-eyebrow-pill">
             <span className="pill-dot" />
-            Szczecin · dostawa całą dobę
+            Szczecin · dostawa o każdej porze
           </div>
           <h1 className="hero-title">Balony, które</h1>
           <span className="hero-title-italic">tworzą magię.</span>
           <p className="hero-desc">
-            Piękne dekoracje balonowe na każdą uroczystość. Zamawiasz przez
-            stronę — potwierdzamy w 15 minut i dowozimy bezpośrednio do Ciebie.
+            Piękne dekoracje balonowe z dostawą po Szczecinie. Zamawiasz online — potwierdzamy w 15 minut i dowozimy prosto do Ciebie.
           </p>
           <div className="hero-btns">
             <a href="#products" className="btn-primary">
@@ -47,9 +45,9 @@ export default function Hero() {
               <span className="stat-label">klientów</span>
             </div>
             <div className="stat-sep" />
-            <div className="stat">
-              <span className="stat-num">24/7</span>
-              <span className="stat-label">dostawa</span>
+            <div className="stat stat--text">
+              <span className="stat-num">Dostawa</span>
+              <span className="stat-label">dopasowana do Twojego terminu</span>
             </div>
             <div className="stat-sep" />
             <div className="stat">
@@ -67,7 +65,7 @@ export default function Hero() {
         {/* ── Right ── */}
         <div className="hero-right">
           {/* Main card */}
-          <div className="hero-main-card">
+          <Link href={`/product/${featured.id}`} className="hero-main-card">
             <div className="hero-card-img">
               <Image
                 src={featured.image}
@@ -87,15 +85,15 @@ export default function Hero() {
               </div>
               <div className="hero-card-price">od {featured.price} zł</div>
             </div>
-          </div>
+          </Link>
 
           {/* Mini cards */}
           <div className="hero-mini-row">
             {minis.map((p) => (
-              <div
+              <Link
                 key={p.id}
-                className="hero-mini-card"
-                onClick={() => addItem(p)}>
+                href={`/product/${p.id}`}
+                className="hero-mini-card">
                 <div className="hero-mini-thumb">
                   <Image
                     src={p.image}
@@ -111,7 +109,7 @@ export default function Hero() {
                   </div>
                   <div className="hero-mini-price">od {p.price} zł</div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

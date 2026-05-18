@@ -5,9 +5,9 @@ import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "On.balon — dekoracje balonowe Szczecin",
+  title: "On.balon — dekoracje balonowe Szczecin. Dostawa i odbiór osobisty.",
   description:
-    "Piękne dekoracje balonowe na każde święto. Dostawa 24/7 w Szczecinie. Zamawiasz online — potwierdzamy w 15 minut.",
+    "Bukiety balonowe, dekoracje na roczek, urodziny, wesela i eventy firmowe. Zamawiasz online — potwierdzamy w 15 minut. Szczecin i okolice.",
 };
 
 export default function RootLayout({

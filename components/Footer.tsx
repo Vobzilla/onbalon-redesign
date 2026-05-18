@@ -10,7 +10,7 @@ export default function Footer() {
               className="footer-logo-img"
             />
           </a>
-          <p className="footer-tagline">i jesteś gotowy na każdą uroczystość.<br />Dekoracje balonowe z dostawą 24/7 w Szczecinie.</p>
+          <p className="footer-tagline">i jesteś gotowy na każdą uroczystość.<br />Dostawa dopasowana do Twojego terminu w Szczecinie.</p>
           <div className="footer-socials">
             <a href="https://t.me/vobzilla_bot" target="_blank" aria-label="Telegram">
               <TgIcon />
@@ -42,6 +42,7 @@ export default function Footer() {
           <ul>
             <li><a href="#how">Jak zamawiać</a></li>
             <li><a href="#faq">FAQ</a></li>
+            <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
           </ul>
         </div>
 
@@ -57,7 +58,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} On.balon · Szczecin</span>
-        <span>Dowozimy 24/7 🎈</span>
+        <span>Dostawa dopasowana do Twojego terminu 🎈</span>
       </div>
     </footer>
   )

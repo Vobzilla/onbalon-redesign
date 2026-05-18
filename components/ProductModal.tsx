@@ -42,7 +42,7 @@ export default function ProductModal({ product, onClose }: Props) {
           <h2 className="pm-name">{product.name}</h2>
           <p className="pm-price">{product.price} <small>zł</small></p>
           <p className="pm-desc">
-            Profesjonalna dekoracja balonowa z dostawą 24/7 na terenie Szczecina.
+            Profesjonalna dekoracja balonowa z dostawą dopasowaną do Twojego terminu na terenie Szczecina.
             Po złożeniu zamówienia potwierdzimy szczegóły w ciągu 15 minut.
           </p>
           <button

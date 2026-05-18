@@ -122,56 +122,6 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
     },
   },
 
-  Urodziny: {
-    bukiet: {
-      description:
-        "Kolorowy bukiet balonowy na urodziny, pełen radości i zabawy. Wypełniony helem — idealny na każde przyjęcie urodzinowe.",
-      contents: [
-        { name: "Balony lateksowe", detail: "Ø 30 cm, kolorowe", qty: 10 },
-        { name: "Balony konfetti", detail: "Ø 30 cm, przezroczyste", qty: 3 },
-        { name: "Balon foliowy okrągły", detail: "Kolorowy, Ø 45 cm", qty: 1 },
-        { name: "Balony gwiazdki foliowe", detail: "Złote, Ø 45 cm", qty: 2 },
-      ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Karta z życzeniami",
-      ],
-    },
-    dekoracja: {
-      description:
-        "Imponująca dekoracja urodzinowa — girlanda, ściana balonowa lub łuk, które stworzą niezapomniane tło na przyjęcie. Profesjonalny montaż w cenie.",
-      contents: [
-        {
-          name: "Balony lateksowe różnych rozmiarów",
-          detail: "Ø 12–36 cm, mix kolorów",
-          qty: 100,
-        },
-        {
-          name: "Balony foliowe z napisem",
-          detail: '"Happy Birthday" lub cyfry',
-          qty: 2,
-        },
-        {
-          name: "Balony organiczne / teksturowane",
-          detail: "Różne rozmiary",
-          qty: 20,
-        },
-        {
-          name: "Elementy dekoracyjne",
-          detail: "Kwiaty, wstążki, konfetti",
-          qty: 1,
-        },
-      ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-        "Demontaż po imprezie (opcjonalnie)",
-      ],
-    },
-  },
-
   "Dla niej": {
     bukiet: {
       description:
@@ -327,108 +277,120 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
     },
   },
 
-  "Chrzest & Komunia": {
+  "Dekoracje balonowe": {
     bukiet: {
       description:
-        "Stonowany, elegancki bukiet balonowy na chrzest lub komunię. Białe i złote akcenty podkreślają wyjątkowość tego momentu.",
-      contents: [
-        { name: "Balony lateksowe białe", detail: "Ø 30 cm, perłowe", qty: 8 },
-        {
-          name: "Balony lateksowe złote",
-          detail: "Ø 30 cm, chromowane",
-          qty: 4,
-        },
-        { name: "Balon foliowy krzyż", detail: "Złoty, Ø 50 cm", qty: 1 },
-        {
-          name: "Balony gwiazdki foliowe",
-          detail: "Złote i białe, Ø 45 cm",
-          qty: 2,
-        },
-      ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Personalizacja",
-        "Karta okolicznościowa",
-      ],
-    },
-    dekoracja: {
-      description:
-        "Elegancka dekoracja balonowa na chrzest lub komunię — girlanda lub łuk w bieli i złocie. Tworzy uroczyste tło do rodzinnych zdjęć.",
+        "Profesjonalna dekoracja balonowa — girlanda, ściana, łuk lub brama balonowa. Tworzy spektakularne tło na każde wydarzenie.",
       contents: [
         {
-          name: "Balony lateksowe białe i złote",
-          detail: "Ø 12–36 cm",
-          qty: 80,
+          name: "Balony lateksowe różnych rozmiarów",
+          detail: "Ø 12–36 cm, mix kolorów",
+          qty: 100,
         },
-        { name: "Balon foliowy krzyż", detail: "Złoty, Ø 50 cm", qty: 1 },
         {
-          name: "Balony organiczne / perłowe",
+          name: "Balony organiczne / teksturowane",
           detail: "Różne rozmiary",
           qty: 20,
         },
         {
           name: "Elementy dekoracyjne",
-          detail: "Gipsówka, wstążki, kwiaty",
+          detail: "Kwiaty, wstążki, konfetti",
           qty: 1,
         },
       ],
       includes: [
         "Profesjonalny montaż w miejscu imprezy",
         "Dostawa na terenie Szczecina",
-        "Personalizacja z imieniem",
         "Projekt i dobór kolorów",
-      ],
-    },
-  },
-
-  Biznes: {
-    bukiet: {
-      description:
-        "Profesjonalna dekoracja balonowa do przestrzeni firmowej. Idealna na otwarcia, targi, konferencje i wszelkiego rodzaju eventy.",
-      contents: [
-        {
-          name: "Balony lateksowe w barwach firmowych",
-          detail: "Ø 30 cm",
-          qty: 20,
-        },
-        { name: "Balony foliowe gwiazdki", detail: "Ø 45 cm", qty: 5 },
-        { name: "Elementy bramy balonowej", detail: "Różne rozmiary", qty: 10 },
-        { name: "Balony z personalizacją", detail: "Ø 30 cm", qty: 5 },
-      ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Dostawa i montaż w cenie",
-        "Projekt na zamówienie",
+        "Demontaż po imprezie (opcjonalnie)",
       ],
     },
     dekoracja: {
       description:
-        "Profesjonalna brama, girlanda lub kolumna balonowa dla firm. Przyciąga uwagę, buduje wizerunek i sprawia, że Twoje wydarzenie zostanie zapamiętane.",
+        "Profesjonalna dekoracja balonowa — girlanda, ściana, łuk lub brama balonowa. Tworzy spektakularne tło na każde wydarzenie.",
       contents: [
         {
-          name: "Balony lateksowe w barwach firmowych",
-          detail: "Ø 12–36 cm, mix rozmiarów",
-          qty: 150,
+          name: "Balony lateksowe różnych rozmiarów",
+          detail: "Ø 12–36 cm, mix kolorów",
+          qty: 100,
         },
         {
-          name: "Balony foliowe z logo lub napisem",
-          detail: "Na zamówienie",
-          qty: 5,
-        },
-        {
-          name: "Balony organiczne / chromowane",
+          name: "Balony organiczne / teksturowane",
           detail: "Różne rozmiary",
-          qty: 30,
+          qty: 20,
         },
-        { name: "Konstrukcja nośna", detail: "Stelarz lub taśma", qty: 1 },
+        {
+          name: "Elementy dekoracyjne",
+          detail: "Kwiaty, wstążki, konfetti",
+          qty: 1,
+        },
       ],
       includes: [
-        "Profesjonalny montaż w miejscu eventu",
-        "Dostawa na terenie Szczecina i okolic",
-        "Projekt w barwach firmowych",
-        "Demontaż po evencie (opcjonalnie)",
+        "Profesjonalny montaż w miejscu imprezy",
+        "Dostawa na terenie Szczecina",
+        "Projekt i dobór kolorów",
+        "Demontaż po imprezie (opcjonalnie)",
+      ],
+    },
+  },
+
+  "Hello Baby": {
+    bukiet: {
+      description:
+        "Wyjątkowy bukiet balonowy na narodziny dziecka lub baby shower. Pastelowe kolory i napis Hello Baby tworzą magiczną pamiątkę na ten wyjątkowy moment.",
+      contents: [
+        {
+          name: "Balon foliowy „It's a Boy/Girl",
+          detail: "Niebieski lub różowy, Ø 45 cm",
+          qty: 1,
+        },
+        {
+          name: "Balony lateksowe pastelowe",
+          detail: "Ø 30 cm, miętowe lub różowe",
+          qty: 6,
+        },
+        { name: "Balony konfetti", detail: "Ø 30 cm, przezroczyste", qty: 2 },
+        {
+          name: "Balony gwiazdki foliowe",
+          detail: "Złote i pastelowe, Ø 45 cm",
+          qty: 2,
+        },
+      ],
+      includes: [
+        "Hel do napełnienia wszystkich balonów",
+        "Wstążki dekoracyjne",
+        "Karta z życzeniami",
+      ],
+    },
+    dekoracja: {
+      description:
+        "Bajeczna dekoracja balonowa na baby shower lub powitanie nowego członka rodziny. Pastelowe kolory i personalizacja tworzą niezapomniane wspomnienie.",
+      contents: [
+        {
+          name: "Balony lateksowe pastelowe",
+          detail: "Ø 12–36 cm, mix kolorów",
+          qty: 80,
+        },
+        {
+          name: "Balony foliowe z napisem",
+          detail: '"Hello Baby" lub "It\'s a Boy/Girl"',
+          qty: 2,
+        },
+        {
+          name: "Balony organiczne / teksturowane",
+          detail: "Różne rozmiary",
+          qty: 15,
+        },
+        {
+          name: "Elementy dekoracyjne",
+          detail: "Gwiazdki, chmurki, serduszka",
+          qty: 1,
+        },
+      ],
+      includes: [
+        "Profesjonalny montaż w miejscu imprezy",
+        "Dostawa na terenie Szczecina",
+        "Projekt i dobór kolorów",
       ],
     },
   },

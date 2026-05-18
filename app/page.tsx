@@ -25,7 +25,7 @@ export default function Home() {
       {/* Announce bar */}
       <div className="announce">
         <span className="announce-dot" />
-        Dowozimy balony <strong>24/7</strong> na terenie Szczecina
+        Dostawa <strong>dopasowana</strong> do Twojego terminu na terenie Szczecina
         <span className="announce-sep">·</span>
         Potwierdzamy w <strong>15 minut</strong>
       </div>

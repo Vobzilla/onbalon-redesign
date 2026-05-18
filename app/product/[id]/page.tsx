@@ -15,7 +15,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const [added, setAdded]         = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [lightbox, setLightbox]   = useState(false)
-  const { addItem } = useCart()
+  const { addItem, items } = useCart()
 
   const product = products.find(p => p.id === Number(params.id))
 
@@ -31,7 +31,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }
 
   const details = getProductDetails(product)
-  const isDekoracja = /^(Girlanda|Dekoracja|Brama|Kolumna|Ściana|Łuk|Arch)/.test(product.name)
+  const isDekoracja =
+    product.category === 'Dekoracje balonowe' ||
+    /^(Girlanda|Dekoracja|Brama|Kolumna|Ściana|Łuk|Arch)/.test(product.name)
 
   function handleAdd() {
     addItem(product!)
@@ -39,11 +41,18 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     setTimeout(() => setAdded(false), 1600)
   }
 
+  function handleOrder() {
+    if (!items.find(i => i.product.id === product!.id)) {
+      addItem(product!)
+    }
+    setModalOpen(true)
+  }
+
   return (
     <>
       <div className="announce">
         <span className="announce-dot" />
-        Dowozimy balony <strong>24/7</strong> na terenie Szczecina
+        Dostawa <strong>dopasowana</strong> do Twojego terminu na terenie Szczecina
         <span className="announce-sep">·</span>
         Potwierdzamy w <strong>15 minut</strong>
       </div>
@@ -149,7 +158,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 <button
                   className="btn-secondary"
                   style={{ flex: 1 }}
-                  onClick={() => setModalOpen(true)}
+                  onClick={handleOrder}
                 >
                   📋 Złóż zamówienie
                 </button>

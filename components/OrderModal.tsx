@@ -103,6 +103,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                 <label>
                   Adres dostawy *
                   <input name="address" type="text" placeholder="ul. Przykładowa 1, Szczecin" required />
+                  <span className="form-hint">Dostawa płatna od 20 zł — dokładny koszt podamy przy potwierdzeniu.</span>
                 </label>
               </div>
               <div className="form-row">
@@ -115,6 +116,16 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                 <label>
                   Uwagi
                   <textarea name="notes" placeholder="Kod domofonu, dodatkowe życzenia…" rows={3} />
+                </label>
+              </div>
+
+              <div className="form-row">
+                <label className="form-checkbox-label">
+                  <input name="consent" type="checkbox" required />
+                  <span>
+                    Wyrażam zgodę na przetwarzanie moich danych osobowych przez On.balon w celu realizacji zamówienia, zgodnie z{' '}
+                    <a href="/polityka-prywatnosci" target="_blank">Polityką prywatności</a>. *
+                  </span>
                 </label>
               </div>
 

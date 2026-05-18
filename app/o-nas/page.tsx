@@ -10,7 +10,7 @@ const CDN = "https://res.cloudinary.com/dnyevlhh7/image/upload/onbalon";
 const STATS = [
   { num: "5+", label: "lat doświadczenia" },
   { num: "3000+", label: "zadowolonych klientów" },
-  { num: "24/7", label: "dostawa w Szczecinie" },
+  { num: "", label: "Dostawa dopasowana do Twojego terminu" },
   { num: "100%", label: "pasji do balonów" },
 ];
 
@@ -18,7 +18,7 @@ const VALUES = [
   {
     icon: "🎈",
     title: "Pasja",
-    desc: "Balony to nie tylko nasza praca — to nasza prawdziwa pasja. Każdy zestaw tworzymy z miłością i dbałością o każdy szczegół.",
+    desc: "Każdy zestaw składamy ręcznie i z uwagą — bo wiemy, że ta dekoracja będzie w tle Twoich zdjęć przez lata.",
   },
   {
     icon: "⚡",
@@ -33,7 +33,7 @@ const VALUES = [
   {
     icon: "💜",
     title: "Serce",
-    desc: "Za każdym zamówieniem stoi prawdziwa historia — urodziny, chrzest, osiemnastka. Traktujemy to poważnie.",
+    desc: "Za każdym zamówieniem stoi prawdziwa historia — roczek, osiemnastka, ślub, event firmowy. Każdą z nich traktujemy tak samo poważnie.",
   },
 ];
 
@@ -42,7 +42,7 @@ export default function AboutPage() {
     <>
       <div className="announce">
         <span className="announce-dot" />
-        Dowozimy balony <strong>24/7</strong> na terenie Szczecina
+        Dostawa <strong>dopasowana</strong> do Twojego terminu na terenie Szczecina
         <span className="announce-sep">·</span>
         Potwierdzamy w <strong>15 minut</strong>
       </div>
@@ -108,8 +108,8 @@ export default function AboutPage() {
           <div className="section-inner">
             <div className="about-stats">
               {STATS.map((s) => (
-                <div key={s.label} className="about-stat">
-                  <span className="about-stat-num">{s.num}</span>
+                <div key={s.label} className={`about-stat${!s.num ? " about-stat--text" : ""}`}>
+                  {s.num && <span className="about-stat-num">{s.num}</span>}
                   <span className="about-stat-label">{s.label}</span>
                 </div>
               ))}
@@ -141,8 +141,9 @@ export default function AboutPage() {
                 </h2>
                 <p className="about-body">
                   Przez lata naszej działalności zdobyliśmy grono stałych
-                  klientów i mnóstwo pozytywnych opinii. Nasz zespół posiada
-                  ponad cztery lata doświadczenia w branży balonowej.
+                  klientów i mnóstwo pozytywnych opinii. Od ponad 5 lat tworzymy
+                  dekoracje balonowe, które zamieniają zwykłe chwile w
+                  niezapomniane wspomnienia.
                 </p>
                 <p className="about-body">
                   Zapraszamy do świata On.balon — gdzie każde święto staje się

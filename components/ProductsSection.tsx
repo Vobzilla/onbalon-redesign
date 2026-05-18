@@ -7,14 +7,13 @@ import { products, CATEGORIES, Category } from '@/data/products'
 import { useCart } from '@/context/CartContext'
 
 const PILL_CLASS: Record<Category, string> = {
-  'Roczek':             'pill-roczek',
-  '18-ka':              'pill-18-ka',
-  'Dla dziecka':        'pill-dziecka',
-  'Urodziny':           'pill-urodziny',
-  'Dla niej':           'pill-dla-niej',
-  'Dla niego':          'pill-dla-niego',
-  'Chrzest & Komunia':  'pill-chrzest',
-  'Biznes':             'pill-biznes',
+  'Roczek':               'pill-roczek',
+  '18-ka':                'pill-18-ka',
+  'Dla niej':             'pill-dla-niej',
+  'Dla niego':            'pill-dla-niego',
+  'Dla dziecka':          'pill-dziecka',
+  'Dekoracje balonowe':   'pill-dekoracje',
+  'Hello Baby':           'pill-hello-baby',
 }
 
 const PAGE_SIZE = 6
@@ -83,40 +82,40 @@ export default function ProductsSection({ initialCategory }: Props) {
 
         <div className="prod-grid">
           {visible.map(product => (
-            <article key={product.id} className="prod-card">
-              <div className="prod-img-wrap">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="prod-img"
-                />
-                <span className={`prod-category-pill ${PILL_CLASS[product.category]}`}>
-                  {product.category}
-                </span>
-              </div>
-              <div className="prod-body">
-                <p className="prod-cat-label">{product.category}</p>
-                <h3 className="prod-name">{product.name}</h3>
-                <div className="prod-foot">
-                  <span className="prod-price">{product.price} <small>zł</small></span>
-                  <div className="prod-btns">
-                    <Link href={`/product/${product.id}`} className="detail-btn">
-                      Szczegóły →
-                    </Link>
-                    <button
-                      className={`add-cart-btn${added === product.id ? ' added' : ''}`}
-                      onClick={e => handleAdd(e, product.id)}
-                      title="Dodaj do koszyka"
-                      aria-label="Dodaj do koszyka"
-                    >
-                      {added === product.id ? '✓' : '🛒'}
-                    </button>
+            <Link key={product.id} href={`/product/${product.id}`} className="prod-card-link">
+              <article className="prod-card">
+                <div className="prod-img-wrap">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="prod-img"
+                  />
+                  <span className={`prod-category-pill ${PILL_CLASS[product.category]}`}>
+                    {product.category}
+                  </span>
+                </div>
+                <div className="prod-body">
+                  <p className="prod-cat-label">{product.category}</p>
+                  <h3 className="prod-name">{product.name}</h3>
+                  <div className="prod-foot">
+                    <span className="prod-price">{product.price} <small>zł</small></span>
+                    <div className="prod-btns">
+                      <span className="detail-btn">Szczegóły →</span>
+                      <button
+                        className={`add-cart-btn${added === product.id ? ' added' : ''}`}
+                        onClick={e => handleAdd(e, product.id)}
+                        title="Dodaj do koszyka"
+                        aria-label="Dodaj do koszyka"
+                      >
+                        {added === product.id ? '✓' : '🛒'}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           ))}
         </div>
 
