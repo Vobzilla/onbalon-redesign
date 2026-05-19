@@ -12,11 +12,24 @@ export type ProductDetails = {
 
 type ProductType = "bukiet" | "dekoracja";
 
+const BUKIET_INCLUDES = [
+  "Balony napełnione helem",
+  "Balony lateksowe zabezpieczone Hi-Float dla dłuższego unoszenia",
+  "Ciężarki do balonów",
+  "Wstążki dekoracyjne",
+];
+
+const DEKORACJA_INCLUDES = [
+  "Profesjonalny montaż w miejscu imprezy",
+  "Projekt i dobór kolorów",
+  "Demontaż po imprezie",
+];
+
 const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
   Roczek: {
     bukiet: {
       description:
-        "Kolorowy bukiet balonowy na pierwsze urodziny — wypełniony helem, gotowy do odbioru lub z dostawą. Idealna niespodzianka na ten wyjątkowy dzień.",
+        "Wyjątkowy zestaw balonowy na pierwsze urodziny — wypełniony helem z Hi-Float dla dłuższego unoszenia. Eleganckie ciężarki w zestawie. Gotowy do odbioru lub z dostawą po Szczecinie.",
       contents: [
         { name: "Balony lateksowe kolorowe", detail: "Ø 30 cm", qty: 6 },
         {
@@ -31,11 +44,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 2,
         },
       ],
-      includes: [
-        "Balony napełnione helem",
-        "Balony lateksowe zabezpieczone uszczelniaczem Hi-Float dla dłuższego unoszenia",
-        "Eleganckie ciężarki do balonów",
-      ],
+      includes: BUKIET_INCLUDES,
     },
     dekoracja: {
       description:
@@ -58,19 +67,14 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 1,
         },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-        "Demontaż po imprezie (opcjonalnie)",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 
-  "18-ka": {
+  "18-tka": {
     bukiet: {
       description:
-        "Spektakularny bukiet na osiemnastkę — duże cyfry foliowe i kolorowe balony lateksowe wypełnione helem. Gotowy do odbioru lub z dostawą.",
+        "Efektowny zestaw balonowy na osiemnastkę — bo ten dzień zasługuje na coś wyjątkowego. Wypełniony helem z Hi-Float. Gotowy do odbioru lub z dostawą po Szczecinie.",
       contents: [
         { name: "Balony lateksowe", detail: "Ø 30 cm, kolorowe", qty: 10 },
         {
@@ -85,12 +89,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
         },
         { name: "Balony konfetti", detail: "Ø 30 cm, przezroczyste", qty: 3 },
       ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Personalizacja",
-        "Karta z życzeniami",
-      ],
+      includes: BUKIET_INCLUDES,
     },
     dekoracja: {
       description:
@@ -113,19 +112,14 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 20,
         },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-        "Neon / personalizacja w cenie",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 
   "Dla niej": {
     bukiet: {
       description:
-        "Romantyczny bukiet balonowy w odcieniach różu i złota — idealny prezent na urodziny, imieniny lub każdą wyjątkową chwilę.",
+        "Piękny zestaw balonowy dla niej — na urodziny, imieniny lub każdą wyjątkową okazję. Wypełniony helem z Hi-Float dla dłuższego unoszenia. Dostawa prosto pod drzwi.",
       contents: [
         {
           name: "Balony lateksowe różowe",
@@ -140,11 +134,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
         { name: "Balony gwiazdki foliowe", detail: "Złote, Ø 45 cm", qty: 3 },
         { name: "Balony konfetti", detail: "Ø 30 cm, przezroczyste", qty: 2 },
       ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Karta z życzeniami",
-      ],
+      includes: BUKIET_INCLUDES,
     },
     dekoracja: {
       description:
@@ -167,18 +157,14 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
         },
         { name: "Elementy dekoracyjne", detail: "Kwiaty, wstążki", qty: 1 },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 
   "Dla niego": {
     bukiet: {
       description:
-        "Elegancki bukiet balonowy dla niego — granatowe, srebrne lub czarne balony tworzą stylową, nowoczesną kompozycję. Z dostawą lub do odbioru.",
+        "Efektowny zestaw balonowy dla niego — idealny na urodziny, imieniny lub niespodziankę. Wypełniony helem z Hi-Float. Gotowy do odbioru lub z dostawą po Szczecinie.",
       contents: [
         { name: "Balony lateksowe granatowe", detail: "Ø 30 cm", qty: 8 },
         {
@@ -189,11 +175,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
         { name: "Balony konfetti", detail: "Ø 30 cm, przezroczyste", qty: 2 },
         { name: "Balon foliowy gwiazdka", detail: "Srebrna, Ø 45 cm", qty: 2 },
       ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Karta z życzeniami",
-      ],
+      includes: BUKIET_INCLUDES,
     },
     dekoracja: {
       description:
@@ -216,18 +198,14 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
         },
         { name: "Elementy dekoracyjne", detail: "Wstążki, konfetti", qty: 1 },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 
   "Dla dziecka": {
     bukiet: {
       description:
-        "Kolorowy bukiet balonowy z ulubionym bohaterem Twojego dziecka. Niespodzianka, która wywoła uśmiech — dostawa pod drzwi w 2–3 godziny!",
+        "Kolorowy zestaw balonowy, który zachwyci każde dziecko. Wypełniony helem z Hi-Float dla dłuższego unoszenia. Idealny na urodziny lub niespodziankę — dostawa prosto do domu.",
       contents: [
         {
           name: "Balon foliowy cyfra",
@@ -242,11 +220,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
         { name: "Balony lateksowe kolorowe", detail: "Ø 30 cm", qty: 6 },
         { name: "Balony konfetti", detail: "Ø 30 cm, przezroczyste", qty: 2 },
       ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Karta z życzeniami",
-      ],
+      includes: BUKIET_INCLUDES,
     },
     dekoracja: {
       description:
@@ -269,18 +243,14 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 1,
         },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 
   "Dekoracje balonowe": {
     bukiet: {
       description:
-        "Profesjonalna dekoracja balonowa — girlanda, ściana, łuk lub brama balonowa. Tworzy spektakularne tło na każde wydarzenie.",
+        "Profesjonalna dekoracja balonowa na każdą okazję — urodziny, wesele, event firmowy. Wykonana przez nasz zespół na miejscu. Szczegóły i wycenę ustalamy indywidualnie w ciągu 15 minut.",
       contents: [
         {
           name: "Balony lateksowe różnych rozmiarów",
@@ -298,16 +268,11 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 1,
         },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-        "Demontaż po imprezie (opcjonalnie)",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
     dekoracja: {
       description:
-        "Profesjonalna dekoracja balonowa — girlanda, ściana, łuk lub brama balonowa. Tworzy spektakularne tło na każde wydarzenie.",
+        "Profesjonalna dekoracja balonowa na każdą okazję — urodziny, wesele, event firmowy. Wykonana przez nasz zespół na miejscu. Szczegóły i wycenę ustalamy indywidualnie w ciągu 15 minut.",
       contents: [
         {
           name: "Balony lateksowe różnych rozmiarów",
@@ -325,25 +290,15 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 1,
         },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-        "Demontaż po imprezie (opcjonalnie)",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 
   "Hello Baby": {
     bukiet: {
       description:
-        "Wyjątkowy bukiet balonowy na narodziny dziecka lub baby shower. Pastelowe kolory i napis Hello Baby tworzą magiczną pamiątkę na ten wyjątkowy moment.",
+        "Wyjątkowy zestaw balonowy na powitanie nowego członka rodziny. Wypełniony helem z Hi-Float — idealna niespodzianka dla świeżo upieczonych rodziców. Dostawa pod wskazany adres w Szczecinie.",
       contents: [
-        {
-          name: "Balon foliowy „It's a Boy/Girl",
-          detail: "Niebieski lub różowy, Ø 45 cm",
-          qty: 1,
-        },
         {
           name: "Balony lateksowe pastelowe",
           detail: "Ø 30 cm, miętowe lub różowe",
@@ -356,11 +311,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 2,
         },
       ],
-      includes: [
-        "Hel do napełnienia wszystkich balonów",
-        "Wstążki dekoracyjne",
-        "Karta z życzeniami",
-      ],
+      includes: BUKIET_INCLUDES,
     },
     dekoracja: {
       description:
@@ -387,11 +338,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
           qty: 1,
         },
       ],
-      includes: [
-        "Profesjonalny montaż w miejscu imprezy",
-        "Dostawa na terenie Szczecina",
-        "Projekt i dobór kolorów",
-      ],
+      includes: DEKORACJA_INCLUDES,
     },
   },
 };

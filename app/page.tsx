@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProductsSection from "@/components/ProductsSection";
 import HowItWorks from "@/components/HowItWorks";
+import Reviews from "@/components/Reviews";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import Cart from "@/components/Cart";
@@ -36,6 +37,7 @@ export default function Home() {
         <Hero />
         <ProductsSection initialCategory={filterCategory} />
         <HowItWorks />
+        <Reviews />
         <FAQ />
       </main>
 

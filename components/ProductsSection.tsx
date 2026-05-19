@@ -8,7 +8,7 @@ import { useCart } from '@/context/CartContext'
 
 const PILL_CLASS: Record<Category, string> = {
   'Roczek':               'pill-roczek',
-  '18-ka':                'pill-18-ka',
+  '18-tka':               'pill-18-ka',
   'Dla niej':             'pill-dla-niej',
   'Dla niego':            'pill-dla-niego',
   'Dla dziecka':          'pill-dziecka',

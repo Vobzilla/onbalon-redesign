@@ -28,7 +28,7 @@ export default function Footer() {
           <p className="footer-col-title">Okazje</p>
           <ul>
             <li><a href="#products">Roczek</a></li>
-            <li><a href="#products">18-ka</a></li>
+            <li><a href="#products">18-tka</a></li>
             <li><a href="#products">Urodziny</a></li>
             <li><a href="#products">Dla niej</a></li>
             <li><a href="#products">Dla niego</a></li>

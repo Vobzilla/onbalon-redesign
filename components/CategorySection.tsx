@@ -6,11 +6,14 @@ import { Category } from "@/data/products";
 
 const CATEGORY_META: Record<Category, { label: string; sub: string }> = {
   Roczek: { label: "Roczek", sub: "Pierwsze urodziny" },
-  "18-ka": { label: "18-ka", sub: "Osiemnastka" },
+  "18-tka": { label: "18-tka", sub: "Osiemnastka" },
   "Dla niej": { label: "Dla niej", sub: "Kobiece zestawy" },
   "Dla niego": { label: "Dla niego", sub: "Męskie zestawy" },
   "Dla dziecka": { label: "Dla dziecka", sub: "Postacie & charaktery" },
-  "Dekoracje balonowe": { label: "Dekoracje balonowe", sub: "Girlandy & ściany" },
+  "Dekoracje balonowe": {
+    label: "Dekoracje balonowe",
+    sub: "Girlandy & ściany",
+  },
   "Hello Baby": { label: "Hello Baby", sub: "Narodziny & baby shower" },
 };
 
