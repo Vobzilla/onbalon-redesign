@@ -14,6 +14,7 @@ const PILL_CLASS: Record<Category, string> = {
   'Dla dziecka':          'pill-dziecka',
   'Dekoracje balonowe':   'pill-dekoracje',
   'Hello Baby':           'pill-hello-baby',
+  'Małe Zestawy':         'pill-male-zestawy',
 }
 
 const PAGE_SIZE = 6

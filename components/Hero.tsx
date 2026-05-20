@@ -33,8 +33,7 @@ export default function Hero() {
               🎈 Zobacz katalog
             </a>
             <a
-              href="https://t.me/vobzilla_bot"
-              target="_blank"
+              href="tel:+48732977561"
               className="btn-secondary">
               📞 Skontaktuj się
             </a>

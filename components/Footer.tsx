@@ -10,15 +10,14 @@ export default function Footer() {
               className="footer-logo-img"
             />
           </a>
-          <p className="footer-tagline">i jesteś gotowy na każdą uroczystość.<br />Dostawa dopasowana do Twojego terminu w Szczecinie.</p>
           <div className="footer-socials">
-            <a href="https://t.me/vobzilla_bot" target="_blank" aria-label="Telegram">
+            <a href="https://t.me/onbalon" target="_blank" aria-label="Telegram">
               <TgIcon />
             </a>
             <a href="https://facebook.com/onbalon" target="_blank" aria-label="Facebook">
               <FbIcon />
             </a>
-            <a href="https://instagram.com/onbalon" target="_blank" aria-label="Instagram">
+            <a href="https://instagram.com/on.balon" target="_blank" aria-label="Instagram">
               <IgIcon />
             </a>
           </div>
@@ -27,21 +26,22 @@ export default function Footer() {
         <div className="footer-col">
           <p className="footer-col-title">Okazje</p>
           <ul>
-            <li><a href="#products">Roczek</a></li>
-            <li><a href="#products">18-tka</a></li>
-            <li><a href="#products">Urodziny</a></li>
-            <li><a href="#products">Dla niej</a></li>
-            <li><a href="#products">Dla niego</a></li>
-            <li><a href="#products">Chrzest &amp; Komunia</a></li>
-            <li><a href="#products">Biznes</a></li>
+            <li><a href="/#products">Roczek</a></li>
+            <li><a href="/#products">18-tka</a></li>
+            <li><a href="/#products">Urodziny</a></li>
+            <li><a href="/#products">Dla niej</a></li>
+            <li><a href="/#products">Dla niego</a></li>
+            <li><a href="/#products">Chrzest &amp; Komunia</a></li>
+            <li><a href="/#products">Biznes</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
           <p className="footer-col-title">Informacje</p>
           <ul>
-            <li><a href="#how">Jak zamawiać</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="/o-nas">O nas</a></li>
+            <li><a href="/#how">Jak zamawiać</a></li>
+            <li><a href="/#faq">FAQ</a></li>
             <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
           </ul>
         </div>
@@ -49,8 +49,8 @@ export default function Footer() {
         <div className="footer-col">
           <p className="footer-col-title">Kontakt</p>
           <ul>
-            <li><a href="https://t.me/vobzilla_bot" target="_blank">Telegram</a></li>
-            <li><a href="https://instagram.com/onbalon" target="_blank">Instagram</a></li>
+            <li><a href="https://t.me/onbalon" target="_blank">Telegram</a></li>
+            <li><a href="https://instagram.com/on.balon" target="_blank">Instagram</a></li>
             <li><a href="https://facebook.com/onbalon" target="_blank">Facebook</a></li>
           </ul>
         </div>

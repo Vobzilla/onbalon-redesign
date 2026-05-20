@@ -1,14 +1,60 @@
 const STEPS = [
-  { n: '01', title: 'Wybierz zestaw',  desc: 'Przeglądaj katalog i dodawaj gotowe zestawy do koszyka. Każdy zestaw to skompletowana dekoracja.' },
-  { n: '02', title: 'Podaj dane',      desc: 'Adres dostawy, data i godzina — formularz zajmuje 30 sekund.' },
-  { n: '03', title: 'Potwierdzamy',    desc: 'Skontaktujemy się z Tobą w ciągu 15 minut z potwierdzeniem zamówienia i godziną dostawy.' },
-  { n: '04', title: 'Dostarczamy',     desc: 'Balony trafiają prosto do Ciebie — o każdej porze, na terenie Szczecina i okolic.' },
+  {
+    n: '01',
+    title: 'Wybierz zestaw',
+    desc: 'Przeglądaj katalog i dodaj gotowy zestaw do koszyka.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+    ),
+  },
+  {
+    n: '02',
+    title: 'Podaj dane',
+    desc: 'Adres, data i godzina — formularz zajmuje 30 sekund.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="9" y="2" width="6" height="4" rx="1"/>
+        <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/>
+        <line x1="8" y1="11" x2="16" y2="11"/>
+        <line x1="8" y1="15" x2="13" y2="15"/>
+      </svg>
+    ),
+  },
+  {
+    n: '03',
+    title: 'Potwierdzamy',
+    desc: 'Oddzwaniamy w 15 minut i potwierdzamy wszystkie szczegóły.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.2 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14v2.92z"/>
+      </svg>
+    ),
+  },
+  {
+    n: '04',
+    title: 'Dostarczamy',
+    desc: 'Balony trafiają prosto do Ciebie — o każdej porze.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2C8.686 2 6 4.686 6 8c0 4.418 6 11 6 11s6-6.582 6-11c0-3.314-2.686-6-6-6z"/>
+        <circle cx="12" cy="8" r="2"/>
+      </svg>
+    ),
+  },
 ]
 
 export default function HowItWorks() {
   return (
     <section className="how" id="how">
-      <div className="how-inner">
+      <div className="section-inner">
         <div className="how-top">
           <div>
             <p className="eyebrow">Jak to działa</p>
@@ -22,12 +68,17 @@ export default function HowItWorks() {
             Ty się cieszysz — my zajmujemy się resztą.
           </p>
         </div>
+
         <div className="steps">
-          {STEPS.map(s => (
+          {STEPS.map((s, i) => (
             <div key={s.n} className="step">
-              <div className="step-num-circle">{s.n}</div>
+              <div className="step-icon">{s.icon}</div>
+              <div className="step-num">{s.n}</div>
               <h3 className="step-title">{s.title}</h3>
               <p className="step-desc">{s.desc}</p>
+              {i < STEPS.length - 1 && (
+                <div className="step-arrow">→</div>
+              )}
             </div>
           ))}
         </div>

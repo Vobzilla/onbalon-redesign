@@ -294,6 +294,27 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
     },
   },
 
+  "Małe Zestawy": {
+    bukiet: {
+      description:
+        "Mały zestaw, wielka radość — idealny jako szybki prezent lub dodatek do dekoracji. Wypełniony helem, gotowy do odbioru lub z dostawą po Szczecinie.",
+      contents: [
+        { name: "Balony lateksowe kolorowe", detail: "Ø 30 cm", qty: 3 },
+        { name: "Balon foliowy", detail: "Ø 45 cm", qty: 1 },
+      ],
+      includes: BUKIET_INCLUDES,
+    },
+    dekoracja: {
+      description:
+        "Mały zestaw, wielka radość — idealny jako szybki prezent lub dodatek do dekoracji. Wypełniony helem, gotowy do odbioru lub z dostawą po Szczecinie.",
+      contents: [
+        { name: "Balony lateksowe kolorowe", detail: "Ø 30 cm", qty: 3 },
+        { name: "Balon foliowy", detail: "Ø 45 cm", qty: 1 },
+      ],
+      includes: BUKIET_INCLUDES,
+    },
+  },
+
   "Hello Baby": {
     bukiet: {
       description:

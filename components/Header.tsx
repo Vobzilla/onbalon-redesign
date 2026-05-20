@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
 
 const CONTACTS = [
@@ -12,8 +13,8 @@ const CONTACTS = [
   },
   {
     label: 'E-mail',
-    value: 'kontakt@onbalon.pl',
-    href: 'mailto:kontakt@onbalon.pl',
+    value: 'on.balon2022@gmail.com',
+    href: 'mailto:on.balon2022@gmail.com',
     icon: 'mail',
   },
   {
@@ -37,7 +38,7 @@ const CONTACTS = [
 ]
 
 export default function Header() {
-  const { totalCount, openCart } = useCart()
+  const { totalCount, openCart, loaded } = useCart()
   const [contactOpen, setContactOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -54,19 +55,19 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-inner">
-        <a href="/" className="logo">
+        <Link href="/" className="logo">
           <img
             src="https://raw.githubusercontent.com/Vobzilla/on.balon/main/img/logo.png"
             alt="on.balon logo"
             className="logo-img"
           />
-        </a>
+        </Link>
 
         <nav className="nav">
-          <a href="/#products" className="nav-link">Katalog</a>
-          <a href="/#how"      className="nav-link">Jak zamówić</a>
-          <a href="/#faq"      className="nav-link">FAQ</a>
-          <a href="/o-nas"    className="nav-link">O nas</a>
+          <Link href="/#products" className="nav-link">Katalog</Link>
+          <Link href="/#how"      className="nav-link">Jak zamówić</Link>
+          <Link href="/#faq"      className="nav-link">FAQ</Link>
+          <Link href="/o-nas"     className="nav-link">O nas</Link>
         </nav>
 
         <div className="header-actions">
@@ -79,7 +80,7 @@ export default function Header() {
               aria-expanded={contactOpen}
             >
               <PhoneIcon />
-              Kontakt
+              <span className="contact-btn-text">Kontakt</span>
               <span className="chevron">▾</span>
             </button>
 
@@ -108,8 +109,10 @@ export default function Header() {
           {/* Cart button */}
           <button className="cart-btn" onClick={openCart} aria-label="Koszyk">
             <CartIcon />
-            Koszyk
-            <span className="cart-count">{totalCount}</span>
+            <span className="cart-btn-text">Koszyk</span>
+            {loaded && totalCount > 0 && (
+              <span className="cart-count">{totalCount}</span>
+            )}
           </button>
         </div>
       </div>

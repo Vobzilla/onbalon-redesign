@@ -61,8 +61,7 @@ export default function FAQ() {
             dobrać idealny zestaw na Twoją uroczystość.
           </p>
           <a
-            href="https://t.me/vobzilla_bot"
-            target="_blank"
+            href="tel:+48732977561"
             className="btn-primary">
             📞 Skontaktuj się z nami
           </a>

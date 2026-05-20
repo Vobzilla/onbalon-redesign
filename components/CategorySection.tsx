@@ -15,6 +15,7 @@ const CATEGORY_META: Record<Category, { label: string; sub: string }> = {
     sub: "Girlandy & ściany",
   },
   "Hello Baby": { label: "Hello Baby", sub: "Narodziny & baby shower" },
+  "Małe Zestawy": { label: "Małe Zestawy", sub: "Szybki prezent" },
 };
 
 type Props = { onFilter: (cat: Category | null) => void };

@@ -1,6 +1,8 @@
 /** @format */
 
-const CDN = "https://res.cloudinary.com/dnyevlhh7/image/upload/onbalon";
+const BASE =
+  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto,w_1200";
+const CDN = `${BASE}/onbalon`;
 
 export type Category =
   | "Roczek"
@@ -9,7 +11,8 @@ export type Category =
   | "Dla niego"
   | "Dla dziecka"
   | "Dekoracje balonowe"
-  | "Hello Baby";
+  | "Hello Baby"
+  | "Małe Zestawy";
 
 export type ContentItem = {
   name: string;
@@ -36,6 +39,7 @@ export const CATEGORIES: Category[] = [
   "Dla dziecka",
   "Dekoracje balonowe",
   "Hello Baby",
+  "Małe Zestawy",
 ];
 
 export const products: Product[] = [
@@ -137,85 +141,133 @@ export const products: Product[] = [
     id: 14,
     name: "Zestaw 18-tka #1",
     category: "18-tka",
-    price: 149,
+    price: 313,
     image: `${CDN}/18-urodziny/18-urodziny-1`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 13 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+    ],
   },
   {
     id: 15,
     name: "Zestaw 18-tka #2",
     category: "18-tka",
-    price: 149,
+    price: 205,
     image: `${CDN}/18-urodziny/18-urodziny-2`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 16,
     name: "Zestaw 18-tka #3",
     category: "18-tka",
-    price: 149,
+    price: 314,
     image: `${CDN}/18-urodziny/18-urodziny-3`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 17,
     name: "Zestaw 18-tka #4",
     category: "18-tka",
-    price: 149,
+    price: 211,
     image: `${CDN}/18-urodziny/18-urodziny-4`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 18,
     name: "Zestaw 18-tka #5",
     category: "18-tka",
-    price: 159,
+    price: 1550,
     image: `${CDN}/18-urodziny/18-urodziny-5`,
   },
   {
     id: 19,
     name: "Zestaw 18-tka #6",
     category: "18-tka",
-    price: 149,
+    price: 266,
     image: `${CDN}/18-urodziny/18-urodziny-6`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy gwiazda", detail: "Ø 45 cm", qty: 1 },
+    ],
   },
   {
     id: 20,
     name: "Zestaw 18-tka #7",
     category: "18-tka",
-    price: 159,
+    price: 320,
     image: `${CDN}/18-urodziny/18-urodziny-7`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 21,
     name: "Zestaw 18-tka #8",
     category: "18-tka",
-    price: 149,
+    price: 218,
     image: `${CDN}/18-urodziny/18-urodziny-8`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+    ],
   },
   {
     id: 22,
     name: "Zestaw 18-tka #9",
     category: "18-tka",
-    price: 149,
+    price: 211,
     image: `${CDN}/18-urodziny/18-urodziny-9`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 23,
     name: "Zestaw 18-tka #10",
     category: "18-tka",
-    price: 159,
+    price: 211,
     image: `${CDN}/18-urodziny/18-urodziny-10`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 24,
     name: "Zestaw 18-tka #11",
     category: "18-tka",
-    price: 169,
+    price: 300,
     image: `${CDN}/18-urodziny/18-urodziny-11`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 25,
     name: "Zestaw 18-tka #12",
     category: "18-tka",
-    price: 149,
+    price: 435,
     image: `${CDN}/18-urodziny/18-urodziny-12`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 10 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon personalizowany", detail: "Ø 90 cm", qty: 1 },
+    ],
   },
 
   // ── Dla niej ──────────────────────────────────────────────────────────────
@@ -223,78 +275,157 @@ export const products: Product[] = [
     id: 26,
     name: "Zestaw Dla Niej #1",
     category: "Dla niej",
-    price: 149,
+    price: 322,
     image: `${CDN}/dla-niej/dla-niej-1`,
+    contents: [
+      { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 14 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 27,
     name: "Zestaw Dla Niej #2",
     category: "Dla niej",
-    price: 149,
+    price: 472,
     image: `${CDN}/dla-niej/dla-niej-2`,
+    contents: [
+      { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 26 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 28,
     name: "Zestaw Dla Niej #3",
     category: "Dla niej",
-    price: 149,
+    price: 555,
     image: `${CDN}/dla-niej/dla-niej-3`,
+    contents: [
+      { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 21 },
+      { name: "Balon foliowy korona", detail: "Złoty", qty: 2 },
+      { name: "Balon foliowy serce", detail: "Ø 68 x 72 cm", qty: 1 },
+    ],
   },
   {
     id: 29,
     name: "Zestaw Dla Niej #4",
     category: "Dla niej",
-    price: 149,
+    price: 211,
     image: `${CDN}/dla-niej/dla-niej-4`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 30,
     name: "Zestaw Dla Niej #5",
     category: "Dla niej",
-    price: 159,
+    price: 850,
     image: `${CDN}/dla-niej/dla-niej-5`,
+    contents: [
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 30 },
+      { name: "Balon foliowy cyfra", detail: "Ø 102 cm", qty: 2 },
+    ],
   },
   {
     id: 31,
     name: "Zestaw Dla Niej #6",
     category: "Dla niej",
-    price: 149,
+    price: 269,
     image: `${CDN}/dla-niej/dla-niej-6`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      {
+        name: "Balon foliowy cyfra",
+        detail: "Ø 86 cm",
+        qty: 2,
+      },
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+    ],
   },
   {
     id: 32,
     name: "Zestaw Dla Niej #7",
     category: "Dla niej",
-    price: 149,
+    price: 258,
     image: `${CDN}/dla-niej/dla-niej-7`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+    ],
   },
   {
     id: 33,
     name: "Zestaw Dla Niej #8",
     category: "Dla niej",
-    price: 159,
-    image: `${CDN}/dla-niej/dla-niej-9`,
+    price: 264,
+    image: `${BASE}/dla-niej-8_gm0wss`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+    ],
   },
   {
     id: 34,
     name: "Zestaw Dla Niej #9",
     category: "Dla niej",
-    price: 169,
-    image: `${CDN}/dla-niej/dla-niej-10`,
+    price: 555,
+    image: `${CDN}/dla-niej/dla-niej-9`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 30 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
   {
     id: 35,
     name: "Zestaw Dla Niej #10",
     category: "Dla niej",
-    price: 149,
-    image: `${CDN}/dla-niej/dla-niej-11`,
+    price: 281,
+    image: `${CDN}/dla-niej/dla-niej-10`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy z napisem", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy korona", detail: "Złoty", qty: 1 },
+    ],
   },
   {
     id: 36,
     name: "Zestaw Dla Niej #11",
     category: "Dla niej",
-    price: 149,
-    image: `${CDN}/dla-niej/dla-niej-13`,
+    price: 326,
+    image: `${BASE}/dla-niej-11_lqlpod`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 12 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 2 },
+    ],
+  },
+  {
+    id: 133,
+    name: "Zestaw Dla Niej #12",
+    category: "Dla niej",
+    price: 510,
+    image: `${BASE}/dla-niej-12_louu08`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 18 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy gwiazda", detail: "Ø 45 cm", qty: 2 },
+      { name: "Balon foliowy korona", detail: "Srebrna", qty: 2 },
+    ],
+  },
+  {
+    id: 134,
+    name: "Zestaw Dla Niej #13",
+    category: "Dla niej",
+    price: 209,
+    image: `${BASE}/dla-niej-13_nxwacq`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+    ],
   },
 
   // ── Dla niego ─────────────────────────────────────────────────────────────
@@ -435,14 +566,14 @@ export const products: Product[] = [
     id: 56,
     name: "Zestaw Dla Niego #20",
     category: "Dla niego",
-    price: 159,
+    price: 575,
     image: `${CDN}/dla-niego/dla-niego-22`,
   },
   {
     id: 57,
     name: "Zestaw Dla Niego #21",
     category: "Dla niego",
-    price: 179,
+    price: 381,
     image: `${CDN}/dla-niego/dla-niego-23`,
   },
 
@@ -856,5 +987,126 @@ export const products: Product[] = [
     category: "Hello Baby",
     price: 179,
     image: `${CDN}/hello-baby/hello-baby-8`,
+  },
+
+  // ── Małe Zestawy ─────────────────────────────────────────────────────────
+  {
+    id: 116,
+    name: "Mały Zestaw #1",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-1_zjb7vw`,
+  },
+  {
+    id: 117,
+    name: "Mały Zestaw #2",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-2_mj3oj3`,
+  },
+  {
+    id: 118,
+    name: "Mały Zestaw #3",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-3_zsmewv`,
+  },
+  {
+    id: 119,
+    name: "Mały Zestaw #4",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-4_rnst05`,
+  },
+  {
+    id: 120,
+    name: "Mały Zestaw #5",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-5_x2ofzd`,
+  },
+  {
+    id: 121,
+    name: "Mały Zestaw #6",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-6_td2pjb`,
+  },
+  {
+    id: 122,
+    name: "Mały Zestaw #7",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-7_muito1`,
+  },
+  {
+    id: 123,
+    name: "Mały Zestaw #8",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-8_ab6m2e`,
+  },
+  {
+    id: 124,
+    name: "Mały Zestaw #9",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-9_ddzouv`,
+  },
+  {
+    id: 125,
+    name: "Mały Zestaw #10",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-10_tvijmq`,
+  },
+  {
+    id: 126,
+    name: "Mały Zestaw #11",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-11_m5cqdl`,
+  },
+  {
+    id: 127,
+    name: "Mały Zestaw #12",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-12_iicamf`,
+  },
+  {
+    id: 128,
+    name: "Mały Zestaw #13",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-13_gj9480`,
+  },
+  {
+    id: 129,
+    name: "Mały Zestaw #14",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-14_vt8bue`,
+  },
+  {
+    id: 130,
+    name: "Mały Zestaw #15",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-15_p7bxcg`,
+  },
+  {
+    id: 131,
+    name: "Mały Zestaw #16",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-16_dgx6rl`,
+  },
+  {
+    id: 132,
+    name: "Mały Zestaw #17",
+    category: "Małe Zestawy",
+    price: 79,
+    image: `${BASE}/male-zestawy-17_izikii`,
   },
 ];

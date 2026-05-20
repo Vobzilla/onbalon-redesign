@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AnnounceBanner from "@/components/AnnounceBanner";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const CDN = "https://res.cloudinary.com/dnyevlhh7/image/upload/onbalon";
 
@@ -40,12 +42,7 @@ const VALUES = [
 export default function AboutPage() {
   return (
     <>
-      <div className="announce">
-        <span className="announce-dot" />
-        Dostawa <strong>dopasowana</strong> do Twojego terminu na terenie Szczecina
-        <span className="announce-sep">·</span>
-        Potwierdzamy w <strong>15 minut</strong>
-      </div>
+      <AnnounceBanner />
 
       <Header />
 
@@ -207,6 +204,7 @@ export default function AboutPage() {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

@@ -13,6 +13,8 @@ import Footer from "@/components/Footer";
 import Cart from "@/components/Cart";
 import OrderModal from "@/components/OrderModal";
 import { Category } from "@/data/products";
+import AnnounceBanner from "@/components/AnnounceBanner";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Balloon decorations scattered around the page
 
@@ -22,14 +24,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Floating balloon decorations */}
-      {/* Announce bar */}
-      <div className="announce">
-        <span className="announce-dot" />
-        Dostawa <strong>dopasowana</strong> do Twojego terminu na terenie Szczecina
-        <span className="announce-sep">·</span>
-        Potwierdzamy w <strong>15 minut</strong>
-      </div>
+      <AnnounceBanner />
 
       <Header />
 
@@ -45,6 +40,7 @@ export default function Home() {
 
       <Cart onCheckout={() => setModalOpen(true)} />
       <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <ScrollToTop />
     </>
   );
 }

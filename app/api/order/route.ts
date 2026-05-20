@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 type OrderItem = {
-  product: { name: string; price: number }
+  product: { name: string; price: number; image: string }
   qty: number
 }
 
@@ -15,8 +15,19 @@ export async function POST(req: NextRequest) {
 
   const { name, contact, address, date, notes, items, totalPrice } = await req.json()
 
+  function toViewableUrl(url?: string): string {
+    if (!url) return ''
+    return url
+      .replace(/\/upload\/[^/]+\//, '/upload/')
+      .replace(/(\.[a-z]+)?$/, '.jpg')
+  }
+
   const itemLines = (items as OrderItem[])
-    .map(({ product, qty }) => `  • ${product.name} × ${qty} = ${product.price * qty} zł`)
+    .map(({ product, qty }) => {
+      const imgUrl = toViewableUrl(product.image)
+      const imgLine = imgUrl ? `\n    🖼 ${imgUrl}` : ''
+      return `  • ${product.name} × ${qty} = ${product.price * qty} zł${imgLine}`
+    })
     .join('\n')
 
   const deliveryDate = new Date(date).toLocaleString('pl-PL', {
@@ -29,18 +40,18 @@ export async function POST(req: NextRequest) {
   })
 
   const message = [
-    '🛒 *Nowe zamówienie!*',
+    '🛒 <b>Nowe zamówienie!</b>',
     '',
-    `👤 *Klient:* ${name}`,
-    `📱 *Kontakt:* ${contact}`,
-    `📍 *Adres:* ${address}`,
-    `🕐 *Dostawa:* ${deliveryDate}`,
-    notes ? `📝 *Uwagi:* ${notes}` : null,
+    `👤 <b>Klient:</b> ${name}`,
+    `📱 <b>Kontakt:</b> ${contact}`,
+    `📍 <b>Adres:</b> ${address}`,
+    `🕐 <b>Dostawa:</b> ${deliveryDate}`,
+    notes ? `📝 <b>Uwagi:</b> ${notes}` : null,
     '',
-    '*Zamówione produkty:*',
+    '<b>Zamówione produkty:</b>',
     itemLines,
     '',
-    `💰 *Łącznie: ${totalPrice} zł*`,
+    `💰 <b>Łącznie: ${totalPrice} zł</b>`,
   ]
     .filter(l => l !== null)
     .join('\n')
@@ -51,14 +62,14 @@ export async function POST(req: NextRequest) {
     body: JSON.stringify({
       chat_id: chatId,
       text: message,
-      parse_mode: 'Markdown',
+      parse_mode: 'HTML',
     }),
   })
 
   if (!res.ok) {
     const err = await res.text()
     console.error('Telegram error:', err)
-    return NextResponse.json({ error: 'Failed to send' }, { status: 500 })
+    return NextResponse.json({ error: err }, { status: 500 })
   }
 
   return NextResponse.json({ ok: true })
