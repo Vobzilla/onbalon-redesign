@@ -27,7 +27,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&subset=latin,latin-ext&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,800;0,900;1,400;1,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&display=swap"
           rel="stylesheet"
         />
       </head>

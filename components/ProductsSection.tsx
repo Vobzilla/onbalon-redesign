@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { products, CATEGORIES, Category } from '@/data/products'
+import { products, CATEGORIES, type Product, type Category } from '@/data/products'
 import { useCart } from '@/context/CartContext'
 
 const PILL_CLASS: Record<Category, string> = {
@@ -19,22 +19,18 @@ const PILL_CLASS: Record<Category, string> = {
 
 const PAGE_SIZE = 6
 
-type Props = { initialCategory?: Category | null }
-
-export default function ProductsSection({ initialCategory }: Props) {
-  const [activeFilter, setActiveFilter] = useState<Category | null>(initialCategory ?? null)
+export default function ProductsSection() {
+  const [activeFilter, setActiveFilter] = useState<Category | null>(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [added, setAdded]               = useState<number | null>(null)
   const { addItem } = useCart()
 
-  // On mount: restore state from history or apply initialCategory
   useEffect(() => {
     const savedScroll = sessionStorage.getItem('shop_scroll')
     const savedFilter = sessionStorage.getItem('shop_filter')
     const savedCount  = sessionStorage.getItem('shop_count')
 
     if (savedScroll !== null) {
-      // Coming back from product page — restore everything
       setActiveFilter((savedFilter as Category) || null)
       setVisibleCount(Number(savedCount) || PAGE_SIZE)
       sessionStorage.removeItem('shop_scroll')
@@ -42,8 +38,6 @@ export default function ProductsSection({ initialCategory }: Props) {
       sessionStorage.removeItem('shop_count')
       const y = Number(savedScroll)
       setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' }), 100)
-    } else if (initialCategory != null) {
-      setActiveFilter(initialCategory)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -57,12 +51,11 @@ export default function ProductsSection({ initialCategory }: Props) {
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
   const visible  = filtered.slice(0, visibleCount)
 
-  function handleAdd(e: React.MouseEvent, productId: number) {
+  function handleAdd(e: React.MouseEvent, product: Product) {
     e.preventDefault()
     e.stopPropagation()
-    const product = products.find(p => p.id === productId)!
     addItem(product)
-    setAdded(productId)
+    setAdded(product.id)
     setTimeout(() => setAdded(null), 1400)
   }
 
@@ -129,11 +122,14 @@ export default function ProductsSection({ initialCategory }: Props) {
                       <span className="detail-btn">Szczegóły →</span>
                       <button
                         className={`add-cart-btn${added === product.id ? ' added' : ''}`}
-                        onClick={e => handleAdd(e, product.id)}
+                        onClick={e => handleAdd(e, product)}
                         title="Dodaj do koszyka"
                         aria-label="Dodaj do koszyka"
                       >
-                        {added === product.id ? '✓' : '🛒'}
+                        {added === product.id
+                          ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                          : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        }
                       </button>
                     </div>
                   </div>

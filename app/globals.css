@@ -7,15 +7,15 @@
   --border-dark: rgba(180, 103, 235, 0.3);
   --text: #430550;
   --text-mid: #6a2880;
-  --text-soft: #a07ab8;
+  --text-soft: #6b3fa0;
   --accent: #6b35b0;
   --accent-dark: #430550;
   --accent-light: rgba(107, 53, 176, 0.1);
   --gold: #c8954a;
   --gold-light: #f0c878;
   --announce-bg: rgba(255, 255, 255, 0.55);
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Sansita', 'Arial Black', sans-serif;
+  --font-sans: 'Newsreader', Georgia, serif;
   --radius-sm: 8px;
   --radius: 16px;
   --radius-lg: 24px;
@@ -190,14 +190,14 @@ a {
 .logo-name {
   font-family: var(--font-serif);
   font-size: 1.45rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
   line-height: 1;
 }
 
 .logo-name em {
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   color: var(--accent);
 }
 
@@ -337,8 +337,9 @@ a {
 
 /* ─── Shared Primitives ──────────────────────────────────────────────────── */
 .eyebrow {
+  font-family: var(--font-sans);
   font-size: .7rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--accent);
@@ -348,14 +349,14 @@ a {
 .section-title {
   font-family: var(--font-serif);
   font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.15;
   color: var(--text);
 }
 
 .section-title em {
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   color: var(--accent);
   display: block;
 }
@@ -508,7 +509,7 @@ a {
 .hero-title {
   font-family: var(--font-serif);
   font-size: clamp(2.8rem, 5vw, 4.8rem);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.05;
   letter-spacing: -.5px;
   color: var(--text);
@@ -518,11 +519,11 @@ a {
 .hero-title-italic {
   font-family: var(--font-serif);
   font-size: clamp(2.8rem, 5vw, 4.8rem);
-  font-weight: 300;
-  font-style: italic;
+  font-weight: 400;
+  font-style: normal;
   line-height: 1.05;
   color: var(--accent);
-  margin-bottom: 10px;
+  margin-bottom: 28px;
   display: block;
 }
 
@@ -551,21 +552,22 @@ a {
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 6px;
 }
 
 .stat-num {
   font-family: var(--font-serif);
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
   line-height: 1;
 }
 
 .stat-label {
+  font-family: var(--font-sans);
   font-size: .68rem;
   color: var(--text-soft);
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: .5px;
 }
@@ -644,7 +646,7 @@ a {
 .hero-card-name {
   font-family: var(--font-serif);
   font-size: 1.05rem;
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text);
 }
 
@@ -657,7 +659,7 @@ a {
 .hero-card-price {
   font-family: var(--font-serif);
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent-dark);
   white-space: nowrap;
 }
@@ -715,8 +717,10 @@ a {
 }
 
 .hero-mini-price {
-  font-size: .75rem;
-  color: var(--text-soft);
+  font-family: var(--font-serif);
+  font-size: .85rem;
+  font-weight: 800;
+  color: var(--text);
   margin-top: 2px;
 }
 
@@ -950,7 +954,7 @@ a {
 .prod-name {
   font-family: var(--font-serif);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text);
   margin-bottom: 8px;
   line-height: 1.3;
@@ -973,7 +977,7 @@ a {
 .prod-price {
   font-family: var(--font-serif);
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
 }
 
@@ -1010,8 +1014,8 @@ a {
 }
 
 .add-cart-btn {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1.5px solid var(--border-dark);
   background: rgba(255, 255, 255, .8);
@@ -1073,11 +1077,11 @@ a {
 
 .pm-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   z-index: 2;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
   background: rgba(255, 255, 255, .85);
@@ -1555,8 +1559,8 @@ a {
 
 .faq-icon {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1.5px solid var(--border-dark);
   background: rgba(255, 255, 255, .8);
@@ -1653,11 +1657,12 @@ a {
 }
 
 .footer-col-title {
+  font-family: var(--font-sans);
   font-size: .67rem;
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, .28);
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 16px;
 }
 
@@ -1736,7 +1741,7 @@ a {
 .cart-title {
   font-family: var(--font-serif);
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
 }
 
@@ -1876,7 +1881,7 @@ a {
 .cart-total-price {
   font-family: var(--font-serif);
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
 }
 
@@ -1929,7 +1934,7 @@ a {
 .modal-title {
   font-family: var(--font-serif);
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
   margin-bottom: 4px;
 }
@@ -2169,7 +2174,7 @@ a {
 .modal-success h2 {
   font-family: var(--font-serif);
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
   margin-bottom: 10px;
 }
@@ -2471,22 +2476,22 @@ a {
 .about-title {
   font-family: var(--font-serif);
   font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.1;
   color: var(--text);
   margin-top: 12px;
 }
 
 .about-title em {
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   color: var(--accent);
 }
 
 .about-subtitle {
   font-family: var(--font-serif);
   font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text);
   line-height: 1.2;
   margin: 12px 0 20px;
@@ -2514,7 +2519,7 @@ a {
 .about-lead {
   font-family: var(--font-serif);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text);
   line-height: 1.5;
 }
@@ -2572,7 +2577,7 @@ a {
 .about-stat-num {
   font-family: var(--font-serif);
   font-size: 2.6rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent-dark);
   line-height: 1;
 }
@@ -2580,7 +2585,7 @@ a {
 .about-stat--text .about-stat-label {
   font-family: var(--font-serif);
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent-dark);
   text-transform: none;
   letter-spacing: 0;
@@ -2620,15 +2625,21 @@ a {
 }
 
 .about-value-icon {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
 .about-value-title {
   font-family: var(--font-serif);
   font-size: 1.15rem;
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text);
   margin-bottom: 8px;
 }
@@ -2654,7 +2665,7 @@ a {
 .about-cta-title {
   font-family: var(--font-serif);
   font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 700;
+  font-weight: 800;
   color: white;
   margin-bottom: 12px;
 }
@@ -2698,26 +2709,87 @@ a {
     order: -1;
   }
 
+  .about-story,
+  .about-why {
+    padding: 40px 0;
+  }
+
   .about-stats {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .about-stat {
+    padding: 20px 12px;
+  }
+
+  .about-stat-num {
+    font-size: 2rem;
+  }
+
+  .about-stat--text .about-stat-label {
+    font-size: 1.1rem;
   }
 
   .about-values-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-values {
+    padding: 40px 0;
+  }
+
+  .about-stats-section {
+    padding: 24px 0;
+  }
+
+  .about-cta {
+    padding: 40px 0 60px;
   }
 
   .about-cta-box {
     padding: 40px 24px;
   }
+
+  .about-img-frame {
+    width: 100%;
+  }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 480px) {
   .about-stats {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .about-stat {
+    padding: 16px 10px;
+  }
+
+  .about-stat-num {
+    font-size: 1.7rem;
+  }
+
+  .about-stat--text .about-stat-label {
+    font-size: 1rem;
+  }
+
+  .about-stat-label {
+    font-size: .65rem;
   }
 
   .about-values-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-cta-btns {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .about-cta-btns .btn-primary,
+  .about-cta-btns .btn-secondary {
+    justify-content: center;
   }
 }
 
@@ -2862,7 +2934,7 @@ a {
 .prod-page-name {
   font-family: var(--font-serif);
   font-size: clamp(1.7rem, 3vw, 2.4rem);
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text);
   line-height: 1.15;
   margin-bottom: 14px;
@@ -2878,7 +2950,7 @@ a {
 .prod-page-price {
   font-family: var(--font-serif);
   font-size: 3.2rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
   line-height: 1;
   margin-bottom: 28px;

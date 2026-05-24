@@ -1,17 +1,19 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
 import { products } from '@/data/products'
 import { getProductDetails } from '@/data/productDefaults'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import Cart from '@/components/Cart'
-import OrderModal from '@/components/OrderModal'
 import AnnounceBanner from '@/components/AnnounceBanner'
 import ScrollToTop from '@/components/ScrollToTop'
+
+const Footer     = dynamic(() => import('@/components/Footer'),     { ssr: false })
+const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
+const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const [added, setAdded]         = useState(false)
@@ -108,17 +110,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="prod-page-info">
               <p className="prod-page-cat-label">{product.category}</p>
               <h1 className="prod-page-name">{product.name}</h1>
-              <p className="prod-page-desc">{details.description}</p>
+              {details.description && (
+                <p className="prod-page-desc">{details.description}</p>
+              )}
 
               <div className="prod-page-price">
                 {isDekoracja && <span className="prod-page-price-from">od </span>}
                 {product.price}<span className="prod-page-currency">zł</span>
               </div>
 
-              {/* Composition — only for bouquets */}
-              {!isDekoracja && (
+              {/* Composition — only when contents defined */}
+              {details.contents.length > 0 && (
                 <>
-                  <p className="prod-page-section-label">Skład zestawu</p>
+                  <p className="prod-page-section-label">Zestaw</p>
                   <div className="prod-page-contents-wrap">
                     <div className="prod-page-contents">
                       {details.contents.map((item, i) => (
@@ -136,7 +140,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               )}
 
               {/* Includes */}
-              <p className="prod-page-section-label">W zestawie</p>
+              <p className="prod-page-section-label">Cena zawiera</p>
               <ul className="prod-page-includes">
                 {details.includes.map((item, i) => (
                   <li key={i} className="prod-page-include-item">
@@ -153,14 +157,25 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   onClick={handleAdd}
                   style={added ? { background: '#2d7a3a', flex: 1 } : { flex: 1 }}
                 >
-                  {added ? '✓ Dodano do koszyka!' : '🛒 Dodaj do koszyka'}
+                  {added ? (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      Dodano do koszyka!
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                      Dodaj do koszyka
+                    </>
+                  )}
                 </button>
                 <button
                   className="btn-secondary"
                   style={{ flex: 1 }}
                   onClick={handleOrder}
                 >
-                  📋 Złóż zamówienie
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  Złóż zamówienie
                 </button>
               </div>
             </div>

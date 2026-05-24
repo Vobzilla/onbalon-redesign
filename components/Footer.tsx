@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer" id="contact">
       <div className="footer-inner">
         <div className="footer-brand">
           <a href="/" className="footer-logo-img-wrap">

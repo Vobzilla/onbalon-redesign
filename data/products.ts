@@ -1,7 +1,7 @@
 ﻿/** @format */
 
 const BASE =
-  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto:eco,w_1200";
+  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto:eco,w_900";
 const CDN = `${BASE}/onbalon`;
 
 export type Category =
