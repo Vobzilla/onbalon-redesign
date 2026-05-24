@@ -41,6 +41,10 @@ const FAQS = [
     q: "Jak wcześnie należy złożyć zamówienie?",
     a: "W pilnych przypadkach przyjmujemy zamówienia nawet w dniu imprezy — napisz do nas, sprawdzimy dostępność. Na wieczorne godziny, weekendy lub większe eventy prosimy o kontakt z wyprzedzeniem 2–3 dni.",
   },
+  {
+    q: "Czy mogę zamówić tylko kilka balonów?",
+    a: "Oczywiście! W przypadku zamówień na kilka sztuk zapraszamy do bezpośredniego kontaktu z nami — balony można wybrać i odebrać osobiście w naszym sklepie w Szczecinie.",
+  },
 ];
 
 export default function FAQ() {

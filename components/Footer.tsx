@@ -31,7 +31,6 @@ export default function Footer() {
             <li><a href="/#products">Urodziny</a></li>
             <li><a href="/#products">Dla niej</a></li>
             <li><a href="/#products">Dla niego</a></li>
-            <li><a href="/#products">Chrzest &amp; Komunia</a></li>
             <li><a href="/#products">Biznes</a></li>
           </ul>
         </div>

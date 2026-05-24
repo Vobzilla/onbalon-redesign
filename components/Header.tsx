@@ -20,7 +20,7 @@ const CONTACTS = [
   {
     label: 'Telegram',
     value: '@onbalon',
-    href: 'https://t.me/vobzilla_bot',
+    href: 'https://t.me/onbalon',
     icon: 'telegram',
   },
   {

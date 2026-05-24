@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import { CartProvider } from "@/context/CartContext";
+import CookieBanner from "@/components/CookieBanner";
 import Script from "next/script";
 import "./globals.css";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
       </head>
       <body>
         <CartProvider>{children}</CartProvider>
+        <CookieBanner />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-JY42M73V2Z"
           strategy="afterInteractive"

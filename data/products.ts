@@ -1,7 +1,7 @@
 /** @format */
 
 const BASE =
-  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto,w_1200";
+  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto:eco,w_1200";
 const CDN = `${BASE}/onbalon`;
 
 export type Category =
@@ -145,8 +145,8 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-1`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 13 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
     ],
   },
   {
@@ -157,7 +157,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-2`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -168,7 +168,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-3`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -179,7 +179,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-4`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -188,6 +188,28 @@ export const products: Product[] = [
     category: "18-tka",
     price: 1550,
     image: `${CDN}/18-urodziny/18-urodziny-5`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 94 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 5 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      {
+        name: "Napis - Happy Birthday",
+        detail: "napompowany powietrzem",
+        qty: 1,
+      },
+      {
+        name: "Balon lateksowy - napompowany powietrzem ",
+        detail: "Ø 30 cm",
+        qty: 50,
+      },
+    ],
+    includes: [
+      "Balony napełnione helem",
+      "Balony lateksowe zabezpieczone Hi-Float dla dłuższego unoszenia",
+      "Ciężarki do balonów",
+      "Wstążki dekoracyjne",
+      "Montaż dekoracji",
+    ],
   },
   {
     id: 19,
@@ -197,8 +219,8 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-6`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy gwiazda", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy gwiazda", detail: "45 cm", qty: 1 },
     ],
   },
   {
@@ -209,7 +231,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-7`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -220,8 +242,8 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-8`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
     ],
   },
   {
@@ -232,7 +254,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-9`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -243,7 +265,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-10`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -254,7 +276,7 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-11`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -265,8 +287,8 @@ export const products: Product[] = [
     image: `${CDN}/18-urodziny/18-urodziny-12`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 10 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon personalizowany", detail: "Ø 90 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon personalizowany", detail: "90 cm", qty: 1 },
     ],
   },
 
@@ -279,7 +301,7 @@ export const products: Product[] = [
     image: `${CDN}/dla-niej/dla-niej-1`,
     contents: [
       { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 14 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -290,7 +312,7 @@ export const products: Product[] = [
     image: `${CDN}/dla-niej/dla-niej-2`,
     contents: [
       { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 26 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -301,8 +323,8 @@ export const products: Product[] = [
     image: `${CDN}/dla-niej/dla-niej-3`,
     contents: [
       { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 21 },
-      { name: "Balon foliowy korona", detail: "Złoty", qty: 2 },
-      { name: "Balon foliowy serce", detail: "Ø 68 x 72 cm", qty: 1 },
+      { name: "Balon foliowy korona", detail: "figura", qty: 2 },
+      { name: "Balon foliowy serce", detail: "68 x 72 cm", qty: 1 },
     ],
   },
   {
@@ -313,7 +335,7 @@ export const products: Product[] = [
     image: `${CDN}/dla-niej/dla-niej-4`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
   {
@@ -323,8 +345,8 @@ export const products: Product[] = [
     price: 850,
     image: `${CDN}/dla-niej/dla-niej-5`,
     contents: [
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 30 },
-      { name: "Balon foliowy cyfra", detail: "Ø 102 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 30 },
+      { name: "Balon foliowy cyfra", detail: "102 cm", qty: 2 },
     ],
   },
   {
@@ -337,10 +359,10 @@ export const products: Product[] = [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
       {
         name: "Balon foliowy cyfra",
-        detail: "Ø 86 cm",
+        detail: "86 cm",
         qty: 2,
       },
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
     ],
   },
   {
@@ -351,8 +373,8 @@ export const products: Product[] = [
     image: `${CDN}/dla-niej/dla-niej-7`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
     ],
   },
   {
@@ -363,8 +385,8 @@ export const products: Product[] = [
     image: `${BASE}/dla-niej-8_gm0wss`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
     ],
   },
   {
@@ -388,7 +410,7 @@ export const products: Product[] = [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
       { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
       { name: "Balon foliowy z napisem", detail: "Ø 45 cm", qty: 1 },
-      { name: "Balon foliowy korona", detail: "Złoty", qty: 1 },
+      { name: "Balon foliowy korona", detail: "Złota", qty: 1 },
     ],
   },
   {
@@ -399,8 +421,8 @@ export const products: Product[] = [
     image: `${BASE}/dla-niej-11_lqlpod`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 12 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy serce", detail: "Ø 45 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 2 },
     ],
   },
   {
@@ -411,8 +433,8 @@ export const products: Product[] = [
     image: `${BASE}/dla-niej-12_louu08`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 18 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
-      { name: "Balon foliowy gwiazda", detail: "Ø 45 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy gwiazda", detail: "45 cm", qty: 2 },
       { name: "Balon foliowy korona", detail: "Srebrna", qty: 2 },
     ],
   },
@@ -424,7 +446,7 @@ export const products: Product[] = [
     image: `${BASE}/dla-niej-13_nxwacq`,
     contents: [
       { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
-      { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
     ],
   },
 
@@ -433,36 +455,63 @@ export const products: Product[] = [
     id: 37,
     name: "Zestaw Dla Niego #1",
     category: "Dla niego",
-    price: 149,
+    price: 218,
     image: `${CDN}/dla-niego/dla-niego-1`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      {
+        name: "Balon foliowy gwiazda",
+        detail: "45 cm, napis'Happy Birthday'",
+        qty: 1,
+      },
+      { name: "Balon foliowy butelka whisky", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 38,
     name: "Zestaw Dla Niego #2",
     category: "Dla niego",
-    price: 149,
+    price: 169,
     image: `${CDN}/dla-niego/dla-niego-2`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy butelka whisky", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 39,
     name: "Zestaw Dla Niego #3",
     category: "Dla niego",
-    price: 149,
+    price: 273,
     image: `${CDN}/dla-niego/dla-niego-3`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy Grumpy Cat", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 40,
     name: "Zestaw Dla Niego #4",
     category: "Dla niego",
-    price: 149,
+    price: 154,
     image: `${CDN}/dla-niego/dla-niego-4`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy Pani Cycalina", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 41,
     name: "Zestaw Dla Niego #5",
     category: "Dla niego",
-    price: 159,
+    price: 285,
     image: `${CDN}/dla-niego/dla-niego-5`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy gepard", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 42,
@@ -475,92 +524,166 @@ export const products: Product[] = [
     id: 43,
     name: "Zestaw Dla Niego #7",
     category: "Dla niego",
-    price: 149,
+    price: 263,
     image: `${CDN}/dla-niego/dla-niego-7`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      {
+        name: "Balon foliowy gwiazda",
+        detail: "45 cm, napis 'Happy Birthday'",
+        qty: 1,
+      },
+    ],
   },
   {
     id: 44,
     name: "Zestaw Dla Niego #8",
     category: "Dla niego",
-    price: 149,
+    price: 210,
     image: `${CDN}/dla-niego/dla-niego-8`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy Cool Cat", detail: "figura", qty: 1 },
+      { name: "Balon foliowy Śmierć z tortem", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 45,
     name: "Zestaw Dla Niego #9",
     category: "Dla niego",
-    price: 149,
+    price: 170,
     image: `${CDN}/dla-niego/dla-niego-9`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy penis", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 46,
     name: "Zestaw Dla Niego #10",
     category: "Dla niego",
-    price: 159,
+    price: 209,
     image: `${CDN}/dla-niego/dla-niego-10`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+    ],
   },
   {
     id: 47,
     name: "Zestaw Dla Niego #11",
     category: "Dla niego",
-    price: 149,
+    price: 332,
     image: `${CDN}/dla-niego/dla-niego-11`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy butelka whisky", detail: "figura", qty: 1 },
+      { name: "Balon foliowy wąsy", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 48,
     name: "Zestaw Dla Niego #12",
     category: "Dla niego",
-    price: 159,
+    price: 278,
     image: `${CDN}/dla-niego/dla-niego-12`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy okrągły", detail: "45 cm, Harry Potter", qty: 1 },
+      { name: "Balon foliowy Hedwiga", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 49,
     name: "Zestaw Dla Niego #13",
     category: "Dla niego",
-    price: 159,
+    price: 274,
     image: `${CDN}/dla-niego/dla-niego-13`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy gwiazda", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy kufel piwa", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 50,
     name: "Zestaw Dla Niego #14",
     category: "Dla niego",
-    price: 169,
+    price: 209,
     image: `${CDN}/dla-niego/dla-niego-16`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+    ],
   },
   {
     id: 51,
     name: "Zestaw Dla Niego #15",
     category: "Dla niego",
-    price: 149,
+    price: 135,
     image: `${CDN}/dla-niego/dla-niego-17`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      { name: "Balon foliowy piłka nożna", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy but", detail: "Figura", qty: 1 },
+    ],
   },
   {
     id: 52,
     name: "Zestaw Dla Niego #16",
     category: "Dla niego",
-    price: 149,
+    price: 206,
     image: `${CDN}/dla-niego/dla-niego-18`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+    ],
   },
   {
     id: 53,
     name: "Zestaw Dla Niego #17",
     category: "Dla niego",
-    price: 159,
+    price: 247,
     image: `${CDN}/dla-niego/dla-niego-19`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      {
+        name: "Balon foliowy gwiazda",
+        detail: "45 cm, napis personalizowany",
+        qty: 1,
+      },
+      { name: "Balon foliowy duszek", detail: "Figura", qty: 1 },
+    ],
   },
   {
     id: 54,
     name: "Zestaw Dla Niego #18",
     category: "Dla niego",
-    price: 169,
+    price: 212,
     image: `${CDN}/dla-niego/dla-niego-20`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
+    ],
   },
   {
     id: 55,
     name: "Zestaw Dla Niego #19",
     category: "Dla niego",
-    price: 149,
+    price: 136,
     image: `${CDN}/dla-niego/dla-niego-21`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy duszek", detail: "Figura", qty: 1 },
+    ],
   },
   {
     id: 56,
@@ -568,6 +691,19 @@ export const products: Product[] = [
     category: "Dla niego",
     price: 575,
     image: `${CDN}/dla-niego/dla-niego-22`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 10 },
+      {
+        name: "Balon Bubble Giga z personalizacją",
+        detail: "personalizacja",
+        qty: 1,
+      },
+      {
+        name: "Pudełko niespodzianka z balonami",
+        detail: "70 × 70 cm, 30 balonów (5 cali)",
+        qty: 1,
+      },
+    ],
   },
   {
     id: 57,
@@ -575,6 +711,37 @@ export const products: Product[] = [
     category: "Dla niego",
     price: 381,
     image: `${CDN}/dla-niego/dla-niego-23`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 22 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+    ],
+  },
+  {
+    id: 135,
+    name: "Zestaw Dla Niego #22",
+    category: "Dla niego",
+    price: 365,
+    image: `${BASE}/dla-niego-14_pg6lhv`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 23 },
+      { name: "Balon foliowy figura", detail: "Figura", qty: 2 },
+      { name: "Balon foliowy z nadrukiem", detail: "45 cm", qty: 1 },
+    ],
+  },
+  {
+    id: 136,
+    name: "Zestaw Dla Niego #23",
+    category: "Dla niego",
+    price: 330,
+    image: `${BASE}/dla-niego-15_lehtub`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 10 },
+      {
+        name: "Balon Bubbles Giga z personalizacją",
+        detail: "Personalizacja",
+        qty: 1,
+      },
+    ],
   },
 
   // ── Dla dziecka ───────────────────────────────────────────────────────────
@@ -582,92 +749,184 @@ export const products: Product[] = [
     id: 58,
     name: "Zestaw Dla Dziecka #1",
     category: "Dla dziecka",
-    price: 129,
+    price: 209,
     image: `${CDN}/dla-dziecka/dla-dziecka-1`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy Gekko (PJ Masks)", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 59,
     name: "Zestaw Dla Dziecka #2",
     category: "Dla dziecka",
-    price: 129,
+    price: 355,
     image: `${CDN}/dla-dziecka/dla-dziecka-3`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      {
+        name: "Balon foliowy George Pig (Świnka Peppa)",
+        detail: "figura",
+        qty: 2,
+      },
+      {
+        name: "Balon Bubbles z personalizacją",
+        detail: "Personalizacja",
+        qty: 1,
+      },
+    ],
   },
   {
     id: 60,
     name: "Zestaw Dla Dziecka #3",
     category: "Dla dziecka",
-    price: 129,
+    price: 265,
     image: `${CDN}/dla-dziecka/dla-dziecka-5`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      {
+        name: "Balon foliowy okrągły Gabi (Koci Domek)",
+        detail: "figura",
+        qty: 1,
+      },
+      { name: "Balon foliowy serce Gabi", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy Mercat (Koci Domek)", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 61,
     name: "Zestaw Dla Dziecka #4",
     category: "Dla dziecka",
-    price: 139,
+    price: 221,
     image: `${CDN}/dla-dziecka/dla-dziecka-6`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy traktor", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 62,
     name: "Zestaw Dla Dziecka #5",
     category: "Dla dziecka",
-    price: 129,
+    price: 195,
     image: `${CDN}/dla-dziecka/dla-dziecka-7`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 3 },
+      { name: "Balon foliowy okrągły Dinozaury", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy Dinozaur", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 63,
     name: "Zestaw Dla Dziecka #6",
     category: "Dla dziecka",
-    price: 139,
+    price: 275,
     image: `${CDN}/dla-dziecka/dla-dziecka-8`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy Batman", detail: "figura", qty: 1 },
+      { name: "Balon foliowy Spider-Man", detail: "figura", qty: 1 },
+      { name: "Balon foliowy Liga Sprawiedliwości", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 64,
     name: "Zestaw Dla Dziecka #7",
     category: "Dla dziecka",
-    price: 129,
+    price: 228,
     image: `${CDN}/dla-dziecka/dla-dziecka-9`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 3 },
+      { name: "Balon foliowy kotka", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 65,
     name: "Zestaw Dla Dziecka #8",
     category: "Dla dziecka",
-    price: 139,
+    price: 177,
     image: `${CDN}/dla-dziecka/dla-dziecka-10`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy Miś", detail: "figura", qty: 1 },
+      { name: "Balon foliowy serce", detail: "45 cm", qty: 1 },
+    ],
   },
   {
     id: 66,
     name: "Zestaw Dla Dziecka #9",
     category: "Dla dziecka",
-    price: 129,
+    price: 262,
     image: `${CDN}/dla-dziecka/dla-dziecka-11`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 9 },
+      {
+        name: "Balon foliowy George Pig",
+        detail: "figura",
+        qty: 1,
+      },
+      { name: "Balon foliowy serce Świnka Peppa", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 67,
     name: "Zestaw Dla Dziecka #10",
     category: "Dla dziecka",
-    price: 139,
+    price: 475,
     image: `${CDN}/dla-dziecka/dla-dziecka-12`,
+    contents: [
+      {
+        name: "Balon lateksowy",
+        detail: "Ø 30 cm, 15 szt. z soplami",
+        qty: 22,
+      },
+      { name: "Balon foliowy Wróżka", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 68,
     name: "Zestaw Dla Dziecka #11",
     category: "Dla dziecka",
-    price: 139,
+    price: 205,
     image: `${CDN}/dla-dziecka/dla-dziecka-13`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy Smok", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 69,
     name: "Zestaw Dla Dziecka #12",
     category: "Dla dziecka",
-    price: 149,
+    price: 199,
     image: `${CDN}/dla-dziecka/dla-dziecka-14`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy Tails", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 70,
     name: "Zestaw Dla Dziecka #13",
     category: "Dla dziecka",
-    price: 139,
+    price: 215,
     image: `${CDN}/dla-dziecka/dla-dziecka-15`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy Chase Psi Patrol ", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy gwiazdka", detail: "45 cm", qty: 1 },
+    ],
   },
   {
     id: 71,
@@ -675,132 +934,349 @@ export const products: Product[] = [
     category: "Dla dziecka",
     price: 129,
     image: `${CDN}/dla-dziecka/dla-dziecka-16`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy Kuromi", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 72,
     name: "Zestaw Dla Dziecka #15",
     category: "Dla dziecka",
-    price: 139,
+    price: 230,
     image: `${CDN}/dla-dziecka/dla-dziecka-17`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      {
+        name: "Balon foliowy okrągły Happy Birthday",
+        detail: "Ø 45 cm",
+        qty: 1,
+      },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 2 },
+    ],
   },
   {
     id: 73,
     name: "Zestaw Dla Dziecka #16",
     category: "Dla dziecka",
-    price: 149,
+    price: 176,
     image: `${CDN}/dla-dziecka/dla-dziecka-18`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      { name: "Balon foliowy Ladybug", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 74,
     name: "Zestaw Dla Dziecka #17",
     category: "Dla dziecka",
-    price: 129,
+    price: 415,
     image: `${CDN}/dla-dziecka/dla-dziecka-19`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm, pod sufitem", qty: 10 },
+      { name: "Balon lateksowy", detail: "Ø 30 cm, w zestawie", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      {
+        name: "Balon foliowy okragly Happy Birthday",
+        detail: "Ø 45 cm",
+        qty: 1,
+      },
+      { name: "Balon foliowy lew", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 75,
     name: "Zestaw Dla Dziecka #18",
     category: "Dla dziecka",
-    price: 139,
+    price: 145,
     image: `${CDN}/dla-dziecka/dla-dziecka-20`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy pszczółka", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 76,
     name: "Zestaw Dla Dziecka #19",
     category: "Dla dziecka",
-    price: 149,
+    price: 416,
     image: `${CDN}/dla-dziecka/dla-dziecka-21`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 18 },
+      { name: "Balon foliowy okrągły Sonic", detail: "Ø 45 cm", qty: 2 },
+      { name: "Balon foliowy Sonic", detail: "figura", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 77,
     name: "Zestaw Dla Dziecka #20",
     category: "Dla dziecka",
-    price: 139,
+    price: 360,
     image: `${CDN}/dla-dziecka/dla-dziecka-23`,
+    contents: [
+      {
+        name: "Balon lateksowy pastelowy mix",
+        detail: "Ø 30 cm, kropelki",
+        qty: 5,
+      },
+      { name: "Balon lateksowy", detail: "Ø 30 cm, w zestawie", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy okrągły Spider-Man", detail: "Ø 45 cm", qty: 1 },
+      {
+        name: "Balon foliowy Spider-Man",
+        detail: "figura, napompowany powietrzem",
+        qty: 1,
+      },
+    ],
   },
   {
     id: 78,
     name: "Zestaw Dla Dziecka #21",
     category: "Dla dziecka",
-    price: 149,
+    price: 168,
     image: `${CDN}/dla-dziecka/dla-dziecka-25`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      {
+        name: "Balon foliowy okrągły Happy Birthday",
+        detail: "Ø 45 cm",
+        qty: 1,
+      },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 79,
     name: "Zestaw Dla Dziecka #22",
     category: "Dla dziecka",
-    price: 139,
+    price: 240,
     image: `${CDN}/dla-dziecka/dla-dziecka-26`,
+    contents: [
+      {
+        name: "Balon lateksowy pastelowy mix",
+        detail: "Ø 30 cm, kropelki",
+        qty: 5,
+      },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy jednorożec", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 80,
     name: "Zestaw Dla Dziecka #23",
     category: "Dla dziecka",
-    price: 149,
+    price: 375,
     image: `${CDN}/dla-dziecka/dla-dziecka-27`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 13 },
+      { name: "Balon foliowy Psi Patrol", detail: "figura", qty: 2 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy z nadrukiem", detail: "kwadratowy", qty: 1 },
+    ],
   },
   {
     id: 81,
     name: "Zestaw Dla Dziecka #24",
     category: "Dla dziecka",
-    price: 149,
+    price: 220,
     image: `${CDN}/dla-dziecka/dla-dziecka-28`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy kotek", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 82,
     name: "Zestaw Dla Dziecka #25",
     category: "Dla dziecka",
-    price: 129,
+    price: 275,
     image: `${CDN}/dla-dziecka/dla-dziecka-29`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
   },
   {
     id: 83,
     name: "Zestaw Dla Dziecka #26",
     category: "Dla dziecka",
-    price: 139,
+    price: 360,
     image: `${CDN}/dla-dziecka/dla-dziecka-30`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy lew", detail: "figura", qty: 1 },
+      { name: "Balon foliowy żyrafa", detail: "figura", qty: 1 },
+      { name: "Balon foliowy zebra", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 84,
     name: "Zestaw Dla Dziecka #27",
     category: "Dla dziecka",
-    price: 149,
+    price: 332,
     image: `${CDN}/dla-dziecka/dla-dziecka-31`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      {
+        name: "Balon Bubble Giga z personalizacją",
+        detail: "personalizacją",
+        qty: 1,
+      },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy postać Roblox", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 85,
     name: "Zestaw Dla Dziecka #28",
     category: "Dla dziecka",
-    price: 139,
+    price: 155,
     image: `${CDN}/dla-dziecka/dla-dziecka-32`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy kotek", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 86,
     name: "Zestaw Dla Dziecka #29",
     category: "Dla dziecka",
-    price: 139,
+    price: 290,
     image: `${CDN}/dla-dziecka/dla-dziecka-35`,
+    contents: [
+      {
+        name: "Balon lateksowy pastelowy mix",
+        detail: "Ø 30 cm, kropelki",
+        qty: 5,
+      },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy Bingo", detail: "figura", qty: 1 },
+      { name: "Balon foliowy Bluey", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 87,
     name: "Zestaw Dla Dziecka #30",
     category: "Dla dziecka",
-    price: 149,
+    price: 239,
     image: `${CDN}/dla-dziecka/dla-dziecka-36`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 14 },
+      { name: "Balon foliowy miś", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 88,
     name: "Zestaw Dla Dziecka #31",
     category: "Dla dziecka",
-    price: 149,
+    price: 230,
     image: `${CDN}/dla-dziecka/dla-dziecka-37`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy Sonic", detail: "figura", qty: 1 },
+      { name: "Balon foliowy Tails", detail: "figura", qty: 1 },
+    ],
   },
   {
     id: 89,
     name: "Zestaw Dla Dziecka #32",
     category: "Dla dziecka",
-    price: 129,
+    price: 248,
     image: `${CDN}/dla-dziecka/dla-dziecka-38`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+      { name: "Balon foliowy Minnie Mouse", detail: "figura", qty: 1 },
+      { name: "Balon foliowy okrągły Minnie Mouse", detail: "Ø 45 cm", qty: 1 },
+    ],
+  },
+  {
+    id: 137,
+    name: "Zestaw Dla Dziecka #33",
+    category: "Dla dziecka",
+    price: 175,
+    image: `${BASE}/dla-dziecka-4_qjy8ab`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 5 },
+      {
+        name: "Balon foliowy Samolot)",
+        detail: "figura",
+        qty: 1,
+      },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
+  },
+  {
+    id: 138,
+    name: "Zestaw Dla Dziecka #34",
+    category: "Dla dziecka",
+    price: 169,
+    image: `${BASE}/dla-dziecka-22_kvrp0b`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      { name: "Balon foliowy konik", detail: "figura", qty: 1 },
+    ],
+  },
+  {
+    id: 139,
+    name: "Zestaw Dla Dziecka #35",
+    category: "Dla dziecka",
+    price: 167,
+    image: `${BASE}/dla-dziecka-24_ztxfbr`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy okrągły Happy Birthday", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
+  },
+  {
+    id: 140,
+    name: "Zestaw Dla Dziecka #36",
+    category: "Dla dziecka",
+    price: 145,
+    image: `${BASE}/dla-dziecka-33_f48tej`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 7 },
+      {
+        name: "Balon foliowy króliczek",
+        detail: "figura, napelniony powietrzem",
+        qty: 1,
+      },
+    ],
+  },
+  {
+    id: 141,
+    name: "Zestaw Dla Dziecka #37",
+    category: "Dla dziecka",
+    price: 270,
+    image: `${BASE}/dla-dziecka-34_oaauyb`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy Psi Patrol", detail: "figura", qty: 2 },
+      { name: "Balon foliowy gwiazda", detail: "45 cm", qty: 1 },
+      { name: "Balon foliowy cyfra", detail: "86 cm", qty: 1 },
+    ],
+  },
+  {
+    id: 142,
+    name: "Zestaw Dla Dziecka #38",
+    category: "Dla dziecka",
+    price: 179,
+    image: `${BASE}/dla-dziecka-2_na3mv6`,
+    contents: [
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 6 },
+      { name: "Balon foliowy lama", detail: "figura", qty: 1 },
+      {
+        name: "Balon foliowy serce z personalizacją",
+        detail: "45 cm, personalizacja",
+        qty: 1,
+      },
+    ],
   },
 
   // ── Dekoracje balonowe ────────────────────────────────────────────────────

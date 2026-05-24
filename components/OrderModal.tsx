@@ -167,10 +167,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
                   </svg>
-                  Sklep On.balon, Szczecin —{' '}
-                  <a href="https://maps.app.goo.gl/cbjatffpocY9LYQPA" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontWeight: 600 }}>
-                    zobacz na mapie
-                  </a>.
+                  Odbiór w godz. pracy sklepu —{' '}<a href="https://maps.app.goo.gl/cbjatffpocY9LYQPA" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontWeight: 600 }}>grafik tutaj</a>.
                 </div>
               )}
 
