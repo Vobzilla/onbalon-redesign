@@ -27,12 +27,32 @@ export default function ProductsSection({ initialCategory }: Props) {
   const [added, setAdded]               = useState<number | null>(null)
   const { addItem } = useCart()
 
+  // On mount: restore state from history or apply initialCategory
   useEffect(() => {
-    if (initialCategory !== undefined) {
+    const savedScroll = sessionStorage.getItem('shop_scroll')
+    const savedFilter = sessionStorage.getItem('shop_filter')
+    const savedCount  = sessionStorage.getItem('shop_count')
+
+    if (savedScroll !== null) {
+      // Coming back from product page — restore everything
+      setActiveFilter((savedFilter as Category) || null)
+      setVisibleCount(Number(savedCount) || PAGE_SIZE)
+      sessionStorage.removeItem('shop_scroll')
+      sessionStorage.removeItem('shop_filter')
+      sessionStorage.removeItem('shop_count')
+      const y = Number(savedScroll)
+      setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' }), 100)
+    } else if (initialCategory != null) {
       setActiveFilter(initialCategory)
-      setVisibleCount(PAGE_SIZE)
     }
-  }, [initialCategory])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  function saveScrollState() {
+    sessionStorage.setItem('shop_scroll', String(window.scrollY))
+    sessionStorage.setItem('shop_filter', activeFilter ?? '')
+    sessionStorage.setItem('shop_count', String(visibleCount))
+  }
 
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
   const visible  = filtered.slice(0, visibleCount)
@@ -83,7 +103,7 @@ export default function ProductsSection({ initialCategory }: Props) {
 
         <div className="prod-grid">
           {visible.map(product => (
-            <Link key={product.id} href={`/product/${product.id}`} className="prod-card-link">
+            <Link key={product.id} href={`/product/${product.id}`} className="prod-card-link" onClick={saveScrollState}>
               <article className="prod-card">
                 <div className="prod-img-wrap">
                   <Image
@@ -101,7 +121,10 @@ export default function ProductsSection({ initialCategory }: Props) {
                   <p className="prod-cat-label">{product.category}</p>
                   <h3 className="prod-name">{product.name}</h3>
                   <div className="prod-foot">
-                    <span className="prod-price">{product.price} <small>zł</small></span>
+                    <span className="prod-price">
+                      {product.category === 'Dekoracje balonowe' && <small>od </small>}
+                      {product.price} <small>zł</small>
+                    </span>
                     <div className="prod-btns">
                       <span className="detail-btn">Szczegóły →</span>
                       <button

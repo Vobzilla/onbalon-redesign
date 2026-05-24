@@ -111,6 +111,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <p className="prod-page-desc">{details.description}</p>
 
               <div className="prod-page-price">
+                {isDekoracja && <span className="prod-page-price-from">od </span>}
                 {product.price}<span className="prod-page-currency">zł</span>
               </div>
 
@@ -118,16 +119,18 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {!isDekoracja && (
                 <>
                   <p className="prod-page-section-label">Skład zestawu</p>
-                  <div className="prod-page-contents">
-                    {details.contents.map((item, i) => (
-                      <div key={i} className="prod-content-item">
-                        <div className="prod-content-item-info">
-                          <span className="prod-content-item-name">{item.name}</span>
-                          <span className="prod-content-item-detail">{item.detail}</span>
+                  <div className="prod-page-contents-wrap">
+                    <div className="prod-page-contents">
+                      {details.contents.map((item, i) => (
+                        <div key={i} className="prod-content-item">
+                          <div className="prod-content-item-info">
+                            <span className="prod-content-item-name">{item.name}</span>
+                            <span className="prod-content-item-detail">{item.detail}</span>
+                          </div>
+                          <span className="prod-content-item-qty">× {item.qty}</span>
                         </div>
-                        <span className="prod-content-item-qty">× {item.qty}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </>
               )}

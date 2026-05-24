@@ -7,7 +7,7 @@ import Link from "next/link";
 import { products } from "@/data/products";
 
 // Featured products shown in the hero card
-const FEATURED_ID = 96; // Dekoracja Granatowo-Różowa (Biznes)
+const FEATURED_ID = 26; // Zestaw Dla Niej #1
 const MINI_IDS = [30, 82]; // Dekoracja 18-tka, Komunia
 
 export default function Hero() {
@@ -30,12 +30,18 @@ export default function Hero() {
           </p>
           <div className="hero-btns">
             <a href="#products" className="btn-primary">
-              🎈 Zobacz katalog
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                <ellipse cx="12" cy="9" rx="6" ry="7"/>
+                <path d="M10.5 16 L12 18.5 L13.5 16"/>
+                <path d="M12 18.5 Q10.5 21 12 23"/>
+              </svg>
+              Zobacz katalog
             </a>
-            <a
-              href="tel:+48732977561"
-              className="btn-secondary">
-              📞 Skontaktuj się
+            <a href="tel:+48732977561" className="btn-secondary">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.2 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14v2.92z"/>
+              </svg>
+              Skontaktuj się
             </a>
           </div>
           <div className="hero-stats">
@@ -71,7 +77,7 @@ export default function Hero() {
                 alt={featured.name}
                 fill
                 sizes="600px"
-                style={{ objectFit: "cover" }}
+                style={{ objectFit: "cover", objectPosition: "center top" }}
               />
               <div className="hero-bestseller">⭐ Bestseller sezonu</div>
             </div>
@@ -82,7 +88,9 @@ export default function Hero() {
                   na {featured.category} &amp; wyjątkowe okazje
                 </div>
               </div>
-              <div className="hero-card-price">od {featured.price} zł</div>
+              <div className="hero-card-price">
+                {featured.category === 'Dekoracje balonowe' && 'od '}{featured.price} zł
+              </div>
             </div>
           </Link>
 
@@ -106,7 +114,9 @@ export default function Hero() {
                   <div className="hero-mini-name">
                     {p.name.replace(/^(Balony|Dekoracja)\s/, "")}
                   </div>
-                  <div className="hero-mini-price">od {p.price} zł</div>
+                  <div className="hero-mini-price">
+                    {p.category === 'Dekoracje balonowe' && 'od '}{p.price} zł
+                  </div>
                 </div>
               </Link>
             ))}

@@ -11,7 +11,7 @@ const FAQS = [
   },
   {
     q: "Czy balony z helem długo wytrzymują?",
-    a: "Balony lateksowe z helem wytrzymują minimum 1–2 dni, foliowe od 3 do 7 dni. Na każdą imprezę wystarczą z zapasem!",
+    a: "Balony lateksowe z helem wytrzymują minimum 1–2 dni, foliowe od 3 do 7 dni. Na każdą imprezę wystarczy z zapasem!",
   },
   {
     q: "Jaki jest obszar dostawy?",
@@ -64,10 +64,11 @@ export default function FAQ() {
             Nie znalazłeś odpowiedzi? Skontaktuj się z nami — chętnie pomożemy
             dobrać idealny zestaw na Twoją uroczystość.
           </p>
-          <a
-            href="tel:+48732977561"
-            className="btn-primary">
-            📞 Skontaktuj się z nami
+          <a href="tel:+48732977561" className="btn-primary">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.2 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14v2.92z"/>
+            </svg>
+            Skontaktuj się z nami
           </a>
         </div>
 

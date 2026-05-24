@@ -887,6 +887,7 @@ a {
   transform: scale(1.04);
 }
 
+
 .prod-category-pill {
   position: absolute;
   top: 12px;
@@ -2882,6 +2883,12 @@ a {
   line-height: 1;
   margin-bottom: 28px;
 }
+.prod-page-price-from {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-right: 2px;
+}
 
 .prod-page-currency {
   font-family: var(--font-sans);
@@ -2900,11 +2907,27 @@ a {
   margin: 0 0 12px;
 }
 
+.prod-page-contents-wrap {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.prod-page-contents-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, rgba(245, 235, 255, 0.92));
+  pointer-events: none;
+  border-radius: 0 0 12px 12px;
+}
+
 .prod-page-contents {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 24px;
   max-height: 260px;
   overflow-y: auto;
   padding-right: 4px;

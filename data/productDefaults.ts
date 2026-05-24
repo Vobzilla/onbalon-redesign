@@ -297,7 +297,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
   "Małe Zestawy": {
     bukiet: {
       description:
-        "Mały zestaw, wielka radość — idealny jako szybki prezent lub dodatek do dekoracji. Wypełniony helem, gotowy do odbioru lub z dostawą po Szczecinie.",
+        "Mały zestaw, wielka radość — idealny jako szybki prezent lub dodatek do prezentu. Wypełniony helem, gotowy do odbioru lub z dostawą w Szczecinie.",
       contents: [
         { name: "Balony lateksowe kolorowe", detail: "Ø 30 cm", qty: 3 },
         { name: "Balon foliowy", detail: "Ø 45 cm", qty: 1 },
@@ -306,7 +306,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
     },
     dekoracja: {
       description:
-        "Mały zestaw, wielka radość — idealny jako szybki prezent lub dodatek do dekoracji. Wypełniony helem, gotowy do odbioru lub z dostawą po Szczecinie.",
+        "Mały zestaw, wielka radość — idealny jako szybki prezent lub dodatek do prezentu. Wypełniony helem, gotowy do odbioru lub z dostawą w Szczecinie.",
       contents: [
         { name: "Balony lateksowe kolorowe", detail: "Ø 30 cm", qty: 3 },
         { name: "Balon foliowy", detail: "Ø 45 cm", qty: 1 },
@@ -318,7 +318,7 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
   "Hello Baby": {
     bukiet: {
       description:
-        "Wyjątkowy zestaw balonowy na powitanie nowego członka rodziny. Wypełniony helem z Hi-Float — idealna niespodzianka dla świeżo upieczonych rodziców. Dostawa pod wskazany adres w Szczecinie.",
+        "Wyjątkowy zestaw balonowy na powitanie nowego członka rodziny. Wypełniony helem z Hi-Float. Każdy zestaw dostępny w wersji dla chłopca i dla dziewczynki. Dostawa pod wskazany adres w Szczecinie.",
       contents: [
         {
           name: "Balony lateksowe pastelowe",
@@ -340,23 +340,13 @@ const DEFAULTS: Record<Category, Record<ProductType, ProductDetails>> = {
       contents: [
         {
           name: "Balony lateksowe pastelowe",
-          detail: "Ø 12–36 cm, mix kolorów",
-          qty: 80,
+          detail: "Ø 30 cm, mix kolorów",
+          qty: 7,
         },
         {
           name: "Balony foliowe z napisem",
           detail: '"Hello Baby" lub "It\'s a Boy/Girl"',
           qty: 2,
-        },
-        {
-          name: "Balony organiczne / teksturowane",
-          detail: "Różne rozmiary",
-          qty: 15,
-        },
-        {
-          name: "Elementy dekoracyjne",
-          detail: "Gwiazdki, chmurki, serduszka",
-          qty: 1,
         },
       ],
       includes: DEKORACJA_INCLUDES,
