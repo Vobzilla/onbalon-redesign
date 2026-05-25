@@ -64,8 +64,8 @@ export default function HowItWorks() {
             </h2>
           </div>
           <p className="how-desc">
-            Cały proces od wyboru zestawu do dostawy zajmuje kilka minut.
-            Ty się cieszysz — my zajmujemy się resztą.
+            Cały proces od wyboru zestawu do złożonego zamówienia
+            zajmuje kilka minut. Ty się cieszysz — my zajmujemy się resztą.
           </p>
         </div>
 

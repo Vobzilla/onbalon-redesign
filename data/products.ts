@@ -1,7 +1,7 @@
 ﻿/** @format */
 
 const BASE =
-  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto:eco,w_900";
+  "https://res.cloudinary.com/dnyevlhh7/image/upload/f_auto,q_auto:eco,w_640";
 const CDN = `${BASE}/onbalon`;
 
 export type Category =
@@ -485,7 +485,11 @@ export const products: Product[] = [
     contents: [
       { name: "Balony lateksowe", detail: "Ø 30 cm", qty: 21 },
       { name: "Balon foliowy korona", detail: "figura", qty: 2 },
-      { name: "Balon foliowy serce", detail: "45cm", qty: 1 },
+      {
+        name: "Balon foliowy serce GIGA",
+        detail: "90cm",
+        qty: 1,
+      },
     ],
   },
   {
@@ -557,7 +561,9 @@ export const products: Product[] = [
     price: 555,
     image: `${CDN}/dla-niej/dla-niej-9`,
     contents: [
-      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 30 },
+      { name: "Balon lateksowy", detail: "Ø 30 cm", qty: 29 },
+      { name: "Balon foliowy z napisem", detail: "35 cm", qty: 1 },
+
       { name: "Balon foliowy cyfra", detail: "Ø 86 cm", qty: 2 },
     ],
   },

@@ -1,4 +1,5 @@
 /** @format */
+'use client'
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +19,10 @@ export default function Hero() {
         {/* ── Left ── */}
         <div className="hero-left">
           <div className="hero-eyebrow-pill">
-            <span className="pill-dot" />
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
             Szczecin · dostawa o każdej porze
           </div>
           <h1 className="hero-title">Balony, które</h1>
@@ -45,7 +49,7 @@ export default function Hero() {
               </svg>
               Zobacz katalog
             </a>
-            <a href="tel:+48732977561" className="btn-secondary">
+            <a href="#" className="btn-secondary" onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('open-contact-dropdown')) }}>
               <svg
                 width="17"
                 height="17"

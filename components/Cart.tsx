@@ -19,7 +19,7 @@ export default function Cart({ onCheckout }: Props) {
           </button>
         </div>
 
-        <div className="cart-body">
+        <div className="cart-body" tabIndex={0}>
           {items.length === 0 ? (
             <div className="cart-empty">
               <p>Koszyk jest pusty.</p>

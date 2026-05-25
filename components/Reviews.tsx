@@ -188,7 +188,6 @@ export default function Reviews() {
             target="_blank"
             rel="noopener noreferrer"
             className="rev-cta-btn">
-            <GoogleLogo />
             <span>Zobacz wszystkie opinie</span>
           </a>
         </div>

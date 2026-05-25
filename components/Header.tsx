@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
 
@@ -52,14 +53,27 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
+  useEffect(() => {
+    function handleOpenContact() {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setTimeout(() => setContactOpen(true), 400)
+    }
+    window.addEventListener('open-contact-dropdown', handleOpenContact)
+    return () => window.removeEventListener('open-contact-dropdown', handleOpenContact)
+  }, [])
+
   return (
     <header className="header">
       <div className="header-inner">
         <Link href="/" className="logo">
-          <img
-            src="https://raw.githubusercontent.com/Vobzilla/on.balon/main/img/logo.png"
+          <Image
+            src="/logo.png"
             alt="on.balon logo"
+            width={160}
+            height={48}
             className="logo-img"
+            sizes="160px"
+            priority
           />
         </Link>
 
@@ -134,13 +148,14 @@ function ContactIcon({ type }: { type: string }) {
     </svg>
   )
   if (type === 'telegram') return (
-    <svg viewBox="0 0 24 24" {...props} stroke="none" fill="currentColor">
-      <path d="M11.944 0A12 12 0 1 0 24 12 12 12 0 0 0 11.944 0zm3.882 8.027-1.77 8.444c-.13.58-.47.722-.953.449l-2.625-1.946-1.267 1.227c-.14.14-.258.258-.53.258l.19-2.672 4.867-4.42c.212-.19-.046-.295-.327-.106L7.48 14.52l-2.58-.81c-.561-.175-.571-.561.117-.83l10.082-3.896c.468-.169.878.113.727.843z"/>
+    <svg viewBox="0 0 24 24" {...props}>
+      <line x1="22" y1="2" x2="11" y2="13"/>
+      <polygon points="22 2 15 22 11 13 2 9 22 2"/>
     </svg>
   )
   if (type === 'facebook') return (
-    <svg viewBox="0 0 24 24" {...props} stroke="none" fill="currentColor">
-      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.885v2.27h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+    <svg viewBox="0 0 24 24" {...props}>
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
     </svg>
   )
   if (type === 'instagram') return (

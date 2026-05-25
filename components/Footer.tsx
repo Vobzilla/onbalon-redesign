@@ -1,13 +1,18 @@
+import Image from 'next/image'
+
 export default function Footer() {
   return (
     <footer className="footer" id="contact">
       <div className="footer-inner">
         <div className="footer-brand">
           <a href="/" className="footer-logo-img-wrap">
-            <img
-              src="https://raw.githubusercontent.com/Vobzilla/on.balon/main/img/logo.png"
+            <Image
+              src="/logo.png"
               alt="on.balon logo"
+              width={160}
+              height={52}
               className="footer-logo-img"
+              sizes="160px"
             />
           </a>
           <div className="footer-socials">
@@ -31,7 +36,7 @@ export default function Footer() {
             <li><a href="/#products">Urodziny</a></li>
             <li><a href="/#products">Dla niej</a></li>
             <li><a href="/#products">Dla niego</a></li>
-            <li><a href="/#products">Biznes</a></li>
+            <li><a href="/#products">Hello Baby</a></li>
           </ul>
         </div>
 
@@ -57,7 +62,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} On.balon · Szczecin</span>
-        <span>Dostawa dopasowana do Twojego terminu 🎈</span>
+        <span>Dostawa dopasowana do Twojego terminu</span>
       </div>
     </footer>
   )

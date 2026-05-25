@@ -103,7 +103,7 @@ export default function ProductsSection() {
                     src={product.image}
                     alt={product.name}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 44vw, 320px"
                     className="prod-img"
                   />
                   <span className={`prod-category-pill ${PILL_CLASS[product.category]}`}>

@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react'
 import { useCart } from '@/context/CartContext'
+import Confetti from './Confetti'
 
 type Props = { isOpen: boolean; onClose: () => void }
 type DeliveryType = 'delivery' | 'pickup'
@@ -77,6 +78,8 @@ export default function OrderModal({ isOpen, onClose }: Props) {
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
+
+        {sent && <Confetti />}
 
         {sent ? (
           <div className="modal-success">

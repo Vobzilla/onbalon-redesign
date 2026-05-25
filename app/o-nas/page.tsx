@@ -1,8 +1,21 @@
 /** @format */
 
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+
+export const metadata: Metadata = {
+  title: "O nas — On.balon · Dekoracje balonowe Szczecin",
+  description:
+    "Poznaj zespół On.balon. Od 2022 roku tworzymy wyjątkowe dekoracje balonowe w Szczecinie. Bukiety z helem, girlandy, łuki balonowe — z pasją i dbałością o każdy detal.",
+  openGraph: {
+    title: "O nas — On.balon",
+    description:
+      "Od 2022 roku tworzymy wyjątkowe dekoracje balonowe w Szczecinie. Poznaj nasz zespół.",
+    url: "https://onbalon.pl/o-nas",
+  },
+};
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnnounceBanner from "@/components/AnnounceBanner";
