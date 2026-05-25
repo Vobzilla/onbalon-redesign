@@ -6,6 +6,10 @@ import CookieBanner from "@/components/CookieBanner";
 import Script from "next/script";
 import "./globals.css";
 
+// ─── Google Ads ───────────────────────────────────────────────────────────────
+// Після КРОКУ 1: замінити REPLACE_AW на реальний ID, напр. AW-123456789
+const GOOGLE_ADS_ID = "AW-16531023419";
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://onbalon.pl'),
   title: "On.balon — dekoracje balonowe Szczecin. Dostawa i odbiór osobisty.",
@@ -55,14 +59,29 @@ export default function RootLayout({
           rel="stylesheet"
           media="print"
         />
+
+        {/* Meta Pixel — noscript fallback */}
+        <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=4259424894316217&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
       </head>
       <body>
         <CartProvider>{children}</CartProvider>
         <CookieBanner />
+
         {/* Switch font stylesheet from print→all after page load */}
         <Script id="font-swap" strategy="afterInteractive">
           {`document.querySelector('link[media="print"][href*="fonts.googleapis"]').media='all'`}
         </Script>
+
+        {/* Google Analytics GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-JY42M73V2Z"
           strategy="afterInteractive"
@@ -75,6 +94,17 @@ export default function RootLayout({
             gtag('config', 'G-JY42M73V2Z');
           `}
         </Script>
+
+        {/* Google Ads */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads" strategy="afterInteractive">
+          {`gtag('config', '${GOOGLE_ADS_ID}');`}
+        </Script>
+
+        {/* Meta Pixel */}
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)

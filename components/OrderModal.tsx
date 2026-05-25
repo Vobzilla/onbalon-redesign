@@ -4,6 +4,17 @@ import { useState, FormEvent } from 'react'
 import { useCart } from '@/context/CartContext'
 import Confetti from './Confetti'
 
+// ─── Conversion IDs ───────────────────────────────────────────────────────────
+// Після КРОКУ 1: замінити на реальні значення з Google Ads
+const GOOGLE_ADS_CONVERSION = 'AW-16531023419/EEdkCPqEjLMcELvMzco9'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+    fbq?: (...args: unknown[]) => void
+  }
+}
+
 type Props = { isOpen: boolean; onClose: () => void }
 type DeliveryType = 'delivery' | 'pickup'
 
@@ -56,6 +67,27 @@ export default function OrderModal({ isOpen, onClose }: Props) {
       }
       setSent(true)
       clear()
+
+      // ── Conversion tracking ──────────────────────────────────────────────
+      // Meta Pixel — Lead
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Zamówienie balony',
+          currency: 'PLN',
+          value: totalPrice,
+        })
+      }
+      // Google Ads — conversion (активується після КРОКУ 1)
+      if (
+        typeof window.gtag === 'function' &&
+        !GOOGLE_ADS_CONVERSION.includes('REPLACE')
+      ) {
+        window.gtag('event', 'conversion', {
+          send_to: GOOGLE_ADS_CONVERSION,
+          value: totalPrice,
+          currency: 'PLN',
+        })
+      }
     } catch (err) {
       setError(`Błąd: ${err instanceof Error ? err.message : 'Nieznany błąd'}`)
     } finally {
