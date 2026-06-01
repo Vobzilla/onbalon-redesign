@@ -15,6 +15,15 @@ const nextConfig = {
     ],
   },
 
+  async redirects() {
+    return [
+      { source: '/helium-gallery', destination: '/#products', permanent: true },
+      { source: '/dekoracje',      destination: '/#products', permanent: true },
+      { source: '/index.html',     destination: '/',          permanent: true },
+      { source: '/price',          destination: '/#products', permanent: true },
+    ]
+  },
+
   async headers() {
     return [
       {
