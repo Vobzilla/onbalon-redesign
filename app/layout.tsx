@@ -14,11 +14,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://onbalon.pl'),
   title: "On.balon — dekoracje balonowe Szczecin. Dostawa i odbiór osobisty.",
   description:
-    "Bukiety balonowe, dekoracje na roczek, urodziny, pierwsza komunia święta, wesela i eventy firmowe. Zamawiasz online — potwierdzamy w 15 minut. Szczecin i okolice.",
+    "Zestawy balonów, dekoracje na roczek, urodziny, pierwsza komunia święta, wesela i eventy firmowe. Zamawiasz online — potwierdzamy w 15 minut. Szczecin i okolice.",
   openGraph: {
     title: "On.balon — dekoracje balonowe Szczecin",
     description:
-      "Bukiety z helem, dekoracje na urodziny, roczek i eventy. Potwierdzamy w 15 minut · Dostawa pod drzwi.",
+      "Zestawy balonów z helem, dekoracje na urodziny, roczek i eventy. Potwierdzamy w 15 minut · Dostawa pod drzwi.",
     url: "https://onbalon.pl",
     siteName: "On.balon",
     locale: "pl_PL",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "On.balon — dekoracje balonowe Szczecin",
     description:
-      "Bukiety z helem, dekoracje na urodziny, roczek i eventy. Potwierdzamy w 15 minut · Dostawa pod drzwi.",
+      "Zestawy balonów z helem, dekoracje na urodziny, roczek i eventy. Potwierdzamy w 15 minut · Dostawa pod drzwi.",
     images: ["/logo.png"],
   },
 };
