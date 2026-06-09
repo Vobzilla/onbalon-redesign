@@ -17,10 +17,17 @@ const nextConfig = {
 
   async redirects() {
     return [
+      // Old URLs without extension
       { source: '/helium-gallery', destination: '/#products', permanent: true },
       { source: '/dekoracje',      destination: '/#products', permanent: true },
-      { source: '/index.html',     destination: '/',          permanent: true },
       { source: '/price',          destination: '/#products', permanent: true },
+      { source: '/about',          destination: '/o-nas',     permanent: true },
+      // Old URLs with .html extension
+      { source: '/helium-gallery.html', destination: '/#products', permanent: true },
+      { source: '/dekoracje.html',      destination: '/#products', permanent: true },
+      { source: '/price.html',          destination: '/#products', permanent: true },
+      { source: '/about.html',          destination: '/o-nas',     permanent: true },
+      { source: '/index.html',          destination: '/',           permanent: true },
     ]
   },
 
