@@ -158,7 +158,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               </div>
               <div className="form-row">
                 <label>
-                  Telefon *
+                  Numer telefonu *
                   <input name="contact" type="tel" placeholder="+48 500 123 456" required />
                 </label>
               </div>
