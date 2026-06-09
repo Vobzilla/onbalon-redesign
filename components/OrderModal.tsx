@@ -30,11 +30,13 @@ export default function OrderModal({ isOpen, onClose }: Props) {
   const [sent, setSent]               = useState(false)
   const [loading, setLoading]         = useState(false)
   const [error, setError]             = useState('')
+  const [phoneError, setPhoneError]   = useState('')
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('delivery')
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
+    setPhoneError('')
 
     const fd      = new FormData(e.currentTarget)
     const name    = String(fd.get('name')    || '').trim()
@@ -51,7 +53,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
       return
     }
     if (!phoneRegex.test(contact)) {
-      setError('Proszę podać prawidłowy numer telefonu (np. +48 500 123 456).')
+      setPhoneError('Nieprawidłowy numer telefonu')
       return
     }
     if (deliveryType === 'delivery' && !address) {
@@ -102,7 +104,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
 
   function handleClose() {
     onClose()
-    setTimeout(() => { setSent(false); setError(''); setDeliveryType('delivery') }, 300)
+    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDeliveryType('delivery') }, 300)
   }
 
   if (!isOpen) return null
@@ -159,7 +161,15 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               <div className="form-row">
                 <label>
                   Numer telefonu *
-                  <input name="contact" type="tel" placeholder="+48 500 123 456" required />
+                  <input
+                    name="contact"
+                    type="tel"
+                    placeholder="+48 500 123 456"
+                    required
+                    onChange={() => setPhoneError('')}
+                    style={phoneError ? { borderColor: '#e53e3e' } : undefined}
+                  />
+                  {phoneError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{phoneError}</span>}
                 </label>
               </div>
 
