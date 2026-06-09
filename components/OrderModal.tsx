@@ -45,8 +45,13 @@ export default function OrderModal({ isOpen, onClose }: Props) {
     const date    = String(fd.get('date')    || '').trim()
     const notes   = String(fd.get('notes')   || '').trim()
 
+    const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/
     if (!name || !contact || !date) {
       setError('Proszę wypełnić wszystkie wymagane pola.')
+      return
+    }
+    if (!phoneRegex.test(contact)) {
+      setError('Proszę podać prawidłowy numer telefonu (np. +48 500 123 456).')
       return
     }
     if (deliveryType === 'delivery' && !address) {
@@ -153,8 +158,8 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               </div>
               <div className="form-row">
                 <label>
-                  Telefon lub Telegram *
-                  <input name="contact" type="text" placeholder="+48 500 123 456 lub @username" required />
+                  Telefon *
+                  <input name="contact" type="tel" placeholder="+48 500 123 456" required />
                 </label>
               </div>
 
