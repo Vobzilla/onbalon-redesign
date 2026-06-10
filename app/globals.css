@@ -2044,6 +2044,26 @@ a {
   color: var(--accent);
 }
 
+.delivery-opt.disabled,
+.delivery-opt:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.availability-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #fff3cd;
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 6px 6px 0;
+  color: #92400e;
+  font-size: .88rem;
+  margin-bottom: 4px;
+}
+
 .pickup-info {
   display: flex;
   align-items: flex-start;

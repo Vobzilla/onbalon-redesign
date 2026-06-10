@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { useCart } from '@/context/CartContext'
 import Confetti from './Confetti'
+import { availability } from '@/data/availability'
 
 // ─── Conversion IDs ───────────────────────────────────────────────────────────
 // Після КРОКУ 1: замінити на реальні значення з Google Ads
@@ -174,13 +175,21 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               </div>
 
               {/* Delivery type toggle */}
+              {availability.deliveryDisabled && availability.pickupDisabled ? (
+                <div className="availability-banner">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  {availability.disabledMessage || 'Tymczasowo nie przyjmujemy zamówień.'}
+                </div>
+              ) : (
               <div className="form-row">
                 <span className="form-label">Sposób odbioru *</span>
                 <div className="delivery-toggle">
                   <button
                     type="button"
-                    className={`delivery-opt${deliveryType === 'delivery' ? ' active' : ''}`}
-                    onClick={() => setDeliveryType('delivery')}
+                    className={`delivery-opt${deliveryType === 'delivery' ? ' active' : ''}${availability.deliveryDisabled ? ' disabled' : ''}`}
+                    onClick={() => !availability.deliveryDisabled && setDeliveryType('delivery')}
+                    disabled={availability.deliveryDisabled}
+                    title={availability.deliveryDisabled ? (availability.disabledMessage || 'Dostawa niedostępna') : undefined}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
@@ -189,8 +198,10 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                   </button>
                   <button
                     type="button"
-                    className={`delivery-opt${deliveryType === 'pickup' ? ' active' : ''}`}
-                    onClick={() => setDeliveryType('pickup')}
+                    className={`delivery-opt${deliveryType === 'pickup' ? ' active' : ''}${availability.pickupDisabled ? ' disabled' : ''}`}
+                    onClick={() => !availability.pickupDisabled && setDeliveryType('pickup')}
+                    disabled={availability.pickupDisabled}
+                    title={availability.pickupDisabled ? (availability.disabledMessage || 'Odbiór niedostępny') : undefined}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
@@ -199,6 +210,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                   </button>
                 </div>
               </div>
+              )}
 
               {/* Address — only for delivery */}
               {deliveryType === 'delivery' && (
