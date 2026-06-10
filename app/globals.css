@@ -3043,6 +3043,9 @@ a {
 }
 
 .prod-content-cyfra-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
   font-size: .82rem;
   color: var(--accent-dark);
   background: var(--accent-light);
