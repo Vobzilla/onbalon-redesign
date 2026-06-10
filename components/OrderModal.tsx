@@ -32,12 +32,21 @@ export default function OrderModal({ isOpen, onClose }: Props) {
   const [loading, setLoading]         = useState(false)
   const [error, setError]             = useState('')
   const [phoneError, setPhoneError]   = useState('')
+  const [dateError, setDateError]     = useState('')
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('delivery')
+
+  function isDeliveryDateBlocked(dateStr: string): boolean {
+    const { deliveryClosedFrom, deliveryClosedTo } = availability
+    if (!deliveryClosedFrom || !deliveryClosedTo) return false
+    const date = dateStr.slice(0, 10)
+    return date >= deliveryClosedFrom && date <= deliveryClosedTo
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
     setPhoneError('')
+    setDateError('')
 
     const fd      = new FormData(e.currentTarget)
     const name    = String(fd.get('name')    || '').trim()
@@ -59,6 +68,11 @@ export default function OrderModal({ isOpen, onClose }: Props) {
     }
     if (deliveryType === 'delivery' && !address) {
       setError('Proszę podać adres dostawy.')
+      return
+    }
+    if (deliveryType === 'delivery' && isDeliveryDateBlocked(date)) {
+      const to = availability.deliveryClosedTo
+      setDateError(`Dostawa niedostępna w tym terminie. Wybierz datę po ${to}.`)
       return
     }
 
@@ -105,7 +119,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
 
   function handleClose() {
     onClose()
-    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDeliveryType('delivery') }, 300)
+    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setDeliveryType('delivery') }, 300)
   }
 
   if (!isOpen) return null
@@ -175,10 +189,10 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               </div>
 
               {/* Delivery type toggle */}
-              {availability.deliveryDisabled && availability.pickupDisabled ? (
+              {availability.fullyClosed ? (
                 <div className="availability-banner">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  {availability.disabledMessage || 'Tymczasowo nie przyjmujemy zamówień.'}
+                  {availability.closedMessage || 'Tymczasowo nie przyjmujemy zamówień.'}
                 </div>
               ) : (
               <div className="form-row">
@@ -186,10 +200,8 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                 <div className="delivery-toggle">
                   <button
                     type="button"
-                    className={`delivery-opt${deliveryType === 'delivery' ? ' active' : ''}${availability.deliveryDisabled ? ' disabled' : ''}`}
-                    onClick={() => !availability.deliveryDisabled && setDeliveryType('delivery')}
-                    disabled={availability.deliveryDisabled}
-                    title={availability.deliveryDisabled ? (availability.disabledMessage || 'Dostawa niedostępna') : undefined}
+                    className={`delivery-opt${deliveryType === 'delivery' ? ' active' : ''}`}
+                    onClick={() => setDeliveryType('delivery')}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
@@ -198,10 +210,8 @@ export default function OrderModal({ isOpen, onClose }: Props) {
                   </button>
                   <button
                     type="button"
-                    className={`delivery-opt${deliveryType === 'pickup' ? ' active' : ''}${availability.pickupDisabled ? ' disabled' : ''}`}
-                    onClick={() => !availability.pickupDisabled && setDeliveryType('pickup')}
-                    disabled={availability.pickupDisabled}
-                    title={availability.pickupDisabled ? (availability.disabledMessage || 'Odbiór niedostępny') : undefined}
+                    className={`delivery-opt${deliveryType === 'pickup' ? ' active' : ''}`}
+                    onClick={() => setDeliveryType('pickup')}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
@@ -236,7 +246,16 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               <div className="form-row">
                 <label>
                   {deliveryType === 'delivery' ? 'Data i godzina dostawy *' : 'Data i godzina odbioru *'}
-                  <input name="date" type="datetime-local" min={getMinDateTime()} defaultValue={getMinDateTime()} required />
+                  <input
+                    name="date"
+                    type="datetime-local"
+                    min={getMinDateTime()}
+                    defaultValue={getMinDateTime()}
+                    required
+                    onChange={() => setDateError('')}
+                    style={dateError ? { borderColor: '#e53e3e' } : undefined}
+                  />
+                  {dateError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{dateError}</span>}
                 </label>
               </div>
               <div className="form-row">
