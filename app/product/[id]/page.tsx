@@ -132,15 +132,15 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             <span className="prod-content-item-detail">{item.detail}</span>
                           </div>
                           <span className="prod-content-item-qty">× {item.qty}</span>
-                          {/cyfra/i.test(item.name) && (
-                            <span className="prod-content-cyfra-hint">
-                              💡 Cyfrę możesz zmienić na dowolną — wpisz w uwagach przy składaniu zamówienia.
-                            </span>
-                          )}
                         </div>
                       ))}
                     </div>
                   </div>
+                  {details.contents.some(item => /cyfra/i.test(item.name)) && (
+                    <p className="prod-content-cyfra-hint">
+                      💡 Cyfrę możesz zmienić na dowolną — wpisz w uwagach przy składaniu zamówienia.
+                    </p>
+                  )}
                 </>
               )}
 
