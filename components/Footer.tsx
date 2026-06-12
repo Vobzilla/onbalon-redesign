@@ -47,6 +47,7 @@ export default function Footer() {
             <li><a href="/#how">Jak zamawiać</a></li>
             <li><a href="/#faq">FAQ</a></li>
             <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
+            <li><a href="/regulamin-zwrotow">Zwroty i reklamacje</a></li>
           </ul>
         </div>
 
