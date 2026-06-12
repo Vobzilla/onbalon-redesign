@@ -53,6 +53,8 @@ export default function ProductLayout({ params, children }: { params: { id: stri
         shippingDestination: {
           '@type': 'DefinedRegion',
           addressCountry: 'PL',
+          // Zachodniopomorskie — Szczecin i okolice
+          addressRegion: 'ZP',
         },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',
@@ -70,13 +72,12 @@ export default function ProductLayout({ params, children }: { params: { id: stri
           },
         },
       },
+      // Zwrot niemożliwy — Art. 38 pkt 3 i 4 ustawy o prawach konsumenta
+      // (towar wykonany na zamówienie + szybko psujący się)
       hasMerchantReturnPolicy: {
         '@type': 'MerchantReturnPolicy',
         applicableCountry: 'PL',
-        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-        merchantReturnDays: 14,
-        returnMethod: 'https://schema.org/ReturnByMail',
-        returnFees: 'https://schema.org/FreeReturn',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
       },
     },
   } : null
