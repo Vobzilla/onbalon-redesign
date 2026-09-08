@@ -33,6 +33,7 @@ export default function ProductModal({ product, onClose }: Props) {
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, 560px"
+            quality={95}
             style={{ objectFit: 'cover' }}
           />
           <span className="pm-category">{product.category}</span>

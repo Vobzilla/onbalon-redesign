@@ -84,6 +84,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 560px"
+                  quality={95}
+                  priority
                   style={{ objectFit: 'contain' }}
                 />
                 <span className="prod-page-zoom-hint">🔍</span>
@@ -100,6 +102,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     alt={product.name}
                     fill
                     sizes="100vw"
+                    quality={95}
                     style={{ objectFit: 'contain' }}
                   />
                 </div>
