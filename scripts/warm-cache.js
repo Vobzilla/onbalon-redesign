@@ -33,7 +33,7 @@ console.log(`Found ${publicIds.length} unique images. Queuing eager transforms f
         eager: WIDTHS.map(w => ({
           width: w,
           crop: 'limit',
-          quality: 'auto:best',
+          quality: 'auto:good',
           fetch_format: 'auto',
         })),
       })

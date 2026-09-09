@@ -84,7 +84,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 560px"
-                  quality={95}
                   priority
                   style={{ objectFit: 'contain' }}
                 />
@@ -101,8 +100,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     src={product.image}
                     alt={product.name}
                     fill
-                    sizes="100vw"
-                    quality={95}
+                    sizes="(max-width: 768px) 900px, 1920px"
                     style={{ objectFit: 'contain' }}
                   />
                 </div>
