@@ -18,8 +18,8 @@ export async function POST(req: NextRequest) {
   function toViewableUrl(url?: string): string {
     if (!url) return ''
     return url
-      .replace(/\/upload\/[^/]+\//, '/upload/')
-      .replace(/(\.[a-z]+)?$/, '.jpg')
+      .replace('/upload/', '/upload/f_auto,q_auto:good,w_800/')
+      .replace(/(\.[a-z]+)?$/i, '.jpg')
   }
 
   const itemLines = (items as OrderItem[])
