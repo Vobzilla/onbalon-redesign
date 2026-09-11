@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { prisma } from "./db";
 import type { Category, ContentItem } from "@/data/products";
 
@@ -53,15 +54,28 @@ export const getActiveProducts = cache(async (): Promise<ProductWithDetails[]> =
   return rows.map(toProduct);
 });
 
+// Wrapped in unstable_cache (tagged `product-${id}`) because the data comes
+// from Prisma, not fetch() — fetch's own cache tags don't apply here. This is
+// what lets the admin API invalidate a single product's page on Netlify via
+// revalidateTag instead of revalidatePath, which — per diagnosis — doesn't
+// reliably purge Netlify's Durable cache for statically-generated dynamic
+// routes. `revalidate: 3600` mirrors the page's own time-based fallback, so
+// that fallback still refreshes actual data instead of re-rendering the same
+// stale cache entry every hour.
 export const getActiveProductById = cache(
   async (id: number): Promise<ProductWithDetails | null> => {
-    const row = await prisma.product.findFirst({
-      where: { id, isActive: true },
-      include: {
-        contents: { orderBy: { sortOrder: "asc" } },
-        includes: { orderBy: { sortOrder: "asc" } },
-      },
-    });
+    const row = await unstable_cache(
+      async () =>
+        prisma.product.findFirst({
+          where: { id, isActive: true },
+          include: {
+            contents: { orderBy: { sortOrder: "asc" } },
+            includes: { orderBy: { sortOrder: "asc" } },
+          },
+        }),
+      [`product-${id}`],
+      { tags: [`product-${id}`], revalidate: 3600 }
+    )();
     return row ? toProduct(row) : null;
   }
 );

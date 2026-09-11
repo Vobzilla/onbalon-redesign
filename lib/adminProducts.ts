@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./db";
 import { slugify } from "./slugify";
 import { CATEGORIES, type Category } from "@/data/products";
@@ -8,9 +8,16 @@ import { requiresContents } from "./productRules";
 // The public catalog (/) and product pages are cached (ISR) for speed — this
 // is what makes admin edits show up in seconds instead of waiting for the
 // next scheduled revalidation.
+//
+// The catalog uses revalidatePath('/') — a plain static page, and this works
+// reliably on Netlify. The product page is a statically-generated dynamic
+// route (via generateStaticParams); revalidatePath for those didn't reliably
+// purge Netlify's Durable ISR cache (confirmed by diagnosis: worked locally,
+// stayed stale on Netlify), so it uses the tag on the underlying Prisma call
+// in lib/products.ts instead.
 function revalidateProduct(id: number): void {
   revalidatePath("/");
-  revalidatePath(`/product/${id}`);
+  revalidateTag(`product-${id}`);
 }
 
 export type ProductInput = {
