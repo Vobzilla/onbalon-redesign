@@ -15,8 +15,10 @@ const Reviews    = nextDynamic(() => import("@/components/Reviews"),    { ssr: f
 const FAQ        = nextDynamic(() => import("@/components/FAQ"),        { ssr: false })
 const Footer     = nextDynamic(() => import("@/components/Footer"),     { ssr: false })
 
-// Always read the current DB state (products can change in Postgres without a redeploy).
-export const dynamic = "force-dynamic";
+// Statically generated and cached; the admin API triggers an on-demand
+// revalidation via revalidatePath('/') right after a product is saved/deleted,
+// so this is a fallback for anything that misses that (e.g. a direct DB edit).
+export const revalidate = 3600;
 
 export default async function Home() {
   const products = await getActiveProducts();

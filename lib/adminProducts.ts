@@ -1,8 +1,17 @@
+import { revalidatePath } from "next/cache";
 import { prisma } from "./db";
 import { slugify } from "./slugify";
 import { CATEGORIES, type Category } from "@/data/products";
 import { getProductDetails } from "@/data/productDefaults";
 import { requiresContents } from "./productRules";
+
+// The public catalog (/) and product pages are cached (ISR) for speed — this
+// is what makes admin edits show up in seconds instead of waiting for the
+// next scheduled revalidation.
+function revalidateProduct(id: number): void {
+  revalidatePath("/");
+  revalidatePath(`/product/${id}`);
+}
 
 export type ProductInput = {
   name: string;
@@ -114,6 +123,7 @@ export async function createProduct(rawInput: ProductInput): Promise<AdminProduc
     },
     include: productInclude,
   });
+  revalidateProduct(row.id);
   return toAdminProduct(row);
 }
 
@@ -147,11 +157,13 @@ export async function updateProduct(id: number, rawInput: ProductInput): Promise
     }),
   ]);
 
+  revalidateProduct(row.id);
   return toAdminProduct(row);
 }
 
 export async function deleteProduct(id: number): Promise<void> {
   await prisma.product.delete({ where: { id } });
+  revalidateProduct(id);
 }
 
 export type ValidationResult = { ok: true; value: ProductInput } | { ok: false; error: string };
