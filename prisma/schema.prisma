@@ -1,0 +1,103 @@
+// Prisma schema for the onbalon admin panel.
+// The public frontend now reads products from this DB (via lib/products.ts).
+// data/products.ts / data/productDefaults.ts stay in the repo unused, as the
+// source the one-time migration script (prisma/migrate-products.ts) reads from.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// category is a plain text column, not a DB enum/table — the app enforces
+// that it's one of the 8 fixed values (same as the current TS `Category` union):
+// Roczek | 18-tka | Dla niej | Dla niego | Dla dziecka | Dekoracje balonowe | Hello Baby | Małe Zestawy
+model Product {
+  // Existing ids came from data/products.ts and are kept as-is (URLs depend on
+  // them); the sequence starts above them so admin-created products get new ids.
+  id               Int      @id @default(autoincrement())
+  name             String
+  slug             String   @unique
+  category         String
+  price            Int
+  description      String
+  imageUrl         String   @map("image_url")
+  isActive         Boolean  @default(true) @map("is_active")
+  hasColorVariants Boolean  @default(false) @map("has_color_variants")
+  // Preserves the original data/products.ts array position, since the
+  // catalog is grouped by category in file order rather than sorted by id.
+  sortOrder        Int      @default(0) @map("sort_order")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  contents      ProductContent[]
+  includes      ProductInclude[]
+  colorVariants ProductColorVariant[]
+
+  @@map("products")
+}
+
+model ProductContent {
+  id        Int    @id @default(autoincrement())
+  productId Int    @map("product_id")
+  name      String
+  detail    String
+  qty       Int
+  sortOrder Int    @default(0) @map("sort_order")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_contents")
+}
+
+model ProductInclude {
+  id        Int    @id @default(autoincrement())
+  productId Int    @map("product_id")
+  text      String
+  sortOrder Int    @default(0) @map("sort_order")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_includes")
+}
+
+model ProductColorVariant {
+  id        Int    @id @default(autoincrement())
+  productId Int    @map("product_id")
+  colorName String @map("color_name")
+  imageUrl  String @map("image_url")
+  sortOrder Int    @default(0) @map("sort_order")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_color_variants")
+}
+
+// Owner accounts for /admin. Seeded via prisma/seed-admins.ts — there is no
+// self-service signup, and passwords are stored as bcrypt hashes.
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_users")
+}
+
+model Addon {
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Int
+  imageUrl  String?  @map("image_url")
+  isActive  Boolean  @default(true) @map("is_active")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("addons")
+}

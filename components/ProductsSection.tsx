@@ -3,7 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { products, CATEGORIES, type Product, type Category } from '@/data/products'
+import { CATEGORIES, type Category } from '@/data/products'
+import type { ProductWithDetails } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 
 const PILL_CLASS: Record<Category, string> = {
@@ -19,7 +20,9 @@ const PILL_CLASS: Record<Category, string> = {
 
 const PAGE_SIZE = 6
 
-export default function ProductsSection() {
+type Props = { products: ProductWithDetails[] }
+
+export default function ProductsSection({ products }: Props) {
   const [activeFilter, setActiveFilter] = useState<Category | null>(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [added, setAdded]               = useState<number | null>(null)
@@ -51,7 +54,7 @@ export default function ProductsSection() {
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
   const visible  = filtered.slice(0, visibleCount)
 
-  function handleAdd(e: React.MouseEvent, product: Product) {
+  function handleAdd(e: React.MouseEvent, product: ProductWithDetails) {
     e.preventDefault()
     e.stopPropagation()
     addItem(product)

@@ -3,13 +3,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { products } from "@/data/products";
+import type { ProductWithDetails } from "@/lib/products";
 
 // Featured products shown in the hero card
 const FEATURED_ID = 26;
 const MINI_IDS = [30, 82];
 
-export default function Hero() {
+type Props = { products: ProductWithDetails[] };
+
+export default function Hero({ products }: Props) {
   const featured = products.find((p) => p.id === FEATURED_ID)!;
   const minis = MINI_IDS.map((id) => products.find((p) => p.id === id)!);
 

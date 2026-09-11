@@ -5,8 +5,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
-import { products } from '@/data/products'
-import { getProductDetails } from '@/data/productDefaults'
+import type { ProductWithDetails } from '@/lib/products'
 import Header from '@/components/Header'
 import AnnounceBanner from '@/components/AnnounceBanner'
 import ScrollToTop from '@/components/ScrollToTop'
@@ -15,39 +14,28 @@ const Footer     = dynamic(() => import('@/components/Footer'),     { ssr: false
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+type Props = { product: ProductWithDetails }
+
+export default function ProductPageClient({ product }: Props) {
   const [added, setAdded]         = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [lightbox, setLightbox]   = useState(false)
   const { addItem, items } = useCart()
 
-  const product = products.find(p => p.id === Number(params.id))
-
-  if (!product) {
-    return (
-      <div style={{ padding: '140px 24px', textAlign: 'center' }}>
-        <h2 style={{ marginBottom: 16 }}>Produkt nie znaleziony</h2>
-        <Link href="/" style={{ color: 'var(--accent)', fontWeight: 600 }}>
-          ← Wróć do strony głównej
-        </Link>
-      </div>
-    )
-  }
-
-  const details = getProductDetails(product)
+  const details = { description: product.description, contents: product.contents, includes: product.includes }
   const isDekoracja =
     product.category === 'Dekoracje balonowe' ||
     /^(Girlanda|Dekoracja|Brama|Kolumna|Ściana|Łuk|Arch)/.test(product.name)
 
   function handleAdd() {
-    addItem(product!)
+    addItem(product)
     setAdded(true)
     setTimeout(() => setAdded(false), 1600)
   }
 
   function handleOrder() {
-    if (!items.find(i => i.product.id === product!.id)) {
-      addItem(product!)
+    if (!items.find(i => i.product.id === product.id)) {
+      addItem(product)
     }
     setModalOpen(true)
   }

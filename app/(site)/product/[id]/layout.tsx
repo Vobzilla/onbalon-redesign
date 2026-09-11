@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
-import { products } from '@/data/products'
+import { getActiveProductById } from '@/lib/products'
+
+// Always read the current DB state (products can change in Postgres without a redeploy).
+export const dynamic = 'force-dynamic'
 
 type Props = { params: { id: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = products.find(p => p.id === Number(params.id))
+  const product = await getActiveProductById(Number(params.id))
 
   if (!product) {
     return { title: 'Produkt nie znaleziony — On.balon' }
@@ -24,8 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function ProductLayout({ params, children }: { params: { id: string }, children: React.ReactNode }) {
-  const product = products.find(p => p.id === Number(params.id))
+export default async function ProductLayout({ params, children }: { params: { id: string }, children: React.ReactNode }) {
+  const product = await getActiveProductById(Number(params.id))
 
   const jsonLd = product ? {
     '@context': 'https://schema.org',

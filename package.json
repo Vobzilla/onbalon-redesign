@@ -5,19 +5,28 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "migrate:products": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/migrate-products.ts",
+    "seed:admins": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/seed-admins.ts"
   },
   "dependencies": {
+    "@prisma/client": "^5.14.0",
+    "bcryptjs": "^2.4.3",
     "cloudinary": "^2.10.0",
+    "jose": "^4.15.9",
     "next": "13.5.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "dotenv": "^16.4.5",
+    "prisma": "^5.14.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.0.0"
   }
 }

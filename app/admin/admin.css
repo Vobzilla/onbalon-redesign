@@ -1,0 +1,307 @@
+/* Styles scoped to /admin — imported only by admin layouts, so the public
+   site's globals.css is untouched. All class names are prefixed `adm-`. */
+
+.adm-root {
+  --adm-bg: #f6f4f8;
+  --adm-surface: #ffffff;
+  --adm-border: #e3dfe8;
+  --adm-text: #2a1f33;
+  --adm-muted: #7c7288;
+  --adm-accent: #5b2b7b;
+  --adm-accent-soft: #f1e9f7;
+  --adm-danger: #b3261e;
+  --adm-danger-soft: #fdecea;
+  --adm-ok: #2d7a3a;
+  --adm-ok-soft: #e8f5ea;
+
+  min-height: 100vh;
+  background: var(--adm-bg);
+  color: var(--adm-text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+.adm-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--adm-surface);
+  border-bottom: 1px solid var(--adm-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.adm-brand {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.adm-brand span { color: var(--adm-muted); font-weight: 500; }
+
+.adm-topbar-right { display: flex; align-items: center; gap: 14px; }
+.adm-user { color: var(--adm-muted); font-size: 13px; }
+
+.adm-main { padding: 28px 24px 64px; max-width: 1100px; margin: 0 auto; }
+
+.adm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.adm-title { font-size: 22px; font-weight: 700; margin: 0; }
+.adm-subtitle { color: var(--adm-muted); margin: 4px 0 0; }
+
+/* ── Buttons ── */
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 15px;
+  border-radius: 8px;
+  border: 1px solid var(--adm-border);
+  background: var(--adm-surface);
+  color: var(--adm-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.adm-btn:hover { background: #faf8fc; }
+.adm-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.adm-btn-primary {
+  background: var(--adm-accent);
+  border-color: var(--adm-accent);
+  color: #fff;
+}
+.adm-btn-primary:hover { background: #4a2265; }
+
+.adm-btn-danger { color: var(--adm-danger); border-color: #eccfcc; background: var(--adm-danger-soft); }
+.adm-btn-danger:hover { background: #fbdedb; }
+
+.adm-btn-sm { padding: 6px 11px; font-size: 12.5px; }
+
+/* ── Table ── */
+.adm-card {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.adm-table { width: 100%; border-collapse: collapse; }
+.adm-table th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--adm-border);
+  background: #fbfafc;
+}
+.adm-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--adm-border);
+  vertical-align: middle;
+}
+.adm-table tr:last-child td { border-bottom: none; }
+.adm-table tr:hover td { background: #fcfbfd; }
+
+.adm-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 7px;
+  object-fit: cover;
+  background: var(--adm-accent-soft);
+  display: block;
+}
+
+.adm-cell-name { font-weight: 600; }
+.adm-cell-id { color: var(--adm-muted); font-size: 12px; margin-top: 2px; }
+.adm-nowrap { white-space: nowrap; }
+.adm-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+.adm-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.adm-badge-on { background: var(--adm-ok-soft); color: var(--adm-ok); }
+.adm-badge-off { background: #f0eef2; color: var(--adm-muted); }
+
+.adm-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--adm-accent-soft);
+  color: var(--adm-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── Forms ── */
+.adm-form { display: grid; gap: 18px; }
+.adm-fieldset {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.adm-legend { font-weight: 700; font-size: 14px; margin: 0 0 14px; }
+
+.adm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 720px) { .adm-grid-2 { grid-template-columns: 1fr; } }
+
+.adm-field { display: grid; gap: 6px; }
+.adm-label { font-size: 12.5px; font-weight: 600; color: var(--adm-muted); }
+
+.adm-input,
+.adm-select,
+.adm-textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--adm-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--adm-text);
+  font-size: 14px;
+  font-family: inherit;
+}
+.adm-input:focus,
+.adm-select:focus,
+.adm-textarea:focus {
+  outline: 2px solid var(--adm-accent-soft);
+  border-color: var(--adm-accent);
+}
+.adm-textarea { min-height: 92px; resize: vertical; }
+
+.adm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 90px 36px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.adm-row-includes { grid-template-columns: 1fr 36px; }
+@media (max-width: 720px) {
+  .adm-row { grid-template-columns: 1fr 1fr; }
+  .adm-row-includes { grid-template-columns: 1fr 36px; }
+}
+
+.adm-icon-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--adm-border);
+  background: #fff;
+  color: var(--adm-muted);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+.adm-icon-btn:hover { color: var(--adm-danger); border-color: #eccfcc; background: var(--adm-danger-soft); }
+
+.adm-toggle { display: flex; align-items: center; gap: 10px; }
+.adm-toggle input { width: 17px; height: 17px; accent-color: var(--adm-accent); }
+
+.adm-image-row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.adm-image-preview {
+  width: 132px;
+  height: 132px;
+  border-radius: 10px;
+  border: 1px solid var(--adm-border);
+  object-fit: cover;
+  background: var(--adm-accent-soft);
+}
+.adm-image-empty {
+  width: 132px;
+  height: 132px;
+  border-radius: 10px;
+  border: 1px dashed var(--adm-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--adm-muted);
+  font-size: 12px;
+  text-align: center;
+  padding: 8px;
+}
+.adm-image-side { flex: 1; min-width: 240px; display: grid; gap: 8px; align-content: start; }
+/* keep the upload button its natural width instead of stretching the grid cell */
+.adm-image-side > button { justify-self: start; }
+
+.adm-form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.adm-error {
+  background: var(--adm-danger-soft);
+  border: 1px solid #eccfcc;
+  color: var(--adm-danger);
+  padding: 10px 13px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+.adm-hint { color: var(--adm-muted); font-size: 12.5px; }
+.adm-empty { padding: 40px 16px; text-align: center; color: var(--adm-muted); }
+
+/* ── Login ── */
+.adm-login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.adm-login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 14px;
+  padding: 30px 28px;
+  box-shadow: 0 10px 40px rgba(43, 20, 60, 0.07);
+}
+.adm-login-title { font-size: 20px; font-weight: 700; margin: 0 0 4px; }
+.adm-login-sub { color: var(--adm-muted); margin: 0 0 22px; font-size: 13px; }
+.adm-login-form { display: grid; gap: 14px; }
+
+/* ── Confirm modal ── */
+.adm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 14, 40, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+.adm-modal {
+  background: var(--adm-surface);
+  border-radius: 14px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(28, 14, 40, 0.25);
+}
+.adm-modal-title { font-size: 17px; font-weight: 700; margin: 0 0 8px; }
+.adm-modal-text { color: var(--adm-muted); margin: 0 0 20px; line-height: 1.5; }
+.adm-modal-actions { display: flex; gap: 10px; justify-content: flex-end; }

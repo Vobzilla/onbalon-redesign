@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next'
-import { products } from '@/data/products'
+import { getActiveProducts } from '@/lib/products'
 
 const BASE = 'https://onbalon.pl'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const products = await getActiveProducts()
   const productUrls: MetadataRoute.Sitemap = products.map(p => ({
     url: `${BASE}/product/${p.id}`,
     lastModified: new Date(),
