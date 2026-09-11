@@ -42,15 +42,27 @@ function toProduct(row: {
 
 // Same order as the original data/products.ts array (grouped by category in
 // file order), preserved via the `sortOrder` column set during migration.
+//
+// Wrapped in unstable_cache (tagged 'products-list'), same reasoning as
+// getActiveProductById below: the admin API needs to invalidate this via
+// revalidateTag, not revalidatePath('/') — mixing revalidatePath and
+// revalidateTag in one request turned out to make Netlify's adapter drop the
+// revalidatePath signal (confirmed by diagnosis: worked locally, not on
+// Netlify), so revalidateProduct() now uses tags exclusively for both.
 export const getActiveProducts = cache(async (): Promise<ProductWithDetails[]> => {
-  const rows = await prisma.product.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: "asc" },
-    include: {
-      contents: { orderBy: { sortOrder: "asc" } },
-      includes: { orderBy: { sortOrder: "asc" } },
-    },
-  });
+  const rows = await unstable_cache(
+    async () =>
+      prisma.product.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        include: {
+          contents: { orderBy: { sortOrder: "asc" } },
+          includes: { orderBy: { sortOrder: "asc" } },
+        },
+      }),
+    ["products-list"],
+    { tags: ["products-list"], revalidate: 3600 }
+  )();
   return rows.map(toProduct);
 });
 
@@ -79,3 +91,18 @@ export const getActiveProductById = cache(
     return row ? toProduct(row) : null;
   }
 );
+
+// For generateStaticParams only — a plain, uncached query. Calling the
+// unstable_cache-wrapped getActiveProducts() from generateStaticParams (a
+// separate build-time phase from normal page rendering) is what caused
+// `next build` to fail with ECONNRESET on the home page and sitemap: both
+// call the SAME cache entry from the regular render phase, and that seems to
+// race with generateStaticParams's own use of it. generateStaticParams runs
+// once at build time anyway, so it never needed caching in the first place.
+export async function getActiveProductIds(): Promise<number[]> {
+  const rows = await prisma.product.findMany({
+    where: { isActive: true },
+    select: { id: true },
+  });
+  return rows.map((r) => r.id);
+}

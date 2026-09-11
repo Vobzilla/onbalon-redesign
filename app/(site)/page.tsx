@@ -16,8 +16,9 @@ const FAQ        = nextDynamic(() => import("@/components/FAQ"),        { ssr: f
 const Footer     = nextDynamic(() => import("@/components/Footer"),     { ssr: false })
 
 // Statically generated and cached; the admin API triggers an on-demand
-// revalidation via revalidatePath('/') right after a product is saved/deleted,
-// so this is a fallback for anything that misses that (e.g. a direct DB edit).
+// revalidation via revalidateTag('products-list') right after a product is
+// saved/deleted, so this is a fallback for anything that misses that (e.g. a
+// direct DB edit).
 export const revalidate = 3600;
 
 export default async function Home() {

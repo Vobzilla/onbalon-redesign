@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { getActiveProductById, getActiveProducts } from '@/lib/products'
+import { getActiveProductById, getActiveProductIds } from '@/lib/products'
 import ProductPageClient from '@/components/ProductPageClient'
 
 // Statically generated and cached; the admin API triggers an on-demand
-// revalidation via revalidatePath(`/product/${id}`) right after a save/delete,
+// revalidation via revalidateTag(`product-${id}`) right after a save/delete,
 // so this is a fallback for anything that misses that (e.g. a direct DB edit).
 export const revalidate = 3600
 
@@ -12,9 +12,13 @@ export const revalidate = 3600
 // Pre-builds every active product page; a product added later (not in this
 // list) still works via the default dynamicParams=true — rendered on its
 // first visit, then cached like the rest.
+//
+// Uses the plain getActiveProductIds() (not the cached getActiveProducts())
+// — calling the unstable_cache-wrapped version from here made `next build`
+// fail with ECONNRESET on the home page and sitemap.
 export async function generateStaticParams() {
-  const products = await getActiveProducts()
-  return products.map((p) => ({ id: String(p.id) }))
+  const ids = await getActiveProductIds()
+  return ids.map((id) => ({ id: String(id) }))
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
