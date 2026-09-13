@@ -25,11 +25,6 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       {children}
       <CookieBanner />
 
-      {/* Switch font stylesheet from print→all after page load */}
-      <Script id="font-swap" strategy="afterInteractive">
-        {`document.querySelector('link[media="print"][href*="fonts.googleapis"]').media='all'`}
-      </Script>
-
       {/* Google Analytics GA4 + Google Ads — one gtag.js load shared by both.
           The library itself doesn't care which id is in its query string; it
           only bootstraps window.gtag/dataLayer, so a single load followed by

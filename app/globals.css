@@ -14,8 +14,9 @@
   --gold: #c8954a;
   --gold-light: #f0c878;
   --announce-bg: rgba(255, 255, 255, 0.55);
-  --font-serif: 'Sansita', 'Arial Black', sans-serif;
-  --font-sans: 'Newsreader', Georgia, serif;
+  /* --font-serif / --font-sans are defined by next/font on <html> in
+     app/layout.tsx (self-hosted Sansita/Newsreader with adjusted fallback
+     metrics) — not redeclared here. */
   --radius-sm: 8px;
   --radius: 16px;
   --radius-lg: 24px;
