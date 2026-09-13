@@ -89,6 +89,7 @@ export default function ProductPageClient({ product }: Props) {
                     alt={product.name}
                     fill
                     sizes="(max-width: 768px) 900px, 1920px"
+                    priority
                     style={{ objectFit: 'contain' }}
                   />
                 </div>
