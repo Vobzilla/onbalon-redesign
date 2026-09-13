@@ -67,7 +67,7 @@ export default function Header() {
       <div className="header-inner">
         <Link href="/" className="logo">
           <Image
-            src="/logo.png"
+            src="/logo-small.webp"
             alt="on.balon logo"
             width={160}
             height={48}

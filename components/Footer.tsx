@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="footer-brand">
           <a href="/" className="footer-logo-img-wrap">
             <Image
-              src="/logo.png"
+              src="/logo-small.webp"
               alt="on.balon logo"
               width={160}
               height={52}

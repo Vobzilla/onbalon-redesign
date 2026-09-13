@@ -6,7 +6,7 @@
 // Mirrors next.config.js `images.deviceSizes`. next/image (`fill` layout)
 // draws its srcset candidates from that array, so these are the real widths
 // a visitor's browser can end up requesting — keep the two in sync.
-export const EAGER_WIDTHS = [384, 640, 828, 1200, 1920] as const;
+export const EAGER_WIDTHS = [384, 640, 750, 828, 1200, 1920] as const;
 
 // Must produce the exact same transformation string lib/cloudinaryLoader.ts
 // builds for delivery — Cloudinary caches by the literal transformation
