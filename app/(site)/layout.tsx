@@ -30,31 +30,30 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         {`document.querySelector('link[media="print"][href*="fonts.googleapis"]').media='all'`}
       </Script>
 
-      {/* Google Analytics GA4 */}
+      {/* Google Analytics GA4 + Google Ads — one gtag.js load shared by both.
+          The library itself doesn't care which id is in its query string; it
+          only bootstraps window.gtag/dataLayer, so a single load followed by
+          two separate `gtag('config', ...)` calls configures both properties.
+          lazyOnload: not needed for the initial render, and gtag.js/
+          fbevents.js are the bulk of "unused JavaScript"/TBT on PageSpeed.
+          Loading during idle time instead of right after hydration still
+          fires PageView/config, just a beat later. */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-JY42M73V2Z"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-tags" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-JY42M73V2Z');
+          gtag('config', '${GOOGLE_ADS_ID}');
         `}
       </Script>
 
-      {/* Google Ads */}
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script id="google-ads" strategy="afterInteractive">
-        {`gtag('config', '${GOOGLE_ADS_ID}');`}
-      </Script>
-
       {/* Meta Pixel */}
-      <Script id="meta-pixel" strategy="afterInteractive">
+      <Script id="meta-pixel" strategy="lazyOnload">
         {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
