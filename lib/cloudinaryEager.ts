@@ -8,28 +8,17 @@
 // a visitor's browser can end up requesting — keep the two in sync.
 export const EAGER_WIDTHS = [384, 640, 828, 1200, 1920] as const;
 
-// `f_auto` cannot be used in eager transformations: it's resolved once at
-// generation time (Cloudinary defaults to JPG with no requesting client to
-// negotiate with), while real delivery requests negotiate a format per
-// visitor's Accept header (WebP for basically all current browsers, JPG as
-// the fallback for old/no-JS clients). Verified empirically — eager'd JPGs
-// never matched what a real <img> load actually got serving via f_auto, so
-// every real first visit still hit a cold miss despite "successful" warming.
-// Generating both formats explicitly covers what real delivery actually
-// negotiates. (AVIF isn't included: Cloudinary's f_auto negotiation for this
-// account resolved to WebP even with AVIF present in the Accept header —
-// confirmed by testing — so a third AVIF variant would just double eager
-// costs for a format nothing here actually requests.)
-//
-// Same params as lib/cloudinaryLoader.ts otherwise, just varying `f_`/`w_`.
-// Cloudinary's `eager` param takes a "|"-separated list of transformation
-// strings — this exact format works for both the Upload API (widget) and
-// the Admin API (`explicit`, used by the backfill script).
+// Must produce the exact same transformation string lib/cloudinaryLoader.ts
+// builds for delivery — Cloudinary caches by the literal transformation
+// string, not by resolved output format. An eager entry for `f_webp,...`
+// and a delivery request for `f_auto,...` are different cache keys even
+// when f_auto happens to negotiate to webp bytes — confirmed via Admin
+// API's resource() derived list showing both as separate entries. That's
+// why the previous f_auto (then f_webp+f_jpg) eager attempts never actually
+// warmed what real delivery requests. The loader now hardcodes f_webp too,
+// so this string and the delivery URL are identical, not just same-format.
 export function buildEagerParam(): string {
-  const formats = ["webp", "jpg"] as const;
-  return EAGER_WIDTHS.flatMap((w) =>
-    formats.map((f) => `f_${f},q_auto:good,dpr_auto,w_${w}`)
-  ).join("|");
+  return EAGER_WIDTHS.map((w) => `f_webp,q_auto:good,dpr_auto,w_${w}`).join("|");
 }
 
 // Our stored image URLs come in two shapes:
