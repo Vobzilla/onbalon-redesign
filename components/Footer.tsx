@@ -9,10 +9,10 @@ export default function Footer() {
             <Image
               src="/logo-small.webp"
               alt="on.balon logo"
-              width={160}
+              width={98}
               height={52}
               className="footer-logo-img"
-              sizes="160px"
+              sizes="98px"
             />
           </a>
           <div className="footer-socials">

@@ -69,10 +69,10 @@ export default function Header() {
           <Image
             src="/logo-small.webp"
             alt="on.balon logo"
-            width={160}
+            width={90}
             height={48}
             className="logo-img"
-            sizes="160px"
+            sizes="90px"
             priority
           />
         </Link>
