@@ -9,7 +9,8 @@
     "postinstall": "prisma generate",
     "migrate:products": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/migrate-products.ts",
     "seed:admins": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/seed-admins.ts",
-    "seed:content-items": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/seed-common-content-items.ts"
+    "seed:content-items": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/seed-common-content-items.ts",
+    "warm:cloudinary": "ts-node --transpile-only --compiler-options \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" prisma/warm-cloudinary-eager.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",

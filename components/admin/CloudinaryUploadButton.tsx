@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { buildEagerParam } from "@/lib/cloudinaryEager";
 
 const WIDGET_SRC = "https://upload-widget.cloudinary.com/global/all.js";
 
@@ -71,6 +72,13 @@ export default function CloudinaryUploadButton({ onUploaded }: Props) {
           multiple: false,
           maxFiles: 1,
           language: "pl",
+          // Pre-generate every size the site actually requests (see
+          // lib/cloudinaryEager.ts), so a product's very first real visitor
+          // never triggers the slow cold-cache transform we diagnosed —
+          // originals here run 2-7.5MB, so that first transform is ~1s.
+          // Async so the widget's upload doesn't sit and wait for it.
+          eager: buildEagerParam(),
+          eager_async: true,
           // Uploads are signed server-side so no unsigned preset is needed.
           uploadSignature: (
             callback: (signature: string) => void,
