@@ -2,11 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductForm from "@/components/admin/ProductForm";
 import { getProductForAdmin } from "@/lib/adminProducts";
+import { listActiveCommonContentItems } from "@/lib/commonContentItems";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
-  const product = await getProductForAdmin(Number(params.id));
+  const [product, commonItems] = await Promise.all([
+    getProductForAdmin(Number(params.id)),
+    listActiveCommonContentItems(),
+  ]);
   if (!product) notFound();
 
   return (
@@ -24,7 +28,7 @@ export default async function EditProductPage({ params }: { params: { id: string
         </div>
       </div>
 
-      <ProductForm product={product} />
+      <ProductForm product={product} commonItems={commonItems} />
     </>
   );
 }

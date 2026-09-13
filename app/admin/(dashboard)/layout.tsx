@@ -24,6 +24,10 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
         <Link href="/admin/products" className="adm-brand" style={{ textDecoration: "none", color: "inherit" }}>
           On.balon <span>/ panel</span>
         </Link>
+        <nav className="adm-nav">
+          <Link href="/admin/products" className="adm-nav-link">Produkty</Link>
+          <Link href="/admin/content-items" className="adm-nav-link">Pozycje do zestawów</Link>
+        </nav>
         <div className="adm-topbar-right">
           <span className="adm-user">{session.email}</span>
           <Link href="/" className="adm-btn adm-btn-sm" target="_blank" rel="noopener noreferrer">

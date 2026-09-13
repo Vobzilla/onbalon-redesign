@@ -1,9 +1,12 @@
 import Link from "next/link";
 import ProductForm from "@/components/admin/ProductForm";
+import { listActiveCommonContentItems } from "@/lib/commonContentItems";
 
 export const dynamic = "force-dynamic";
 
-export default function NewProductPage() {
+export default async function NewProductPage() {
+  const commonItems = await listActiveCommonContentItems();
+
   return (
     <>
       <div className="adm-head">
@@ -15,7 +18,7 @@ export default function NewProductPage() {
         </div>
       </div>
 
-      <ProductForm />
+      <ProductForm commonItems={commonItems} />
     </>
   );
 }

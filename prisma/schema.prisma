@@ -89,6 +89,23 @@ model AdminUser {
   @@map("admin_users")
 }
 
+// A curated pick-list of frequently used "Zestaw zawiera" rows (e.g. "Balon
+// lateksowy" / "Ø 30 cm"), so the product form can quick-fill a content row
+// instead of retyping it. Purely a convenience list for the admin form — it
+// has no relation to product_contents; picking an item just copies its
+// name/detail into an editable row, same as typing it manually.
+model CommonContentItem {
+  id        Int      @id @default(autoincrement())
+  name      String
+  detail    String
+  isActive  Boolean  @default(true) @map("is_active")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("common_content_items")
+}
+
 model Addon {
   id        Int      @id @default(autoincrement())
   name      String

@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CATEGORIES, type Category } from "@/data/products";
 import type { AdminProduct } from "@/lib/adminProducts";
+import type { CommonContentItem } from "@/lib/commonContentItems";
 import CloudinaryUploadButton from "./CloudinaryUploadButton";
 import { thumbUrl } from "@/lib/cloudinaryThumb";
 import { requiresContents } from "@/lib/productRules";
 
 type ContentRow = { name: string; detail: string; qty: number };
 
-type Props = { product?: AdminProduct };
+type Props = { product?: AdminProduct; commonItems?: CommonContentItem[] };
 
-export default function ProductForm({ product }: Props) {
+export default function ProductForm({ product, commonItems = [] }: Props) {
   const router = useRouter();
   const isEdit = Boolean(product);
 
@@ -26,6 +27,7 @@ export default function ProductForm({ product }: Props) {
   const [contents, setContents] = useState<ContentRow[]>(
     product?.contents ?? [{ name: "", detail: "", qty: 1 }]
   );
+  const [quickPick, setQuickPick] = useState("");
   const [includes, setIncludes] = useState<string[]>(product?.includes ?? []);
 
   const [error, setError] = useState("");
@@ -35,6 +37,14 @@ export default function ProductForm({ product }: Props) {
 
   function updateContent(index: number, patch: Partial<ContentRow>) {
     setContents((rows) => rows.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+  }
+
+  function handleQuickPick(e: React.ChangeEvent<HTMLSelectElement>) {
+    const picked = commonItems.find((item) => item.id === Number(e.target.value));
+    if (picked) {
+      setContents((rows) => [...rows, { name: picked.name, detail: picked.detail, qty: 1 }]);
+    }
+    setQuickPick(""); // reset — this is an action, not a persistent selection
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -187,6 +197,21 @@ export default function ProductForm({ product }: Props) {
             ? "Wymagane — dla składu zestawu nie ma wartości domyślnych."
             : `Opcjonalne dla kategorii „${category}" — wycena jest indywidualna. Zostaw puste, a sekcja „Zestaw" nie pojawi się na stronie produktu.`}
         </p>
+
+        {commonItems.length > 0 && (
+          <div className="adm-field" style={{ marginBottom: 12, maxWidth: 360 }}>
+            <select className="adm-select" value={quickPick} onChange={handleQuickPick}>
+              <option value="">+ Szybkie dodawanie z listy…</option>
+              {commonItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                  {item.detail ? ` — ${item.detail}` : ""}
+                </option>
+              ))}
+            </select>
+            <p className="adm-hint">Wybierz pozycję, a dodamy ją poniżej — będzie można od razu poprawić nazwę, detal lub ilość.</p>
+          </div>
+        )}
 
         {contents.map((row, index) => (
           <div className="adm-row" key={index}>

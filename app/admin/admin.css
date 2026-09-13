@@ -41,6 +41,17 @@
 }
 .adm-brand span { color: var(--adm-muted); font-weight: 500; }
 
+.adm-nav { display: flex; align-items: center; gap: 4px; flex: 1; padding-left: 24px; }
+.adm-nav-link {
+  padding: 7px 12px;
+  border-radius: 8px;
+  color: var(--adm-muted);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+}
+.adm-nav-link:hover { background: var(--adm-accent-soft); color: var(--adm-accent); }
+
 .adm-topbar-right { display: flex; align-items: center; gap: 14px; }
 .adm-user { color: var(--adm-muted); font-size: 13px; }
 
