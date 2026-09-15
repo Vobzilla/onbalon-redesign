@@ -48,6 +48,16 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
     setColorVariants((rows) => rows.map((row, i) => (i === index ? { ...row, ...patch } : row)));
   }
 
+  // Turning the toggle on with no variants yet would otherwise force the admin
+  // to re-upload the photo that's already sitting on the product — carry it
+  // over as the first row instead, leaving just the color name to fill in.
+  function handleColorVariantsToggle(checked: boolean) {
+    setHasColorVariants(checked);
+    if (checked && colorVariants.length === 0 && image) {
+      setColorVariants([{ colorName: "", imageUrl: image }]);
+    }
+  }
+
   function handleQuickPick(e: React.ChangeEvent<HTMLSelectElement>) {
     const picked = commonItems.find((item) => item.id === Number(e.target.value));
     if (picked) {
@@ -232,7 +242,7 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
           <input
             type="checkbox"
             checked={hasColorVariants}
-            onChange={(e) => setHasColorVariants(e.target.checked)}
+            onChange={(e) => handleColorVariantsToggle(e.target.checked)}
           />
           <span>Jest wybór koloru</span>
         </label>
@@ -242,6 +252,12 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
             <p className="adm-hint" style={{ marginBottom: 12 }}>
               Każdy kolor ma własne zdjęcie. Nazwa i cena produktu są wspólne dla wszystkich kolorów.
             </p>
+
+            {colorVariants.some((row) => row.imageUrl === image && !row.colorName.trim()) && (
+              <p className="adm-hint" style={{ marginBottom: 12 }}>
+                Twoje obecne zdjęcie produktu stanie się pierwszym wariantem — nadaj mu nazwę koloru.
+              </p>
+            )}
 
             {colorVariants.map((row, index) => (
               <div className="adm-row adm-row-color" key={index}>
