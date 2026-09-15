@@ -7,6 +7,8 @@ import type { Category, ContentItem } from "@/data/products";
 // Postgres (via Prisma) instead of the hardcoded data/products.ts array.
 // description/contents/includes come straight from the DB already "frozen"
 // by the migration script, so no defaults system needs to run here.
+export type ColorVariant = { colorName: string; imageUrl: string };
+
 export type ProductWithDetails = {
   id: number;
   name: string;
@@ -16,6 +18,8 @@ export type ProductWithDetails = {
   description: string;
   contents: ContentItem[];
   includes: string[];
+  hasColorVariants: boolean;
+  colorVariants: ColorVariant[];
 };
 
 function toProduct(row: {
@@ -25,8 +29,10 @@ function toProduct(row: {
   price: number;
   imageUrl: string;
   description: string;
+  hasColorVariants: boolean;
   contents: { name: string; detail: string; qty: number }[];
   includes: { text: string }[];
+  colorVariants: { colorName: string; imageUrl: string }[];
 }): ProductWithDetails {
   return {
     id: row.id,
@@ -37,6 +43,8 @@ function toProduct(row: {
     description: row.description,
     contents: row.contents.map((c) => ({ name: c.name, detail: c.detail, qty: c.qty })),
     includes: row.includes.map((i) => i.text),
+    hasColorVariants: row.hasColorVariants,
+    colorVariants: row.colorVariants.map((v) => ({ colorName: v.colorName, imageUrl: v.imageUrl })),
   };
 }
 
@@ -58,6 +66,7 @@ export const getActiveProducts = cache(async (): Promise<ProductWithDetails[]> =
         include: {
           contents: { orderBy: { sortOrder: "asc" } },
           includes: { orderBy: { sortOrder: "asc" } },
+          colorVariants: { orderBy: { sortOrder: "asc" } },
         },
       }),
     ["products-list"],
@@ -83,6 +92,7 @@ export const getActiveProductById = cache(
           include: {
             contents: { orderBy: { sortOrder: "asc" } },
             includes: { orderBy: { sortOrder: "asc" } },
+            colorVariants: { orderBy: { sortOrder: "asc" } },
           },
         }),
       [`product-${id}`],

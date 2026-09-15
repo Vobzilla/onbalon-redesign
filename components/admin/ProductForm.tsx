@@ -11,6 +11,7 @@ import { thumbUrl } from "@/lib/cloudinaryThumb";
 import { requiresContents } from "@/lib/productRules";
 
 type ContentRow = { name: string; detail: string; qty: number };
+type ColorVariantRow = { colorName: string; imageUrl: string };
 
 type Props = { product?: AdminProduct; commonItems?: CommonContentItem[] };
 
@@ -29,6 +30,10 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
   );
   const [quickPick, setQuickPick] = useState("");
   const [includes, setIncludes] = useState<string[]>(product?.includes ?? []);
+  const [hasColorVariants, setHasColorVariants] = useState(product?.hasColorVariants ?? false);
+  const [colorVariants, setColorVariants] = useState<ColorVariantRow[]>(
+    product?.colorVariants ?? []
+  );
 
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -37,6 +42,10 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
 
   function updateContent(index: number, patch: Partial<ContentRow>) {
     setContents((rows) => rows.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+  }
+
+  function updateColorVariant(index: number, patch: Partial<ColorVariantRow>) {
+    setColorVariants((rows) => rows.map((row, i) => (i === index ? { ...row, ...patch } : row)));
   }
 
   function handleQuickPick(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -63,6 +72,11 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
       return;
     }
 
+    if (hasColorVariants && colorVariants.every((row) => !row.colorName.trim() || !row.imageUrl)) {
+      setError("Dodaj przynajmniej jeden wariant koloru (nazwa + zdjęcie)");
+      return;
+    }
+
     setSaving(true);
     const payload = {
       name,
@@ -73,6 +87,10 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
       isActive,
       contents,
       includes,
+      hasColorVariants,
+      colorVariants: hasColorVariants
+        ? colorVariants.filter((row) => row.colorName.trim() && row.imageUrl)
+        : [],
     };
 
     const res = await fetch(
@@ -188,6 +206,67 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="adm-fieldset">
+        <p className="adm-legend">Warianty kolorystyczne</p>
+        <label className="adm-toggle" style={{ marginBottom: hasColorVariants ? 14 : 0 }}>
+          <input
+            type="checkbox"
+            checked={hasColorVariants}
+            onChange={(e) => setHasColorVariants(e.target.checked)}
+          />
+          <span>Jest wybór koloru</span>
+        </label>
+
+        {hasColorVariants && (
+          <>
+            <p className="adm-hint" style={{ marginBottom: 12 }}>
+              Każdy kolor ma własne zdjęcie. Nazwa i cena produktu są wspólne dla wszystkich kolorów.
+            </p>
+
+            {colorVariants.map((row, index) => (
+              <div className="adm-row adm-row-color" key={index}>
+                {row.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className="adm-thumb"
+                    src={thumbUrl(row.imageUrl)}
+                    alt=""
+                    style={{ flexShrink: 0 }}
+                  />
+                ) : (
+                  <div className="adm-image-empty" style={{ width: 40, height: 40, flexShrink: 0 }} />
+                )}
+                <input
+                  className="adm-input"
+                  value={row.colorName}
+                  onChange={(e) => updateColorVariant(index, { colorName: e.target.value })}
+                  placeholder="Różowy"
+                />
+                <div className="adm-row-color-actions">
+                  <CloudinaryUploadButton onUploaded={(url) => updateColorVariant(index, { imageUrl: url })} />
+                  <button
+                    type="button"
+                    className="adm-icon-btn"
+                    onClick={() => setColorVariants((rows) => rows.filter((_, i) => i !== index))}
+                    aria-label="Usuń wariant"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            <button
+              type="button"
+              className="adm-btn adm-btn-sm"
+              onClick={() => setColorVariants((rows) => [...rows, { colorName: "", imageUrl: "" }])}
+            >
+              + Dodaj kolor
+            </button>
+          </>
+        )}
       </div>
 
       <div className="adm-fieldset">

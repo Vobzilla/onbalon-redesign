@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getActiveProductById, getActiveProductIds } from '@/lib/products'
+import { listActiveAddons } from '@/lib/addons'
 import ProductPageClient from '@/components/ProductPageClient'
 
 // Statically generated and cached; the admin API triggers an on-demand
@@ -22,7 +23,10 @@ export async function generateStaticParams() {
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  const product = await getActiveProductById(Number(params.id))
+  const [product, addons] = await Promise.all([
+    getActiveProductById(Number(params.id)),
+    listActiveAddons(),
+  ])
 
   if (!product) {
     return (
@@ -35,5 +39,5 @@ export default async function ProductPage({ params }: { params: { id: string } }
     )
   }
 
-  return <ProductPageClient product={product} />
+  return <ProductPageClient product={product} addons={addons} />
 }

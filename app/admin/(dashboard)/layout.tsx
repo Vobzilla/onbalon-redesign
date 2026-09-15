@@ -26,6 +26,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
         </Link>
         <nav className="adm-nav">
           <Link href="/admin/products" className="adm-nav-link">Produkty</Link>
+          <Link href="/admin/addons" className="adm-nav-link">Dodatki</Link>
           <Link href="/admin/content-items" className="adm-nav-link">Pozycje do zestawów</Link>
         </nav>
         <div className="adm-topbar-right">

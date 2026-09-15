@@ -26,14 +26,22 @@ export default function Cart({ onCheckout }: Props) {
               <p className="cart-empty-sub">Dodaj produkty z katalogu.</p>
             </div>
           ) : (
-            items.map(({ product, qty }) => (
+            items.map(({ product, qty, selectedColor, selectedAddons }) => (
               <div key={product.id} className="cart-item">
                 <div className="ci-img-wrap">
                   <Image src={product.image} alt={product.name} fill className="ci-img" sizes="64px" />
                 </div>
                 <div className="ci-info">
                   <p className="ci-name">{product.name}</p>
-                  <p className="ci-price">{product.price * qty} zł</p>
+                  {selectedColor && <p className="ci-color">Kolor: {selectedColor}</p>}
+                  {selectedAddons && selectedAddons.length > 0 && (
+                    <p className="ci-addons">
+                      + {selectedAddons.map(a => `${a.name}${a.qty > 1 ? ` ×${a.qty}` : ''}`).join(', ')}
+                    </p>
+                  )}
+                  <p className="ci-price">
+                    {product.price * qty + (selectedAddons ?? []).reduce((s, a) => s + a.price * a.qty, 0)} zł
+                  </p>
                 </div>
                 <div className="ci-qty">
                   <button className="qty-btn" onClick={() => changeQty(product.id, -1)}>−</button>

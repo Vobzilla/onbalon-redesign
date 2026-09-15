@@ -14,7 +14,7 @@ import { requiresContents } from "./productRules";
 // (confirmed by diagnosis — identical code worked locally, stayed stale on
 // Netlify). Both the catalog and the product's own Prisma call in
 // lib/products.ts are now wrapped in unstable_cache with these same tags.
-function revalidateProduct(id: number): void {
+export function revalidateProduct(id: number): void {
   revalidateTag("products-list");
   revalidateTag(`product-${id}`);
 }
@@ -28,6 +28,8 @@ export type ProductInput = {
   isActive: boolean;
   contents: { name: string; detail: string; qty: number }[];
   includes: string[];
+  hasColorVariants: boolean;
+  colorVariants: { colorName: string; imageUrl: string }[];
 };
 
 export type AdminProduct = ProductInput & { id: number; slug: string };
@@ -35,6 +37,7 @@ export type AdminProduct = ProductInput & { id: number; slug: string };
 const productInclude = {
   contents: { orderBy: { sortOrder: "asc" } },
   includes: { orderBy: { sortOrder: "asc" } },
+  colorVariants: { orderBy: { sortOrder: "asc" } },
 } as const;
 
 type ProductRow = {
@@ -46,8 +49,10 @@ type ProductRow = {
   description: string;
   imageUrl: string;
   isActive: boolean;
+  hasColorVariants: boolean;
   contents: { name: string; detail: string; qty: number }[];
   includes: { text: string }[];
+  colorVariants: { colorName: string; imageUrl: string }[];
 };
 
 function toAdminProduct(row: ProductRow): AdminProduct {
@@ -62,6 +67,8 @@ function toAdminProduct(row: ProductRow): AdminProduct {
     isActive: row.isActive,
     contents: row.contents.map((c) => ({ name: c.name, detail: c.detail, qty: c.qty })),
     includes: row.includes.map((i) => i.text),
+    hasColorVariants: row.hasColorVariants,
+    colorVariants: row.colorVariants.map((v) => ({ colorName: v.colorName, imageUrl: v.imageUrl })),
   };
 }
 
@@ -119,12 +126,16 @@ export async function createProduct(rawInput: ProductInput): Promise<AdminProduc
       description: input.description,
       imageUrl: input.image,
       isActive: input.isActive,
+      hasColorVariants: input.hasColorVariants,
       sortOrder: (last?.sortOrder ?? -1) + 1,
       contents: {
         create: input.contents.map((item, index) => ({ ...item, sortOrder: index })),
       },
       includes: {
         create: input.includes.map((text, index) => ({ text, sortOrder: index })),
+      },
+      colorVariants: {
+        create: input.colorVariants.map((v, index) => ({ ...v, sortOrder: index })),
       },
     },
     include: productInclude,
@@ -137,11 +148,12 @@ export async function updateProduct(id: number, rawInput: ProductInput): Promise
   const input = withCategoryDefaults(rawInput);
   const slug = await uniqueSlug(input.name, id);
 
-  // contents/includes are ordered lists owned by the product, so replacing them
-  // wholesale is simpler and safer than diffing rows.
-  const [, , row] = await prisma.$transaction([
+  // contents/includes/colorVariants are ordered lists owned by the product,
+  // so replacing them wholesale is simpler and safer than diffing rows.
+  const [, , , row] = await prisma.$transaction([
     prisma.productContent.deleteMany({ where: { productId: id } }),
     prisma.productInclude.deleteMany({ where: { productId: id } }),
+    prisma.productColorVariant.deleteMany({ where: { productId: id } }),
     prisma.product.update({
       where: { id },
       data: {
@@ -152,11 +164,15 @@ export async function updateProduct(id: number, rawInput: ProductInput): Promise
         description: input.description,
         imageUrl: input.image,
         isActive: input.isActive,
+        hasColorVariants: input.hasColorVariants,
         contents: {
           create: input.contents.map((item, index) => ({ ...item, sortOrder: index })),
         },
         includes: {
           create: input.includes.map((text, index) => ({ text, sortOrder: index })),
+        },
+        colorVariants: {
+          create: input.colorVariants.map((v, index) => ({ ...v, sortOrder: index })),
         },
       },
       include: productInclude,
@@ -228,6 +244,26 @@ export function validateProductInput(body: unknown): ValidationResult {
     .map((text) => text.trim())
     .filter(Boolean);
 
+  const hasColorVariants = raw.hasColorVariants === true;
+
+  const colorVariantsRaw = Array.isArray(raw.colorVariants) ? raw.colorVariants : [];
+  const colorVariants: ProductInput["colorVariants"] = [];
+  for (const item of colorVariantsRaw) {
+    if (typeof item !== "object" || item === null) continue;
+    const entry = item as Record<string, unknown>;
+    const colorName = typeof entry.colorName === "string" ? entry.colorName.trim() : "";
+    const variantImage = typeof entry.imageUrl === "string" ? entry.imageUrl.trim() : "";
+    if (!colorName && !variantImage) continue;
+    if (!colorName || !variantImage) {
+      return { ok: false, error: "Każdy wariant koloru musi mieć nazwę i zdjęcie" };
+    }
+    colorVariants.push({ colorName, imageUrl: variantImage });
+  }
+
+  if (hasColorVariants && colorVariants.length === 0) {
+    return { ok: false, error: "Dodaj przynajmniej jeden wariant koloru" };
+  }
+
   return {
     ok: true,
     value: {
@@ -239,6 +275,8 @@ export function validateProductInput(body: unknown): ValidationResult {
       isActive: raw.isActive !== false,
       contents,
       includes,
+      hasColorVariants,
+      colorVariants: hasColorVariants ? colorVariants : [],
     },
   };
 }

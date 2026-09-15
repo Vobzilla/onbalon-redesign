@@ -154,10 +154,21 @@ export default function OrderModal({ isOpen, onClose }: Props) {
             <p className="modal-sub">Wypełnij formularz — odpiszemy w 15 minut.</p>
 
             <div className="order-summary">
-              {items.map(({ product, qty }) => (
-                <div key={product.id} className="summary-line">
-                  <span>{product.name} × {qty}</span>
-                  <span>{product.price * qty} zł</span>
+              {items.map(({ product, qty, selectedColor, selectedAddons }) => (
+                <div key={product.id}>
+                  <div className="summary-line">
+                    <span>
+                      {product.name} × {qty}
+                      {selectedColor ? ` (${selectedColor})` : ''}
+                    </span>
+                    <span>{product.price * qty} zł</span>
+                  </div>
+                  {selectedAddons?.map((addon, i) => (
+                    <div key={i} className="summary-line summary-line-addon">
+                      <span>+ {addon.name}{addon.qty > 1 ? ` × ${addon.qty}` : ''}</span>
+                      <span>{addon.price * addon.qty} zł</span>
+                    </div>
+                  ))}
                 </div>
               ))}
               <div className="summary-total">

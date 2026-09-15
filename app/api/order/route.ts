@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 type OrderItem = {
   product: { name: string; price: number; image: string }
   qty: number
+  selectedColor?: string
+  selectedAddons?: { name: string; price: number; qty: number }[]
 }
 
 export async function POST(req: NextRequest) {
@@ -23,10 +25,14 @@ export async function POST(req: NextRequest) {
   }
 
   const itemLines = (items as OrderItem[])
-    .map(({ product, qty }) => {
+    .map(({ product, qty, selectedColor, selectedAddons }) => {
       const imgUrl = toViewableUrl(product.image)
       const imgLine = imgUrl ? `\n    🖼 ${imgUrl}` : ''
-      return `  • ${product.name} × ${qty} = ${product.price * qty} zł${imgLine}`
+      const colorLine = selectedColor ? `\n    🎨 Kolor: ${selectedColor}` : ''
+      const addonsLine = selectedAddons && selectedAddons.length > 0
+        ? '\n' + selectedAddons.map(a => `    ➕ ${a.name}${a.qty > 1 ? ` × ${a.qty}` : ''} = ${a.price * a.qty} zł`).join('\n')
+        : ''
+      return `  • ${product.name} × ${qty} = ${product.price * qty} zł${colorLine}${addonsLine}${imgLine}`
     })
     .join('\n')
 

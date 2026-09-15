@@ -3,13 +3,20 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react'
 import { Product } from '@/data/products'
 
-type CartItem = { product: Product; qty: number }
+export type SelectedAddon = { name: string; price: number; qty: number }
+type CartItem = {
+  product: Product
+  qty: number
+  selectedColor?: string
+  selectedAddons?: SelectedAddon[]
+}
+type AddItemOptions = { selectedColor?: string; selectedAddons?: SelectedAddon[] }
 
 type CartContextType = {
   items: CartItem[]
   totalCount: number
   totalPrice: number
-  addItem: (product: Product) => void
+  addItem: (product: Product, options?: AddItemOptions) => void
   changeQty: (id: number, delta: number) => void
   clear: () => void
   isOpen: boolean
@@ -43,11 +50,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } catch {}
   }, [items, loaded])
 
-  const addItem = useCallback((product: Product) => {
+  const addItem = useCallback((product: Product, options?: AddItemOptions) => {
     setItems(prev => {
       const existing = prev.find(i => i.product.id === product.id)
-      if (existing) return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + 1 } : i)
-      return [...prev, { product, qty: 1 }]
+      if (existing) {
+        return prev.map(i => i.product.id === product.id
+          ? {
+              ...i,
+              qty: i.qty + 1,
+              selectedColor: options?.selectedColor ?? i.selectedColor,
+              selectedAddons: options?.selectedAddons ?? i.selectedAddons,
+            }
+          : i)
+      }
+      return [...prev, { product, qty: 1, selectedColor: options?.selectedColor, selectedAddons: options?.selectedAddons }]
     })
   }, [])
 
@@ -62,7 +78,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clear = useCallback(() => setItems([]), [])
 
   const totalCount = items.reduce((s, i) => s + i.qty, 0)
-  const totalPrice = items.reduce((s, i) => s + i.product.price * i.qty, 0)
+  const totalPrice = items.reduce((s, i) => {
+    const addonsSum = (i.selectedAddons ?? []).reduce((a, x) => a + x.price * x.qty, 0)
+    return s + i.product.price * i.qty + addonsSum
+  }, 0)
 
   return (
     <CartContext.Provider value={{
