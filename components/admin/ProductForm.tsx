@@ -72,9 +72,29 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
       return;
     }
 
-    if (hasColorVariants && colorVariants.every((row) => !row.colorName.trim() || !row.imageUrl)) {
-      setError("Dodaj przynajmniej jeden wariant koloru (nazwa + zdjęcie)");
-      return;
+    let completeColorVariants: ColorVariantRow[] = [];
+    if (hasColorVariants) {
+      // A row with only a name (upload still in flight / forgotten) or only an
+      // image must block the save — silently dropping it previously meant a
+      // color the admin thought they'd added just vanished with no feedback.
+      const partial = colorVariants.find(
+        (row) => Boolean(row.colorName.trim()) !== Boolean(row.imageUrl)
+      );
+      if (partial) {
+        const label = partial.colorName.trim() || "(bez nazwy)";
+        setError(
+          partial.imageUrl
+            ? `Wariant „${label}" nie ma nazwy — uzupełnij ją lub usuń wariant`
+            : `Wariant „${label}" nie ma zdjęcia — wgraj je lub usuń wariant`
+        );
+        return;
+      }
+
+      completeColorVariants = colorVariants.filter((row) => row.colorName.trim() && row.imageUrl);
+      if (completeColorVariants.length === 0) {
+        setError("Dodaj przynajmniej jeden wariant koloru (nazwa + zdjęcie)");
+        return;
+      }
     }
 
     setSaving(true);
@@ -88,9 +108,7 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
       contents,
       includes,
       hasColorVariants,
-      colorVariants: hasColorVariants
-        ? colorVariants.filter((row) => row.colorName.trim() && row.imageUrl)
-        : [],
+      colorVariants: completeColorVariants,
     };
 
     const res = await fetch(
