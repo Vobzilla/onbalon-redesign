@@ -80,9 +80,15 @@ export default function ProductPageClient({ product, addons = [] }: Props) {
       .map(a => ({ name: a.name, price: a.price, qty: addonQty[a.id] }))
   }
 
+  function selectedColorImageForCart() {
+    if (!hasColors) return undefined
+    return product.colorVariants.find(v => v.colorName === selectedColor)?.imageUrl
+  }
+
   function handleAdd() {
     addItem(product, {
       selectedColor: hasColors ? selectedColor : undefined,
+      selectedColorImage: selectedColorImageForCart(),
       selectedAddons: selectedAddonsForCart(),
     })
     setAdded(true)
@@ -93,6 +99,7 @@ export default function ProductPageClient({ product, addons = [] }: Props) {
     if (!items.find(i => i.product.id === product.id)) {
       addItem(product, {
         selectedColor: hasColors ? selectedColor : undefined,
+        selectedColorImage: selectedColorImageForCart(),
         selectedAddons: selectedAddonsForCart(),
       })
     }

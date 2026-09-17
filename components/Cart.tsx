@@ -26,10 +26,10 @@ export default function Cart({ onCheckout }: Props) {
               <p className="cart-empty-sub">Dodaj produkty z katalogu.</p>
             </div>
           ) : (
-            items.map(({ product, qty, selectedColor, selectedAddons }) => (
+            items.map(({ product, qty, selectedColor, selectedColorImage, selectedAddons }) => (
               <div key={product.id} className="cart-item">
                 <div className="ci-img-wrap">
-                  <Image src={product.image} alt={product.name} fill className="ci-img" sizes="64px" />
+                  <Image src={selectedColorImage ?? product.image} alt={product.name} fill className="ci-img" sizes="64px" />
                 </div>
                 <div className="ci-info">
                   <p className="ci-name">{product.name}</p>

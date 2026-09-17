@@ -8,9 +8,10 @@ type CartItem = {
   product: Product
   qty: number
   selectedColor?: string
+  selectedColorImage?: string
   selectedAddons?: SelectedAddon[]
 }
-type AddItemOptions = { selectedColor?: string; selectedAddons?: SelectedAddon[] }
+type AddItemOptions = { selectedColor?: string; selectedColorImage?: string; selectedAddons?: SelectedAddon[] }
 
 type CartContextType = {
   items: CartItem[]
@@ -59,11 +60,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
               ...i,
               qty: i.qty + 1,
               selectedColor: options?.selectedColor ?? i.selectedColor,
+              selectedColorImage: options?.selectedColorImage ?? i.selectedColorImage,
               selectedAddons: options?.selectedAddons ?? i.selectedAddons,
             }
           : i)
       }
-      return [...prev, { product, qty: 1, selectedColor: options?.selectedColor, selectedAddons: options?.selectedAddons }]
+      return [...prev, {
+        product,
+        qty: 1,
+        selectedColor: options?.selectedColor,
+        selectedColorImage: options?.selectedColorImage,
+        selectedAddons: options?.selectedAddons,
+      }]
     })
   }, [])
 
