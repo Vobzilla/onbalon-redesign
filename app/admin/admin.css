@@ -196,6 +196,16 @@
 }
 .adm-textarea { min-height: 92px; resize: vertical; }
 
+.adm-input-required {
+  border-color: var(--adm-danger);
+  background: var(--adm-danger-soft);
+}
+.adm-input-required::placeholder { color: var(--adm-danger); opacity: .8; }
+.adm-input-required:focus {
+  outline-color: var(--adm-danger-soft);
+  border-color: var(--adm-danger);
+}
+
 .adm-row {
   display: grid;
   grid-template-columns: 1fr 1fr 90px 36px;

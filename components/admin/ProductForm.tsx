@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CATEGORIES, type Category } from "@/data/products";
@@ -51,10 +51,16 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
   // Turning the toggle on with no variants yet would otherwise force the admin
   // to re-upload the photo that's already sitting on the product — carry it
   // over as the first row instead, leaving just the color name to fill in.
+  // Autofocus that row's name field so filling it in isn't an easy-to-miss
+  // extra step — the save is already blocked if it's left empty (see
+  // handleSubmit), but making the field impossible to overlook is the better
+  // fix than relying on the admin to notice an error after the fact.
+  const firstColorNameInputRef = useRef<HTMLInputElement | null>(null);
   function handleColorVariantsToggle(checked: boolean) {
     setHasColorVariants(checked);
     if (checked && colorVariants.length === 0 && image) {
       setColorVariants([{ colorName: "", imageUrl: image }]);
+      requestAnimationFrame(() => firstColorNameInputRef.current?.focus());
     }
   }
 
@@ -259,7 +265,9 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
               </p>
             )}
 
-            {colorVariants.map((row, index) => (
+            {colorVariants.map((row, index) => {
+              const needsName = Boolean(row.imageUrl) && !row.colorName.trim();
+              return (
               <div className="adm-row adm-row-color" key={index}>
                 {row.imageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -273,10 +281,11 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
                   <div className="adm-image-empty" style={{ width: 40, height: 40, flexShrink: 0 }} />
                 )}
                 <input
-                  className="adm-input"
+                  ref={index === 0 ? firstColorNameInputRef : undefined}
+                  className={`adm-input${needsName ? " adm-input-required" : ""}`}
                   value={row.colorName}
                   onChange={(e) => updateColorVariant(index, { colorName: e.target.value })}
-                  placeholder="Różowy"
+                  placeholder={needsName ? "Nazwa koloru (wymagane)" : "Różowy"}
                 />
                 <div className="adm-row-color-actions">
                   <CloudinaryUploadButton onUploaded={(url) => updateColorVariant(index, { imageUrl: url })} />
@@ -290,7 +299,8 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
                   </button>
                 </div>
               </div>
-            ))}
+              );
+            })}
 
             <button
               type="button"
