@@ -1,5 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Baked into the server/client bundles at `next build` time (Next.js
+  // does a literal text replacement of every process.env.X reference —
+  // this is NOT a runtime env lookup). Netlify sets COMMIT_REF/DEPLOY_ID
+  // for the build step, but a deployed serverless/edge function isn't
+  // guaranteed to inherit that build environment at request time, so
+  // reading them directly in route code would be unreliable. Resolving
+  // them here, once, at build time is what /api/version depends on.
+  env: {
+    COMMIT_REF: process.env.COMMIT_REF || '',
+    DEPLOY_ID: process.env.DEPLOY_ID || '',
+    BUILT_AT: new Date().toISOString(),
+  },
+
   images: {
     loader: 'custom',
     loaderFile: './lib/cloudinaryLoader.ts',
