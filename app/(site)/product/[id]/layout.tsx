@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { getActiveProductById } from '@/lib/products'
 
-// Must match page.tsx's segment config — Next.js uses the lowest revalidate
-// value across a route's layout+page, so keep these in sync.
-export const revalidate = 3600
+// Must match page.tsx's segment config — Next.js merges `dynamic` across a
+// route's layout+page (force-dynamic in either one makes the whole route
+// dynamic), but declaring it explicitly here too avoids relying on that
+// inheritance being obvious to a future reader.
+export const dynamic = 'force-dynamic'
 
 type Props = { params: { id: string } }
 
