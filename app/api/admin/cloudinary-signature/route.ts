@@ -1,10 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
+import { requireAdmin } from "@/lib/adminSession";
 
 const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "dnyevlhh7";
 
 // The widget needs the cloud name + API key (both public) to start.
 export async function GET() {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const apiKey = process.env.CLOUDINARY_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: "Cloudinary nie jest skonfigurowany" }, { status: 500 });
@@ -14,6 +18,9 @@ export async function GET() {
 
 // The widget asks the server to sign each upload; only the secret stays here.
 export async function POST(req: NextRequest) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const apiSecret = process.env.CLOUDINARY_API_SECRET;
   if (!apiSecret) {
     return NextResponse.json({ error: "Cloudinary nie jest skonfigurowany" }, { status: 500 });

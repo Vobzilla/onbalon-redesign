@@ -1,9 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { deleteProduct, updateProduct, validateProductInput } from "@/lib/adminProducts";
+import { requireAdmin } from "@/lib/adminSession";
 
 type Params = { params: { id: string } };
 
 export async function PUT(req: NextRequest, { params }: Params) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const id = Number(params.id);
   if (!Number.isInteger(id)) {
     return NextResponse.json({ error: "Nieprawidłowy identyfikator" }, { status: 400 });
@@ -20,6 +24,9 @@ export async function PUT(req: NextRequest, { params }: Params) {
 }
 
 export async function DELETE(_req: NextRequest, { params }: Params) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const id = Number(params.id);
   if (!Number.isInteger(id)) {
     return NextResponse.json({ error: "Nieprawidłowy identyfikator" }, { status: 400 });

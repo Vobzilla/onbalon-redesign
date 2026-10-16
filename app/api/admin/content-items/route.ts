@@ -1,7 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createCommonContentItem, validateCommonContentItemInput } from "@/lib/commonContentItems";
+import { requireAdmin } from "@/lib/adminSession";
 
 export async function POST(req: NextRequest) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const body = await req.json().catch(() => null);
   const parsed = validateCommonContentItemInput(body);
   if (!parsed.ok) {
