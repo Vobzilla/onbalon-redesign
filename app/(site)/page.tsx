@@ -15,11 +15,12 @@ const Reviews    = nextDynamic(() => import("@/components/Reviews"),    { ssr: f
 const FAQ        = nextDynamic(() => import("@/components/FAQ"),        { ssr: false })
 const Footer     = nextDynamic(() => import("@/components/Footer"),     { ssr: false })
 
-// Statically generated and cached; the admin API triggers an on-demand
-// revalidation via revalidateTag('products-list') right after a product is
-// saved/deleted, so this is a fallback for anything that misses that (e.g. a
-// direct DB edit).
-export const revalidate = 3600;
+// No ISR/Full Route Cache for this route — that layer made Netlify's
+// Edge/Durable cache serve an empty 304 (no body) to clients without
+// If-None-Match, so the home page wouldn't open. Same fix as
+// product/[id]/page.tsx. Product data is still cached via unstable_cache
+// (tag 'products-list', see lib/products.ts), so admin edits keep working.
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const products = await getActiveProducts();
