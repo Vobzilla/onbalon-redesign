@@ -18,8 +18,8 @@ const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false
 type Props = { product: ProductPageData; addons?: Addon[] }
 
 export default function ProductPageClient({ product: pageProduct, addons = [] }: Props) {
-  // seoTitle only drives the heading and image alts here; the cart (and so the
-  // order / Telegram message) keeps getting the product exactly as before.
+  // seoTitle is not shown on the page; here it only feeds the image alts. The
+  // cart (and so the order / Telegram message) gets the product as before.
   const { seoTitle, ...product } = pageProduct
   const displayTitle = seoTitle ?? product.name
   const [added, setAdded]         = useState(false)
@@ -199,8 +199,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
             {/* ── Right: details ── */}
             <div className="prod-page-info">
               <p className="prod-page-cat-label">{product.category}</p>
-              <h1 className="prod-page-name">{displayTitle}</h1>
-              {seoTitle && <p className="prod-page-working-name">{product.name}</p>}
+              <h1 className="prod-page-name">{product.name}</h1>
               {details.description && (
                 <p className="prod-page-desc">{details.description}</p>
               )}
