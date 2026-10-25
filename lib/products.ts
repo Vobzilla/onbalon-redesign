@@ -126,3 +126,14 @@ export async function getActiveProductIds(): Promise<number[]> {
   });
   return rows.map((r) => r.id);
 }
+
+// For app/sitemap.ts: id + real last-change time, in catalogue order.
+// ProductWithDetails has no updatedAt (it is passed to client components),
+// so this is a separate, plain query.
+export async function getActiveProductSitemapEntries(): Promise<{ id: number; updatedAt: Date }[]> {
+  return prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" },
+    select: { id: true, updatedAt: true },
+  });
+}
