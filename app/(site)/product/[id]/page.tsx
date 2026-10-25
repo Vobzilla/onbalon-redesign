@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { getActiveProductById } from '@/lib/products'
+import { notFound } from 'next/navigation'
+import { getActiveProductById, parseProductId } from '@/lib/products'
 import { listActiveAddons } from '@/lib/addons'
 import ProductPageClient from '@/components/ProductPageClient'
 
@@ -11,12 +12,17 @@ import ProductPageClient from '@/components/ProductPageClient'
 export const dynamic = 'force-dynamic'
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
+  const id = parseProductId(params.id)
+  if (id === null) notFound()
+
   const [product, addons] = await Promise.all([
-    getActiveProductById(Number(params.id)),
+    getActiveProductById(id),
     listActiveAddons(),
   ])
 
   if (!product) {
+    notFound()
+    // No longer reached: missing products now render app/not-found.tsx with a 404.
     return (
       <div style={{ padding: '140px 24px', textAlign: 'center' }}>
         <h2 style={{ marginBottom: 16 }}>Produkt nie znaleziony</h2>

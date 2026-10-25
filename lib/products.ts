@@ -75,6 +75,16 @@ export const getActiveProducts = cache(async (): Promise<ProductWithDetails[]> =
   return rows.map(toProduct);
 });
 
+// Route param -> product id, or null when it isn't a positive integer that
+// fits Postgres' 32-bit Int (e.g. "abc", "0", "-1", "99999999999"). Without
+// this, such values reached Prisma and the render threw.
+// Number() parsing is kept, so "090" and "9e1" still resolve to 90.
+const MAX_INT4 = 2147483647;
+export function parseProductId(param: string): number | null {
+  const id = Number(param);
+  return Number.isInteger(id) && id > 0 && id <= MAX_INT4 ? id : null;
+}
+
 // Wrapped in unstable_cache (tagged `product-${id}`) because the data comes
 // from Prisma, not fetch() — fetch's own cache tags don't apply here. This is
 // what lets the admin API invalidate a single product's page on Netlify via

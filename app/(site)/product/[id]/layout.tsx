@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getActiveProductById } from '@/lib/products'
+import { getActiveProductById, parseProductId } from '@/lib/products'
 
 // Must match page.tsx's segment config — Next.js merges `dynamic` across a
 // route's layout+page (force-dynamic in either one makes the whole route
@@ -10,11 +10,13 @@ export const dynamic = 'force-dynamic'
 type Props = { params: { id: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await getActiveProductById(Number(params.id))
+  const id = parseProductId(params.id)
+  const product = id === null ? null : await getActiveProductById(id)
 
-  if (!product) {
-    return { title: 'Produkt nie znaleziony — On.balon' }
-  }
+  // page.tsx calls notFound() for this case; Next then resolves the
+  // not-found page's metadata. Calling notFound() here too drops the
+  // <title> from the 404 response in Next 13.5, so return nothing instead.
+  if (!product) return {}
 
   return {
     title: `${product.name} — On.balon · ${product.category} Szczecin`,
@@ -33,7 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductLayout({ params, children }: { params: { id: string }, children: React.ReactNode }) {
-  const product = await getActiveProductById(Number(params.id))
+  const id = parseProductId(params.id)
+  const product = id === null ? null : await getActiveProductById(id)
 
   const jsonLd = product ? {
     '@context': 'https://schema.org',
