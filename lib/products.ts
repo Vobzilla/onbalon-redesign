@@ -93,8 +93,12 @@ export function parseProductId(param: string): number | null {
 // routes. `revalidate: 3600` mirrors the page's own time-based fallback, so
 // that fallback still refreshes actual data instead of re-rendering the same
 // stale cache entry every hour.
+// Product page only: adds the optional SEO title. Kept out of
+// ProductWithDetails so the catalog payload and the cart are unchanged.
+export type ProductPageData = ProductWithDetails & { seoTitle: string | null };
+
 export const getActiveProductById = cache(
-  async (id: number): Promise<ProductWithDetails | null> => {
+  async (id: number): Promise<ProductPageData | null> => {
     const row = await unstable_cache(
       async () =>
         prisma.product.findFirst({
@@ -108,7 +112,8 @@ export const getActiveProductById = cache(
       [`product-${id}`],
       { tags: [`product-${id}`], revalidate: 3600 }
     )();
-    return row ? toProduct(row) : null;
+    // `?? null`: entries cached before the seo_title column existed lack it.
+    return row ? { ...toProduct(row), seoTitle: row.seoTitle?.trim() || null } : null;
   }
 );
 

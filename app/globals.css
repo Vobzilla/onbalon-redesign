@@ -3031,6 +3031,13 @@ a {
   margin-bottom: 14px;
 }
 
+/* Working name under an SEO-title H1, so customers can quote it. */
+.prod-page-working-name {
+  font-size: .8rem;
+  color: var(--text-soft);
+  margin: -8px 0 14px;
+}
+
 .prod-page-desc {
   font-size: .93rem;
   color: var(--text-soft);

@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
-import type { ProductWithDetails } from '@/lib/products'
+import type { ProductPageData } from '@/lib/products'
 import type { Addon } from '@/lib/addons'
 import Header from '@/components/Header'
 import AnnounceBanner from '@/components/AnnounceBanner'
@@ -15,9 +15,13 @@ import Footer from '@/components/Footer'
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
 
-type Props = { product: ProductWithDetails; addons?: Addon[] }
+type Props = { product: ProductPageData; addons?: Addon[] }
 
-export default function ProductPageClient({ product, addons = [] }: Props) {
+export default function ProductPageClient({ product: pageProduct, addons = [] }: Props) {
+  // seoTitle only drives the heading and image alts here; the cart (and so the
+  // order / Telegram message) keeps getting the product exactly as before.
+  const { seoTitle, ...product } = pageProduct
+  const displayTitle = seoTitle ?? product.name
   const [added, setAdded]         = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [lightbox, setLightbox]   = useState(false)
@@ -137,7 +141,7 @@ export default function ProductPageClient({ product, addons = [] }: Props) {
               >
                 <Image
                   src={galleryImages[imgIndex]}
-                  alt={product.name}
+                  alt={displayTitle}
                   fill
                   sizes="(max-width: 768px) 100vw, 560px"
                   priority
@@ -182,7 +186,7 @@ export default function ProductPageClient({ product, addons = [] }: Props) {
                 <div className="lightbox-img-wrap" onClick={e => e.stopPropagation()}>
                   <Image
                     src={galleryImages[imgIndex]}
-                    alt={product.name}
+                    alt={displayTitle}
                     fill
                     sizes="(max-width: 768px) 900px, 1920px"
                     priority
@@ -195,7 +199,8 @@ export default function ProductPageClient({ product, addons = [] }: Props) {
             {/* ── Right: details ── */}
             <div className="prod-page-info">
               <p className="prod-page-cat-label">{product.category}</p>
-              <h1 className="prod-page-name">{product.name}</h1>
+              <h1 className="prod-page-name">{displayTitle}</h1>
+              {seoTitle && <p className="prod-page-working-name">{product.name}</p>}
               {details.description && (
                 <p className="prod-page-desc">{details.description}</p>
               )}

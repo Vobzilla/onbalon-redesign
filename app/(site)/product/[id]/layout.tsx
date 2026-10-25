@@ -9,6 +9,13 @@ export const dynamic = 'force-dynamic'
 
 type Props = { params: { id: string } }
 
+function metaDescription(label: string, price: number): string {
+  return (
+    `${label} z dostawą w Szczecinie. Cena od ${price} zł. ` +
+    `Zestawy balonów z helem — zamawiasz online, potwierdzamy w 15 minut.`
+  )
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = parseProductId(params.id)
   const product = id === null ? null : await getActiveProductById(id)
@@ -18,16 +25,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // <title> from the 404 response in Next 13.5, so return nothing instead.
   if (!product) return {}
 
+  // Without an SEO title every tag stays exactly as it was.
+  const { seoTitle } = product
+  const description = metaDescription(seoTitle ?? product.name, product.price)
+
   return {
-    title: `${product.name} — On.balon · ${product.category} Szczecin`,
-    description:
-      `${product.name} z dostawą w Szczecinie. Cena od ${product.price} zł. ` +
-      `Zestawy balonów z helem — zamawiasz online, potwierdzamy w 15 minut.`,
+    title: seoTitle
+      ? `${seoTitle} | On.balon Szczecin`
+      : `${product.name} — On.balon · ${product.category} Szczecin`,
+    description,
     // From product.id, not params.id, so /product/090 or /product/9e1 point at /product/90.
     alternates: { canonical: `/product/${product.id}` },
     openGraph: {
-      title: `${product.name} — On.balon`,
-      description: `${product.category} · ${product.price} zł · Dostawa Szczecin`,
+      title: seoTitle ? `${seoTitle} | On.balon` : `${product.name} — On.balon`,
+      description: seoTitle ? description : `${product.category} · ${product.price} zł · Dostawa Szczecin`,
       url: `https://onbalon.pl/product/${product.id}`,
       images: [{ url: product.image, alt: product.name }],
     },
@@ -41,9 +52,11 @@ export default async function ProductLayout({ params, children }: { params: { id
   const jsonLd = product ? {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.name,
+    name: product.seoTitle ?? product.name,
     image: product.image,
-    description: `${product.name} z dostawą w Szczecinie.`,
+    description: product.seoTitle
+      ? metaDescription(product.seoTitle, product.price)
+      : `${product.name} z dostawą w Szczecinie.`,
     sku: String(product.id),
     brand: { '@type': 'Brand', name: 'On.balon' },
     offers: {
