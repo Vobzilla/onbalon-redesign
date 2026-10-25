@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "Polityka prywatności — On.balon",
   description: "Polityka prywatności serwisu onbalon.pl",
+  alternates: { canonical: "/polityka-prywatnosci" },
 };
 
 export default function PolitykaPrywatnosci() {

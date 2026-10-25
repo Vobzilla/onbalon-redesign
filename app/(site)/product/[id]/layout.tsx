@@ -21,6 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       `${product.name} z dostawą w Szczecinie. Cena od ${product.price} zł. ` +
       `Zestawy balonów z helem — zamawiasz online, potwierdzamy w 15 minut.`,
+    // From product.id, not params.id, so /product/090 or /product/9e1 point at /product/90.
+    alternates: { canonical: `/product/${product.id}` },
     openGraph: {
       title: `${product.name} — On.balon`,
       description: `${product.category} · ${product.price} zł · Dostawa Szczecin`,

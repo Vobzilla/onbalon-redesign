@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'Regulamin zwrotów i reklamacji — On.balon',
   description:
     'Zasady zwrotów i reklamacji w sklepie On.balon. Informacje o wyjątkach od prawa odstąpienia od umowy dla towarów szybko psujących się.',
+  alternates: { canonical: '/regulamin-zwrotow' },
   openGraph: {
     title: 'Regulamin zwrotów i reklamacji — On.balon',
     url: 'https://onbalon.pl/regulamin-zwrotow',

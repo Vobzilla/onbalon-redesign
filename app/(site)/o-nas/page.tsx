@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "O nas — On.balon · Dekoracje balonowe Szczecin",
   description:
     "Poznaj zespół On.balon. Od 2022 roku tworzymy wyjątkowe dekoracje balonowe w Szczecinie. Bukiety z helem, girlandy, łuki balonowe — z pasją i dbałością o każdy detal.",
+  alternates: { canonical: "/o-nas" },
   openGraph: {
     title: "O nas — On.balon",
     description:
