@@ -9,12 +9,12 @@ import ScrollToTop from "@/components/ScrollToTop";
 import CheckoutFlow from "@/components/CheckoutFlow";
 // Server-rendered (not ssr: false) so the FAQ text is in the HTML crawlers see.
 import FAQ from "@/components/FAQ";
+import Footer from "@/components/Footer";
 import { getActiveProducts } from "@/lib/products";
 
 // Lazy load below-the-fold sections
 const HowItWorks = nextDynamic(() => import("@/components/HowItWorks"), { ssr: false })
 const Reviews    = nextDynamic(() => import("@/components/Reviews"),    { ssr: false })
-const Footer     = nextDynamic(() => import("@/components/Footer"),     { ssr: false })
 
 // No ISR/Full Route Cache for this route — that layer made Netlify's
 // Edge/Durable cache serve an empty 304 (no body) to clients without

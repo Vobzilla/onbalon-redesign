@@ -62,7 +62,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} On.balon · Szczecin</span>
+        <span suppressHydrationWarning>© {new Date().getFullYear()} On.balon · Szczecin</span>
         <span>Dostawa dopasowana do Twojego terminu</span>
       </div>
     </footer>

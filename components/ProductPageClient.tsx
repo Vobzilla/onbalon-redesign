@@ -10,8 +10,8 @@ import type { Addon } from '@/lib/addons'
 import Header from '@/components/Header'
 import AnnounceBanner from '@/components/AnnounceBanner'
 import ScrollToTop from '@/components/ScrollToTop'
+import Footer from '@/components/Footer'
 
-const Footer     = dynamic(() => import('@/components/Footer'),     { ssr: false })
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
 
