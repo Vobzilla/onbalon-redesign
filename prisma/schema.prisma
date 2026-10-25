@@ -33,6 +33,7 @@ model Product {
   sortOrder        Int      @default(0) @map("sort_order")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
+  seoTitle         String?  @map("seo_title")
 
   contents      ProductContent[]
   includes      ProductInclude[]
