@@ -20,14 +20,14 @@ export default function Hero({ products }: Props) {
       <div className="hero-inner">
         {/* ── Left ── */}
         <div className="hero-left">
-          <div className="hero-eyebrow-pill">
+          <h1 className="hero-eyebrow-pill">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            Szczecin · dostawa o każdej porze
-          </div>
-          <h1 className="hero-title">Balony, które</h1>
+            Balony z helem i dekoracje balonowe w Szczecinie
+          </h1>
+          <p className="hero-title">Balony, które</p>
           <span className="hero-title-italic">tworzą magię.</span>
           <p className="hero-desc">
             Piękne dekoracje balonowe z dostawą w Szczecinie. Zamawiasz online —
