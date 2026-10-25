@@ -3,7 +3,7 @@ import { prisma } from "./db";
 import { slugify } from "./slugify";
 import { CATEGORIES, type Category } from "@/data/products";
 import { getProductDetails } from "@/data/productDefaults";
-import { requiresContents } from "./productRules";
+import { requiresContents, SEO_TITLE_MAX } from "./productRules";
 
 // The public catalog (/) and product pages are cached (ISR) for speed — this
 // is what makes admin edits show up in seconds instead of waiting for the
@@ -21,6 +21,9 @@ export function revalidateProduct(id: number): void {
 
 export type ProductInput = {
   name: string;
+  // Optional title for search results; null clears it. undefined (field not
+  // sent) leaves the stored value untouched on update.
+  seoTitle?: string | null;
   category: Category;
   price: number;
   description: string;
@@ -32,7 +35,7 @@ export type ProductInput = {
   colorVariants: { colorName: string; imageUrl: string }[];
 };
 
-export type AdminProduct = ProductInput & { id: number; slug: string };
+export type AdminProduct = ProductInput & { id: number; slug: string; seoTitle: string | null };
 
 const productInclude = {
   contents: { orderBy: { sortOrder: "asc" } },
@@ -43,6 +46,7 @@ const productInclude = {
 type ProductRow = {
   id: number;
   name: string;
+  seoTitle: string | null;
   slug: string;
   category: string;
   price: number;
@@ -59,6 +63,7 @@ function toAdminProduct(row: ProductRow): AdminProduct {
   return {
     id: row.id,
     name: row.name,
+    seoTitle: row.seoTitle,
     slug: row.slug,
     category: row.category as Category,
     price: row.price,
@@ -120,6 +125,7 @@ export async function createProduct(rawInput: ProductInput): Promise<AdminProduc
   const row = await prisma.product.create({
     data: {
       name: input.name,
+      seoTitle: input.seoTitle ?? null,
       slug,
       category: input.category,
       price: input.price,
@@ -158,6 +164,7 @@ export async function updateProduct(id: number, rawInput: ProductInput): Promise
       where: { id },
       data: {
         name: input.name,
+        seoTitle: input.seoTitle, // undefined = not sent, keep the stored value
         slug,
         category: input.category,
         price: input.price,
@@ -197,6 +204,17 @@ export function validateProductInput(body: unknown): ValidationResult {
 
   const name = typeof raw.name === "string" ? raw.name.trim() : "";
   if (!name) return { ok: false, error: "Nazwa jest wymagana" };
+
+  let seoTitle: string | null | undefined;
+  if (raw.seoTitle !== undefined) {
+    seoTitle = typeof raw.seoTitle === "string" ? raw.seoTitle.trim() || null : null;
+    if (seoTitle && seoTitle.length > SEO_TITLE_MAX) {
+      return {
+        ok: false,
+        error: `Tytuł SEO może mieć maksymalnie ${SEO_TITLE_MAX} znaków (teraz: ${seoTitle.length})`,
+      };
+    }
+  }
 
   const category = raw.category;
   if (typeof category !== "string" || !CATEGORIES.includes(category as Category)) {
@@ -268,6 +286,7 @@ export function validateProductInput(body: unknown): ValidationResult {
     ok: true,
     value: {
       name,
+      seoTitle,
       category: category as Category,
       price,
       description,

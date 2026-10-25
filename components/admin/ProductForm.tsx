@@ -8,7 +8,7 @@ import type { AdminProduct } from "@/lib/adminProducts";
 import type { CommonContentItem } from "@/lib/commonContentItems";
 import CloudinaryUploadButton from "./CloudinaryUploadButton";
 import { thumbUrl } from "@/lib/cloudinaryThumb";
-import { requiresContents } from "@/lib/productRules";
+import { requiresContents, SEO_TITLE_MAX } from "@/lib/productRules";
 
 type ContentRow = { name: string; detail: string; qty: number };
 type ColorVariantRow = { colorName: string; imageUrl: string };
@@ -20,6 +20,7 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
   const isEdit = Boolean(product);
 
   const [name, setName] = useState(product?.name ?? "");
+  const [seoTitle, setSeoTitle] = useState(product?.seoTitle ?? "");
   const [category, setCategory] = useState<Category>(product?.category ?? CATEGORIES[0]);
   const [price, setPrice] = useState(product ? String(product.price) : "");
   const [description, setDescription] = useState(product?.description ?? "");
@@ -116,6 +117,7 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
     setSaving(true);
     const payload = {
       name,
+      seoTitle,
       category,
       price: Number(price),
       description,
@@ -163,6 +165,24 @@ export default function ProductForm({ product, commonItems = [] }: Props) {
             onChange={(e) => setName(e.target.value)}
             required
           />
+        </div>
+
+        <div className="adm-field" style={{ marginBottom: 14 }}>
+          <label className="adm-label" htmlFor="seoTitle">Tytuł SEO (opcjonalny)</label>
+          <input
+            id="seoTitle"
+            className="adm-input"
+            value={seoTitle}
+            maxLength={SEO_TITLE_MAX}
+            onChange={(e) => setSeoTitle(e.target.value)}
+          />
+          <p className="adm-hint" style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+            <span>
+              Opis dla Google, np. „Chmurka z cyfrą 1, niebiesko-srebrna”. Max {SEO_TITLE_MAX} znaków.
+              Puste = używana jest nazwa
+            </span>
+            <span style={{ whiteSpace: "nowrap" }}>{seoTitle.length}/{SEO_TITLE_MAX}</span>
+          </p>
         </div>
 
         <div className="adm-grid-2" style={{ marginBottom: 14 }}>

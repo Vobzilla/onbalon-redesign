@@ -6,3 +6,6 @@ import type { Category } from "@/data/products";
 export function requiresContents(category: Category): boolean {
   return category !== "Dekoracje balonowe";
 }
+
+// Max length of the optional per-product SEO title (form maxLength + API check).
+export const SEO_TITLE_MAX = 50;
