@@ -1,6 +1,5 @@
 /** @format */
 
-import nextDynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProductsSection from "@/components/ProductsSection";
@@ -11,10 +10,8 @@ import CheckoutFlow from "@/components/CheckoutFlow";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import Reviews from "@/components/Reviews";
+import HowItWorks from "@/components/HowItWorks";
 import { getActiveProducts } from "@/lib/products";
-
-// Lazy load below-the-fold sections
-const HowItWorks = nextDynamic(() => import("@/components/HowItWorks"), { ssr: false })
 
 // No ISR/Full Route Cache for this route — that layer made Netlify's
 // Edge/Durable cache serve an empty 304 (no body) to clients without
