@@ -16,7 +16,7 @@ const sansita = Sansita({
   weight: ["400", "800", "900"],
   style: ["normal", "italic"],
   subsets: ["latin", "latin-ext"],
-  fallback: ["Arial Black", "sans-serif"],
+  fallback: ["Arial", "sans-serif"],
   display: "swap",
   variable: "--font-serif",
 });
