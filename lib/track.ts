@@ -1,15 +1,16 @@
 // GA4 event helper for the shop funnel. Tracking must never affect an order:
 // track() swallows every error, returns nothing and never waits.
 //
-// gtag.js is loaded with next/script lazyOnload, so window.gtag may not exist
-// yet when an early event fires (e.g. view_item right after an ad click).
-// Pushing such an event straight into dataLayer would put it before the
-// 'config' commands, where gtag drops it — so it is held here and replayed
-// through window.gtag once that exists. If gtag never loads (blocked), the
-// queue is simply given up after a while.
+// Our gtag('config') runs after hydration (next/script afterInteractive), so
+// an early event (e.g. view_item right after an ad click) can fire before it.
+// Pushed into dataLayer before 'config', gtag drops the event — so it is held
+// here and replayed once our inline script has run both configs and set
+// window.__obGtagReady (app/(site)/layout.tsx). window.gtag alone is not
+// enough: the Cloudflare tag gateway defines it earlier. If the flag never
+// appears (gtag blocked), the queue is simply given up after a while.
 
 type Params = Record<string, unknown>
-type GtagWindow = Window & { gtag?: (...args: unknown[]) => void }
+type GtagWindow = Window & { gtag?: (...args: unknown[]) => void; __obGtagReady?: boolean }
 
 const QUEUE_LIMIT = 50
 const FLUSH_INTERVAL_MS = 500
@@ -35,8 +36,9 @@ export function debugMode(): boolean {
 }
 
 function send(name: string, params: Params): boolean {
-  const gtag = (window as GtagWindow).gtag
-  if (typeof gtag !== 'function') return false
+  const w = window as GtagWindow
+  const gtag = w.gtag
+  if (w.__obGtagReady !== true || typeof gtag !== 'function') return false
   gtag('event', name, params)
   return true
 }

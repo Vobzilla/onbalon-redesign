@@ -47,6 +47,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-JY42M73V2Z');
           gtag('config', '${GOOGLE_ADS_ID}');
+          window.__obGtagReady = true;
         `}
       </Script>
 
