@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { track } from '@/lib/track'
+import { track, debugMode } from '@/lib/track'
 
 // One delegated listener instead of an onClick on every contact link (header
 // dropdown, footer, About page, policy pages). Customers who call or message
@@ -19,6 +19,8 @@ function contactMethod(href: string): string | null {
 
 export default function ContactClickTracker() {
   useEffect(() => {
+    debugMode() // remember ?ga_debug=1 from the landing URL for this tab
+
     function onClick(e: MouseEvent) {
       try {
         const link = (e.target as Element | null)?.closest?.('a[href]')

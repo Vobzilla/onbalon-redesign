@@ -20,8 +20,10 @@ let flushTimer: ReturnType<typeof setInterval> | null = null
 let flushStarted = 0
 
 // Lets the funnel be checked in GA4 DebugView: open any page with ?ga_debug=1
-// once; it lasts for the browser tab's session.
-function debugMode(): boolean {
+// once; it lasts for the browser tab's session. Called on every page load
+// (see ContactClickTracker) as well as from track(), so the flag is kept even
+// when the landing page itself sends no event of ours.
+export function debugMode(): boolean {
   try {
     if (new URLSearchParams(window.location.search).get('ga_debug') === '1') {
       sessionStorage.setItem('onbalon_ga_debug', '1')
