@@ -3409,6 +3409,7 @@ a {
 .cookie-btn-accept,
 .cookie-btn-decline {
   min-width: 104px;
+  min-height: 36px;
   padding: 8px 16px;
   border-radius: 50px;
   background: var(--accent-dark);
@@ -3450,6 +3451,8 @@ a {
   .cookie-btn-decline {
     flex: 1;
     min-width: 0;
+    /* 44px: comfortable touch target on phones */
+    min-height: 44px;
     padding: 9px 12px;
   }
 }
