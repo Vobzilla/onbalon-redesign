@@ -31,15 +31,16 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           The library itself doesn't care which id is in its query string; it
           only bootstraps window.gtag/dataLayer, so a single load followed by
           two separate `gtag('config', ...)` calls configures both properties.
-          lazyOnload: not needed for the initial render, and gtag.js/
-          fbevents.js are the bulk of "unused JavaScript"/TBT on PageSpeed.
-          Loading during idle time instead of right after hydration still
-          fires PageView/config, just a beat later. */}
+          afterInteractive, not lazyOnload: config is what stores the gclid
+          from an ad click (_gcl_aw), and with lazyOnload a visitor who taps
+          a product within the first second leaves the landing URL before it
+          runs, so the click is lost. The Cloudflare tag gateway doesn't store
+          it on its own — it waits for this config. */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-JY42M73V2Z"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
-      <Script id="google-tags" strategy="lazyOnload">
+      <Script id="google-tags" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -50,7 +51,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </Script>
 
       {/* Meta Pixel */}
-      <Script id="meta-pixel" strategy="lazyOnload">
+      <Script id="meta-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
