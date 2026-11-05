@@ -21,6 +21,20 @@ export type OrderBody = {
   totalPrice: number
 }
 
+// Short order number shown to the customer and in Telegram, e.g. "OB-7K3FQ".
+// No look-alike characters (0/O, 1/I) so it can be read out over the phone.
+// 32^5 ≈ 33.5M combinations: random is enough without a database, given a
+// handful of orders a week.
+const ORDER_ID_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
+const ORDER_ID_LENGTH = 5
+
+export function generateOrderId(): string {
+  const bytes = new Uint8Array(ORDER_ID_LENGTH)
+  globalThis.crypto.getRandomValues(bytes)
+  // 256 is a multiple of the 32-letter alphabet, so % keeps it uniform.
+  return 'OB-' + Array.from(bytes, b => ORDER_ID_ALPHABET[b % ORDER_ID_ALPHABET.length]).join('')
+}
+
 // Telegram's HTML parse mode rejects the whole message if user text contains a
 // bare <, > or & — so everything that isn't our own markup is escaped.
 export function escapeHtml(value: unknown): string {
@@ -73,7 +87,10 @@ export function parseOrderBody(body: unknown): OrderBody | null {
   }
 }
 
-export function buildOrderMessage({ name, contact, deliveryType, address, date, notes, items, totalPrice }: OrderBody): string {
+export function buildOrderMessage(
+  { name, contact, deliveryType, address, date, notes, items, totalPrice }: OrderBody,
+  orderId: string
+): string {
   const itemLines = items.length === 0
     ? '  • (brak produktów w koszyku — zapytaj klienta)'
     : items
@@ -109,6 +126,7 @@ export function buildOrderMessage({ name, contact, deliveryType, address, date, 
 
   return [
     '🛒 <b>Nowe zamówienie!</b>',
+    `🧾 <b>Nr:</b> ${escapeHtml(orderId)}`,
     '',
     `👤 <b>Klient:</b> ${escapeHtml(name)}`,
     `📱 <b>Kontakt:</b> ${escapeHtml(contact)}`,

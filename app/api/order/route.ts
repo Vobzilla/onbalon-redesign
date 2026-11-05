@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
-import { buildOrderMessage, parseOrderBody } from '@/lib/telegramOrder'
+import { buildOrderMessage, generateOrderId, parseOrderBody } from '@/lib/telegramOrder'
 
 // Every failure answers with the same shape, so the form can always show `message`.
 function fail(status: number, error: string) {
@@ -32,13 +32,15 @@ export async function POST(req: NextRequest) {
     return fail(400, 'invalid_order')
   }
 
+  const orderId = generateOrderId()
+
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: buildOrderMessage(order),
+        text: buildOrderMessage(order, orderId),
         parse_mode: 'HTML',
       }),
     })
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
       return fail(502, 'telegram_failed')
     }
 
-    return NextResponse.json({ ok: true })
+    return NextResponse.json({ ok: true, orderId })
   } catch (err) {
     console.error('Order error: could not send to Telegram', err)
     return fail(502, 'telegram_unreachable')

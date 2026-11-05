@@ -2210,6 +2210,15 @@ a {
   line-height: 1.7;
 }
 
+.modal-success .order-number {
+  margin-bottom: 8px;
+}
+
+.modal-success .order-number strong {
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .prod-grid {

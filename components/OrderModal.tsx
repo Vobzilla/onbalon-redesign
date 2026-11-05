@@ -37,6 +37,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
   const [phoneError, setPhoneError]   = useState('')
   const [dateError, setDateError]     = useState('')
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('delivery')
+  const [orderId, setOrderId]         = useState<string | null>(null)
 
   useEffect(() => {
     if (!isOpen) return
@@ -52,9 +53,13 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
   // Ads/Meta conversions + GA4 purchase, after the order is already accepted.
   // Wrapped on its own so a tracking error can never turn a sent order into
   // an error message for the customer.
-  function trackPurchase(value: number, orderItems: typeof items) {
+  // transaction_id = the server's order number, so GA4 and Google Ads count an
+  // order once even if the event is sent twice (e.g. by both Ads tags on the
+  // page). Without a number the events still go, just without it.
+  function trackPurchase(value: number, orderItems: typeof items, id: string | null) {
     try {
-      track('purchase', { currency: 'PLN', value, items: gaItems(orderItems), delivery_type: deliveryType })
+      const transaction = id ? { transaction_id: id } : {}
+      track('purchase', { currency: 'PLN', value, items: gaItems(orderItems), delivery_type: deliveryType, ...transaction })
       // Meta Pixel — Lead
       if (typeof window.fbq === 'function') {
         window.fbq('track', 'Lead', {
@@ -72,6 +77,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
           send_to: GOOGLE_ADS_CONVERSION,
           value,
           currency: 'PLN',
+          ...transaction,
         })
       }
     } catch {
@@ -133,6 +139,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
     setLoading(true)
     let failCode = 'network'
     let httpStatus: number | undefined
+    let newOrderId: string | null = null
     try {
       const res = await fetch('/api/order', {
         method: 'POST',
@@ -146,6 +153,11 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
         httpStatus = res.status
         throw new Error(typeof data.message === 'string' ? data.message : ORDER_FAILED_MESSAGE)
       }
+      // The order is sent at this point; a missing or unreadable body only
+      // means there is no number to show.
+      const data = await res.json().catch(() => ({}))
+      newOrderId = typeof data.orderId === 'string' ? data.orderId : null
+      setOrderId(newOrderId)
       setSent(true)
       clear()
     } catch (err) {
@@ -158,12 +170,12 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
       setLoading(false)
     }
 
-    if (!testOrder) trackPurchase(orderValue, orderItems)
+    if (!testOrder) trackPurchase(orderValue, orderItems, newOrderId)
   }
 
   function handleClose() {
     onClose()
-    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setDeliveryType('delivery') }, 300)
+    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setDeliveryType('delivery'); setOrderId(null) }, 300)
   }
 
   if (!isOpen) return null
@@ -183,6 +195,9 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
           <div className="modal-success">
             <div className="success-icon">✓</div>
             <h2>Zamówienie przyjęte!</h2>
+            {orderId && (
+              <p className="order-number">Numer: <strong>{orderId}</strong></p>
+            )}
             <p>
               {deliveryType === 'delivery'
                 ? 'Skontaktujemy się z Tobą w ciągu 15 minut, aby potwierdzić szczegóły dostawy.'
