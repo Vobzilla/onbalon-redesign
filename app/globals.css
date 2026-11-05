@@ -3363,10 +3363,31 @@ a {
   box-shadow: var(--shadow-lg);
   width: calc(100% - 48px);
   max-width: 620px;
+  /* Fades/slides in and steps aside (see .is-clearing) without touching
+     layout: the banner is fixed, so nothing on the page moves. */
+  transition: opacity .25s ease, transform .25s ease, visibility 0s linear 0s;
+  /* backwards, not both: once it has played, .is-clearing's transform
+     must win over the animation's end state. */
+  animation: cookie-banner-in .3s ease backwards;
+}
+
+@keyframes cookie-banner-in {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* While a [data-keep-clear] button sits behind it (CookieBanner). */
+.cookie-banner.is-clearing {
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
 }
 
 .cookie-text {
   font-size: .82rem;
+  line-height: 1.4;
   color: var(--text-soft);
   flex: 1;
 }
@@ -3383,8 +3404,12 @@ a {
   flex-shrink: 0;
 }
 
-.cookie-btn-accept {
-  padding: 8px 18px;
+/* «Odrzuć» and «Akceptuję» look exactly the same: same fill, size and
+   weight, so neither choice is pushed. */
+.cookie-btn-accept,
+.cookie-btn-decline {
+  min-width: 104px;
+  padding: 8px 16px;
   border-radius: 50px;
   background: var(--accent-dark);
   color: white;
@@ -3395,32 +3420,36 @@ a {
   transition: background var(--transition);
 }
 
-.cookie-btn-accept:hover {
+.cookie-btn-accept:hover,
+.cookie-btn-decline:hover {
   background: var(--accent);
 }
 
-.cookie-btn-decline {
-  padding: 8px 14px;
-  border-radius: 50px;
-  background: transparent;
-  color: var(--text-soft);
-  border: 1.5px solid var(--border-dark);
-  font-size: .82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-
-.cookie-btn-decline:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 @media (max-width: 600px) {
+  /* Compact on phones (~95px at 390px): text in up to two lines, both
+     buttons side by side in one row. */
   .cookie-banner {
     flex-direction: column;
-    align-items: flex-start;
-    bottom: 16px;
-    width: calc(100% - 32px);
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 14px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+  }
+
+  .cookie-text {
+    font-size: .74rem;
+    line-height: 1.35;
+  }
+
+  .cookie-actions {
+    width: 100%;
+  }
+
+  .cookie-btn-accept,
+  .cookie-btn-decline {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 12px;
   }
 }

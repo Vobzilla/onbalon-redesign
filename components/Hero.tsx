@@ -34,7 +34,7 @@ export default function Hero({ products }: Props) {
             potwierdzamy w 15 minut i dowozimy prosto do Ciebie.
           </p>
           <div className="hero-btns">
-            <a href="#products" className="btn-primary">
+            <a href="#products" className="btn-primary" data-keep-clear>
               <svg
                 width="17"
                 height="17"
@@ -51,7 +51,7 @@ export default function Hero({ products }: Props) {
               </svg>
               Zobacz katalog
             </a>
-            <a href="#" className="btn-secondary" onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('open-contact-dropdown')) }}>
+            <a href="#" className="btn-secondary" data-keep-clear onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('open-contact-dropdown')) }}>
               <svg
                 width="17"
                 height="17"

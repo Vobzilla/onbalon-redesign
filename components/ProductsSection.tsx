@@ -126,6 +126,7 @@ export default function ProductsSection({ products }: Props) {
                     <div className="prod-btns">
                       <span className="detail-btn">Szczegóły →</span>
                       <button
+                        data-keep-clear
                         className={`add-cart-btn${added === product.id ? ' added' : ''}`}
                         onClick={e => handleAdd(e, product)}
                         title="Dodaj do koszyka"
@@ -152,6 +153,7 @@ export default function ProductsSection({ products }: Props) {
           <div className="show-more-wrap">
             <button
               className="show-more-btn"
+              data-keep-clear
               onClick={() => setVisibleCount(v => Math.min(v + PAGE_SIZE, filtered.length))}
             >
               {`Pokaż więcej ↓ (${Math.min(PAGE_SIZE, filtered.length - visibleCount)} z ${filtered.length - visibleCount} pozostałych)`}

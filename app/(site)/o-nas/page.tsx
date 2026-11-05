@@ -180,6 +180,7 @@ export default function AboutPage() {
                 <Link
                   href="/#products"
                   className="btn-primary"
+                  data-keep-clear
                   style={{ display: "inline-flex", marginTop: 24 }}>
                   Zobacz nasze zestawy →
                 </Link>
@@ -219,12 +220,13 @@ export default function AboutPage() {
                 sklepie w Szczecinie.
               </p>
               <div className="about-cta-btns">
-                <Link href="/#products" className="btn-primary">
+                <Link href="/#products" className="btn-primary" data-keep-clear>
                   Przeglądaj ofertę
                 </Link>
                 <a
                   href="tel:+48732977561"
-                  className="btn-secondary">
+                  className="btn-secondary"
+                  data-keep-clear>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>
                   </svg>

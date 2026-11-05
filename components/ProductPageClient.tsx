@@ -323,6 +323,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
               <div className="prod-page-btns">
                 <button
                   className="btn-primary"
+                  data-keep-clear
                   onClick={handleAdd}
                   style={added ? { background: '#2d7a3a', flex: 1 } : { flex: 1 }}
                 >
@@ -340,6 +341,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
                 </button>
                 <button
                   className="btn-secondary"
+                  data-keep-clear
                   style={{ flex: 1 }}
                   onClick={handleOrder}
                 >
