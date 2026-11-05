@@ -95,6 +95,68 @@ export function gaItems(items: CartLike[]) {
   }
 }
 
+// ─── Meta Pixel ─────────────────────────────────────────────────────────────
+// Standard Meta events next to the GA4 ones, with the same guarantees as
+// track(): never throws, returns nothing, never waits. The Pixel is set up in
+// app/(site)/layout.tsx (afterInteractive), so an early event — ViewContent
+// right after hydration — is held until that script has run init and set
+// window.__obFbqReady, and then replayed in order after the PageView. Consent
+// is the Pixel's own: while revoked it doesn't send anything.
+
+type MetaWindow = Window & { fbq?: (...args: unknown[]) => void; __obFbqReady?: boolean }
+
+const metaQueue: [string, Params][] = []
+let metaTimer: ReturnType<typeof setInterval> | null = null
+let metaStarted = 0
+
+function sendMeta(name: string, params: Params): boolean {
+  const w = window as MetaWindow
+  if (w.__obFbqReady !== true || typeof w.fbq !== 'function') return false
+  w.fbq('track', name, params)
+  return true
+}
+
+function flushMeta(): void {
+  try {
+    while (metaQueue.length > 0 && sendMeta(...metaQueue[0])) metaQueue.shift()
+    if (metaQueue.length === 0 || Date.now() - metaStarted > FLUSH_GIVE_UP_MS) {
+      metaQueue.length = 0
+      if (metaTimer) clearInterval(metaTimer)
+      metaTimer = null
+    }
+  } catch {
+    // never let tracking surface an error
+  }
+}
+
+export function trackMeta(name: string, params: Params = {}): void {
+  try {
+    if (typeof window === 'undefined') return
+    if (metaQueue.length === 0 && sendMeta(name, params)) return
+    if (metaQueue.length < QUEUE_LIMIT) metaQueue.push([name, params])
+    if (!metaTimer) {
+      metaStarted = Date.now()
+      metaTimer = setInterval(flushMeta, FLUSH_INTERVAL_MS)
+    }
+  } catch {
+    // never let tracking surface an error
+  }
+}
+
+// Meta's content parameters for the same cart lines gaItems() takes.
+export function metaContents(items: CartLike[]) {
+  try {
+    return {
+      content_ids: items.map(i => String(i.product.id)),
+      contents: items.map(i => ({ id: String(i.product.id), quantity: i.qty })),
+      content_type: 'product',
+      num_items: items.reduce((s, i) => s + i.qty, 0),
+    }
+  } catch {
+    return {}
+  }
+}
+
 // Test orders (name starting with "TEST — ") must not reach GA4, Ads or Meta.
 export const TEST_ORDER_PREFIX = 'TEST — '
 export function isTestOrder(name: string): boolean {

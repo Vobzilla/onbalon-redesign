@@ -1,5 +1,6 @@
 import CookieBanner from "@/components/CookieBanner";
 import ContactClickTracker from "@/components/ContactClickTracker";
+import MetaPageView from "@/components/MetaPageView";
 import Script from "next/script";
 
 // ─── Google Ads ───────────────────────────────────────────────────────────────
@@ -17,6 +18,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       {children}
       <CookieBanner />
       <ContactClickTracker />
+      <MetaPageView />
 
       {/* Google Analytics GA4 + Google Ads — one gtag.js load shared by both.
           The library itself doesn't care which id is in its query string; it
@@ -60,8 +62,17 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           // Only revoke: consent is the Pixel's default, and a 'grant' before
           // init stops the PageView below from being sent at all.
           if (obConsent !== 'accepted') fbq('consent', 'revoke');
+          // autoConfig off: the Pixel's own reading of the product page's
+          // JSON-LD (Product with offers) silently dropped the PageView on
+          // every /product/[id]. Standard events are sent explicitly instead
+          // (lib/track.ts trackMeta).
+          fbq('set', 'autoConfig', false, '4259424894316217');
+          // Its automatic PageView on history changes missed most client-side
+          // navigations; MetaPageView sends one per route change instead.
+          fbq.disablePushState = true;
           fbq('init', '4259424894316217');
           fbq('track', 'PageView');
+          window.__obFbqReady = true;
         `}
       </Script>
     </>

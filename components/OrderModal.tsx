@@ -5,7 +5,7 @@ import { useCart } from '@/context/CartContext'
 import Confetti from './Confetti'
 import { availability } from '@/data/availability'
 import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
-import { track, gaItems, isTestOrder } from '@/lib/track'
+import { track, gaItems, isTestOrder, trackMeta, metaContents } from '@/lib/track'
 
 // ─── Conversion IDs ───────────────────────────────────────────────────────────
 // Після КРОКУ 1: замінити на реальні значення з Google Ads
@@ -42,6 +42,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
   useEffect(() => {
     if (!isOpen) return
     track('begin_checkout', { currency: 'PLN', value: totalPrice, items: gaItems(items), source })
+    trackMeta('InitiateCheckout', { ...metaContents(items), currency: 'PLN', value: totalPrice })
     // Only when the form opens, not on every cart change while it is open.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])

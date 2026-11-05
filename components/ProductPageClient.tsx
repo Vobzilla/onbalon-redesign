@@ -11,7 +11,7 @@ import Header from '@/components/Header'
 import AnnounceBanner from '@/components/AnnounceBanner'
 import ScrollToTop from '@/components/ScrollToTop'
 import Footer from '@/components/Footer'
-import { track, gaItems } from '@/lib/track'
+import { track, gaItems, trackMeta, metaContents } from '@/lib/track'
 
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
@@ -31,6 +31,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
 
   useEffect(() => {
     track('view_item', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]) })
+    trackMeta('ViewContent', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price })
     // Once per product page, not on every re-render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product.id])
@@ -105,6 +106,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
       items: gaItems([{ product, qty: 1, selectedColor: hasColors ? selectedColor : undefined }]),
       source,
     })
+    trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price + addonsValue })
   }
 
   function handleAdd() {
