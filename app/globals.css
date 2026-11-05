@@ -3339,7 +3339,10 @@ a {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 999;
+  /* Above the header (100) and page content, but below the cart (200/201),
+     order modal (300) and lightbox (500): at 999 it covered the cart's and
+     the order form's buttons on mobile until the visitor answered it. */
+  z-index: 150;
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   border: 1px solid var(--border-dark);
