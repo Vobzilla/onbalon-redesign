@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react'
 import { useCart } from '@/context/CartContext'
 import Confetti from './Confetti'
 import { availability } from '@/data/availability'
+import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
 
 // ─── Conversion IDs ───────────────────────────────────────────────────────────
 // Після КРОКУ 1: замінити на реальні значення з Google Ads
@@ -85,7 +86,8 @@ export default function OrderModal({ isOpen, onClose }: Props) {
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
-        throw new Error(data.error || 'Unknown error')
+        console.error('Order failed:', res.status, data.error)
+        throw new Error(typeof data.message === 'string' ? data.message : ORDER_FAILED_MESSAGE)
       }
       setSent(true)
       clear()
@@ -111,7 +113,9 @@ export default function OrderModal({ isOpen, onClose }: Props) {
         })
       }
     } catch (err) {
-      setError(`Błąd: ${err instanceof Error ? err.message : 'Nieznany błąd'}`)
+      // Our own throw above carries a customer-facing message; fetch() rejecting
+      // on a network error (TypeError "Failed to fetch") does not.
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : ORDER_FAILED_MESSAGE)
     } finally {
       setLoading(false)
     }

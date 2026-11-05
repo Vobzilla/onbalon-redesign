@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
+import { buildOrderMessage, parseOrderBody } from '@/lib/telegramOrder'
 
-type OrderItem = {
-  product: { name: string; price: number; image: string }
-  qty: number
-  selectedColor?: string
-  selectedAddons?: { name: string; price: number; qty: number }[]
+// Every failure answers with the same shape, so the form can always show `message`.
+function fail(status: number, error: string) {
+  return NextResponse.json({ ok: false, error, message: ORDER_FAILED_MESSAGE }, { status })
 }
 
 export async function POST(req: NextRequest) {
@@ -12,71 +12,45 @@ export async function POST(req: NextRequest) {
   const chatId = process.env.TELEGRAM_CHAT_ID
 
   if (!token || !chatId) {
-    return NextResponse.json({ error: 'Bot not configured' }, { status: 500 })
+    console.error('Order error: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not set')
+    return fail(500, 'not_configured')
   }
 
-  const { name, contact, address, date, notes, items, totalPrice } = await req.json()
-
-  function toViewableUrl(url?: string): string {
-    if (!url) return ''
-    return url
-      .replace('/upload/', '/upload/f_auto,q_auto:good,w_800/')
-      .replace(/(\.[a-z]+)?$/i, '.jpg')
+  let body: unknown
+  try {
+    body = await req.json()
+  } catch (err) {
+    console.error('Order error: invalid JSON body', err)
+    return fail(400, 'invalid_json')
   }
 
-  const itemLines = (items as OrderItem[])
-    .map(({ product, qty, selectedColor, selectedAddons }) => {
-      const imgUrl = toViewableUrl(product.image)
-      const imgLine = imgUrl ? `\n    🖼 ${imgUrl}` : ''
-      const colorLine = selectedColor ? `\n    🎨 Kolor: ${selectedColor}` : ''
-      const addonsLine = selectedAddons && selectedAddons.length > 0
-        ? '\n' + selectedAddons.map(a => `    ➕ ${a.name}${a.qty > 1 ? ` × ${a.qty}` : ''} = ${a.price * a.qty} zł`).join('\n')
-        : ''
-      return `  • ${product.name} × ${qty} = ${product.price * qty} zł${colorLine}${addonsLine}${imgLine}`
+  const order = parseOrderBody(body)
+  if (!order) {
+    // Field names only — the values are the customer's personal data.
+    const keys = typeof body === 'object' && body !== null ? Object.keys(body) : typeof body
+    console.error('Order error: missing required fields, got', keys)
+    return fail(400, 'invalid_order')
+  }
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: buildOrderMessage(order),
+        parse_mode: 'HTML',
+      }),
     })
-    .join('\n')
 
-  const deliveryDate = new Date(date).toLocaleString('pl-PL', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+    if (!res.ok) {
+      console.error('Telegram error:', res.status, await res.text())
+      return fail(502, 'telegram_failed')
+    }
 
-  const message = [
-    '🛒 <b>Nowe zamówienie!</b>',
-    '',
-    `👤 <b>Klient:</b> ${name}`,
-    `📱 <b>Kontakt:</b> ${contact}`,
-    `📍 <b>Adres:</b> ${address}`,
-    `🕐 <b>Dostawa:</b> ${deliveryDate}`,
-    notes ? `📝 <b>Uwagi:</b> ${notes}` : null,
-    '',
-    '<b>Zamówione produkty:</b>',
-    itemLines,
-    '',
-    `💰 <b>Łącznie: ${totalPrice} zł</b>`,
-  ]
-    .filter(l => l !== null)
-    .join('\n')
-
-  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: message,
-      parse_mode: 'HTML',
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.text()
-    console.error('Telegram error:', err)
-    return NextResponse.json({ error: err }, { status: 500 })
+    return NextResponse.json({ ok: true })
+  } catch (err) {
+    console.error('Order error: could not send to Telegram', err)
+    return fail(502, 'telegram_unreachable')
   }
-
-  return NextResponse.json({ ok: true })
 }
