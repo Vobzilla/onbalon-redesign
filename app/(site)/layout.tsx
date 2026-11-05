@@ -70,6 +70,10 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           // Its automatic PageView on history changes missed most client-side
           // navigations; MetaPageView sends one per route change instead.
           fbq.disablePushState = true;
+          // Without this the Pixel drops every PageView after the first one
+          // on a page load, so MetaPageView's route-change PageViews were lost.
+          // No duplicates: the automatic history PageView is off (above).
+          fbq.allowDuplicatePageViews = true;
           fbq('init', '4259424894316217');
           fbq('track', 'PageView');
           window.__obFbqReady = true;
