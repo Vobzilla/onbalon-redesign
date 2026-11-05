@@ -48,6 +48,8 @@ export default function Footer() {
             <li><a href="/#faq">FAQ</a></li>
             <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
             <li><a href="/regulamin-zwrotow">Zwroty i reklamacje</a></li>
+            {/* Opens the cookie banner again (handled in CookieBanner). */}
+            <li><a href="#cookie-settings" data-cookie-settings>Ustawienia cookies</a></li>
           </ul>
         </div>
 

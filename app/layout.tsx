@@ -66,6 +66,24 @@ export const metadata: Metadata = {
   },
 };
 
+// Google Consent Mode v2 (advanced): tags load, but until the visitor accepts
+// cookies everything is denied and Google only gets cookieless pings. This
+// has to be in dataLayer before our gtag('config') (app/(site)/layout.tsx,
+// afterInteractive), so it is a plain inline script in <head>. The Cloudflare
+// tag gateway inserts its own tag earlier in <head>, but that tag sends
+// nothing until our config runs. A choice saved earlier (cookie_consent in
+// localStorage, written by CookieBanner) is applied right here, so a visitor
+// who already accepted never sends a denied hit. url_passthrough keeps the
+// gclid in links while cookies are denied.
+const CONSENT_DEFAULT_SCRIPT = `(function(){try{
+var w=window;w.dataLayer=w.dataLayer||[];function g(){w.dataLayer.push(arguments)}
+g('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});
+g('set','ads_data_redaction',true);
+g('set','url_passthrough',true);
+var c=null;try{c=w.localStorage.getItem('cookie_consent')}catch(e){}
+if(c==='accepted')g('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: {
@@ -73,6 +91,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl" className={`${sansita.variable} ${newsreader.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULT_SCRIPT }} />
+      </head>
       <body>
         {/* CartProvider stays here (not in (site)) — Header/Footer use useCart()
             on the global not-found page too. Tracking scripts and the cookie

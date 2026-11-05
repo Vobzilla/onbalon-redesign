@@ -51,7 +51,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         `}
       </Script>
 
-      {/* Meta Pixel */}
+      {/* Meta Pixel — consent revoked until the visitor accepts cookies
+          (CookieBanner grants it on «Akceptuję»). */}
       <Script id="meta-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
@@ -62,6 +63,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           t.src=v;s=b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
+          var obConsent = null;
+          try { obConsent = localStorage.getItem('cookie_consent'); } catch (e) {}
+          fbq('consent', obConsent === 'accepted' ? 'grant' : 'revoke');
           fbq('init', '4259424894316217');
           fbq('track', 'PageView');
         `}
