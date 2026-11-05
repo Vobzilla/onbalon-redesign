@@ -11,18 +11,9 @@ const GOOGLE_ADS_ID = "AW-16531023419";
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* Meta Pixel — noscript fallback */}
-      <noscript>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          height="1"
-          width="1"
-          style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=4259424894316217&ev=PageView&noscript=1"
-          alt=""
-        />
-      </noscript>
-
+      {/* No <noscript> Pixel image: React turns an <img> into a
+          <link rel="preload"> in <head>, so every visitor (with JS too, and
+          without consent) sent an extra PageView to Meta. */}
       {children}
       <CookieBanner />
       <ContactClickTracker />
@@ -52,7 +43,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </Script>
 
       {/* Meta Pixel — consent revoked until the visitor accepts cookies
-          (CookieBanner grants it on «Akceptuję»). */}
+          (CookieBanner grants it on «Akceptuję»). Kept as is for a visitor
+          who already accepted. */}
       <Script id="meta-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
@@ -65,7 +57,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           'https://connect.facebook.net/en_US/fbevents.js');
           var obConsent = null;
           try { obConsent = localStorage.getItem('cookie_consent'); } catch (e) {}
-          fbq('consent', obConsent === 'accepted' ? 'grant' : 'revoke');
+          // Only revoke: consent is the Pixel's default, and a 'grant' before
+          // init stops the PageView below from being sent at all.
+          if (obConsent !== 'accepted') fbq('consent', 'revoke');
           fbq('init', '4259424894316217');
           fbq('track', 'PageView');
         `}
