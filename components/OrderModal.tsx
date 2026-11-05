@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useCart } from '@/context/CartContext'
 import Confetti from './Confetti'
 import { availability } from '@/data/availability'
 import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
+import { track, gaItems, isTestOrder } from '@/lib/track'
 
 // ─── Conversion IDs ───────────────────────────────────────────────────────────
 // Після КРОКУ 1: замінити на реальні значення з Google Ads
@@ -17,7 +18,8 @@ declare global {
   }
 }
 
-type Props = { isOpen: boolean; onClose: () => void }
+// `source` only labels the begin_checkout event: where the form was opened from.
+type Props = { isOpen: boolean; onClose: () => void; source?: 'cart' | 'product_page' }
 type DeliveryType = 'delivery' | 'pickup'
 
 function getMinDateTime() {
@@ -27,7 +29,7 @@ function getMinDateTime() {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
-export default function OrderModal({ isOpen, onClose }: Props) {
+export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) {
   const { items, totalPrice, clear } = useCart()
   const [sent, setSent]               = useState(false)
   const [loading, setLoading]         = useState(false)
@@ -35,6 +37,47 @@ export default function OrderModal({ isOpen, onClose }: Props) {
   const [phoneError, setPhoneError]   = useState('')
   const [dateError, setDateError]     = useState('')
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('delivery')
+
+  useEffect(() => {
+    if (!isOpen) return
+    track('begin_checkout', { currency: 'PLN', value: totalPrice, items: gaItems(items), source })
+    // Only when the form opens, not on every cart change while it is open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
+
+  function formError(errorType: string) {
+    track('order_form_error', { error_type: errorType, delivery_type: deliveryType })
+  }
+
+  // Ads/Meta conversions + GA4 purchase, after the order is already accepted.
+  // Wrapped on its own so a tracking error can never turn a sent order into
+  // an error message for the customer.
+  function trackPurchase(value: number, orderItems: typeof items) {
+    try {
+      track('purchase', { currency: 'PLN', value, items: gaItems(orderItems), delivery_type: deliveryType })
+      // Meta Pixel — Lead
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Zamówienie balony',
+          currency: 'PLN',
+          value,
+        })
+      }
+      // Google Ads — conversion
+      if (
+        typeof window.gtag === 'function' &&
+        !GOOGLE_ADS_CONVERSION.includes('REPLACE')
+      ) {
+        window.gtag('event', 'conversion', {
+          send_to: GOOGLE_ADS_CONVERSION,
+          value,
+          currency: 'PLN',
+        })
+      }
+    } catch {
+      // tracking must not affect the order
+    }
+  }
 
   function isDeliveryDateBlocked(dateStr: string): boolean {
     const { deliveryClosedFrom, deliveryClosedTo } = availability
@@ -61,23 +104,35 @@ export default function OrderModal({ isOpen, onClose }: Props) {
     const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/
     if (!name || !contact || !date) {
       setError('Proszę wypełnić wszystkie wymagane pola.')
+      formError('missing_fields')
       return
     }
     if (!phoneRegex.test(contact)) {
       setPhoneError('Nieprawidłowy numer telefonu')
+      formError('phone_invalid')
       return
     }
     if (deliveryType === 'delivery' && !address) {
       setError('Proszę podać adres dostawy.')
+      formError('address_missing')
       return
     }
     if (deliveryType === 'delivery' && isDeliveryDateBlocked(date)) {
       const to = availability.deliveryClosedTo
       setDateError(`Dostawa niedostępna w tym terminie. Wybierz datę po ${to}.`)
+      formError('date_blocked')
       return
     }
 
+    // Test orders ("TEST — …") reach Telegram but no analytics or ad platform.
+    const testOrder = isTestOrder(name)
+    const orderValue = totalPrice
+    const orderItems = items
+    if (!testOrder) track('order_submit', { currency: 'PLN', value: orderValue, delivery_type: deliveryType })
+
     setLoading(true)
+    let failCode = 'network'
+    let httpStatus: number | undefined
     try {
       const res = await fetch('/api/order', {
         method: 'POST',
@@ -87,38 +142,23 @@ export default function OrderModal({ isOpen, onClose }: Props) {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
         console.error('Order failed:', res.status, data.error)
+        failCode = typeof data.error === 'string' ? data.error : `http_${res.status}`
+        httpStatus = res.status
         throw new Error(typeof data.message === 'string' ? data.message : ORDER_FAILED_MESSAGE)
       }
       setSent(true)
       clear()
-
-      // ── Conversion tracking ──────────────────────────────────────────────
-      // Meta Pixel — Lead
-      if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', {
-          content_name: 'Zamówienie balony',
-          currency: 'PLN',
-          value: totalPrice,
-        })
-      }
-      // Google Ads — conversion (активується після КРОКУ 1)
-      if (
-        typeof window.gtag === 'function' &&
-        !GOOGLE_ADS_CONVERSION.includes('REPLACE')
-      ) {
-        window.gtag('event', 'conversion', {
-          send_to: GOOGLE_ADS_CONVERSION,
-          value: totalPrice,
-          currency: 'PLN',
-        })
-      }
     } catch (err) {
       // Our own throw above carries a customer-facing message; fetch() rejecting
       // on a network error (TypeError "Failed to fetch") does not.
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : ORDER_FAILED_MESSAGE)
+      if (!testOrder) track('order_failed', { error_code: failCode, http_status: httpStatus, delivery_type: deliveryType })
+      return
     } finally {
       setLoading(false)
     }
+
+    if (!testOrder) trackPurchase(orderValue, orderItems)
   }
 
   function handleClose() {

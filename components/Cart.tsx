@@ -1,12 +1,21 @@
 'use client'
 
+import { useEffect } from 'react'
 import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
+import { track, gaItems } from '@/lib/track'
 
 type Props = { onCheckout: () => void }
 
 export default function Cart({ onCheckout }: Props) {
   const { items, totalPrice, isOpen, closeCart, changeQty } = useCart()
+
+  useEffect(() => {
+    if (!isOpen) return
+    track('view_cart', { currency: 'PLN', value: totalPrice, items: gaItems(items) })
+    // Only when the cart opens, not on every quantity change while it is open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
 
   return (
     <>

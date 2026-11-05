@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { CATEGORIES, type Category } from '@/data/products'
 import type { ProductWithDetails } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
+import { track, gaItems } from '@/lib/track'
 
 const PILL_CLASS: Record<Category, string> = {
   'Roczek':               'pill-roczek',
@@ -58,6 +59,7 @@ export default function ProductsSection({ products }: Props) {
     e.preventDefault()
     e.stopPropagation()
     addItem(product)
+    track('add_to_cart', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]), source: 'catalog' })
     setAdded(product.id)
     setTimeout(() => setAdded(null), 1400)
   }

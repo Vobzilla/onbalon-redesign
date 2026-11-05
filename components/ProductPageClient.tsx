@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,6 +11,7 @@ import Header from '@/components/Header'
 import AnnounceBanner from '@/components/AnnounceBanner'
 import ScrollToTop from '@/components/ScrollToTop'
 import Footer from '@/components/Footer'
+import { track, gaItems } from '@/lib/track'
 
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
@@ -24,8 +25,15 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
   const displayTitle = seoTitle ?? product.name
   const [added, setAdded]         = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [checkoutSource, setCheckoutSource] = useState<'cart' | 'product_page'>('product_page')
   const [lightbox, setLightbox]   = useState(false)
   const { addItem, items } = useCart()
+
+  useEffect(() => {
+    track('view_item', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]) })
+    // Once per product page, not on every re-render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id])
 
   const hasColors = product.hasColorVariants && product.colorVariants.length > 0
   const galleryImages = hasColors ? product.colorVariants.map(v => v.imageUrl) : [product.image]
@@ -89,12 +97,23 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
     return product.colorVariants.find(v => v.colorName === selectedColor)?.imageUrl
   }
 
+  function trackAddToCart(source: 'product_page' | 'product_page_order') {
+    const addonsValue = selectedAddonsForCart().reduce((s, a) => s + a.price * a.qty, 0)
+    track('add_to_cart', {
+      currency: 'PLN',
+      value: product.price + addonsValue,
+      items: gaItems([{ product, qty: 1, selectedColor: hasColors ? selectedColor : undefined }]),
+      source,
+    })
+  }
+
   function handleAdd() {
     addItem(product, {
       selectedColor: hasColors ? selectedColor : undefined,
       selectedColorImage: selectedColorImageForCart(),
       selectedAddons: selectedAddonsForCart(),
     })
+    trackAddToCart('product_page')
     setAdded(true)
     setTimeout(() => setAdded(false), 1600)
   }
@@ -106,7 +125,9 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
         selectedColorImage: selectedColorImageForCart(),
         selectedAddons: selectedAddonsForCart(),
       })
+      trackAddToCart('product_page_order')
     }
+    setCheckoutSource('product_page')
     setModalOpen(true)
   }
 
@@ -333,8 +354,8 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
       </main>
 
       <Footer />
-      <Cart onCheckout={() => setModalOpen(true)} />
-      <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <Cart onCheckout={() => { setCheckoutSource('cart'); setModalOpen(true) }} />
+      <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source={checkoutSource} />
       <ScrollToTop />
     </>
   )

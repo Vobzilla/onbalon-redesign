@@ -1,4 +1,5 @@
 import CookieBanner from "@/components/CookieBanner";
+import ContactClickTracker from "@/components/ContactClickTracker";
 import Script from "next/script";
 
 // ─── Google Ads ───────────────────────────────────────────────────────────────
@@ -24,6 +25,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
 
       {children}
       <CookieBanner />
+      <ContactClickTracker />
 
       {/* Google Analytics GA4 + Google Ads — one gtag.js load shared by both.
           The library itself doesn't care which id is in its query string; it
