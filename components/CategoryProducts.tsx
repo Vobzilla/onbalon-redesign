@@ -10,10 +10,13 @@ export default function CategoryProducts({ products }: { products: ProductWithDe
 
   return (
     <div className="prod-grid">
-      {products.map(product => (
+      {products.map((product, i) => (
         <ProductCard
           key={product.id}
           product={product}
+          // The first card is the LCP element on a phone; the second sits
+          // next to it on wider screens.
+          priority={i < 2}
           added={added === product.id}
           onAdd={handleAdd}
         />

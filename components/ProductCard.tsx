@@ -47,9 +47,12 @@ type Props = {
   added: boolean
   onAdd: (e: React.MouseEvent, product: ProductWithDetails) => void
   onOpen?: () => void
+  // Load eagerly with high priority (next/image `priority`): for the cards
+  // that are the page's largest image above the fold.
+  priority?: boolean
 }
 
-export default function ProductCard({ product, added, onAdd, onOpen }: Props) {
+export default function ProductCard({ product, added, onAdd, onOpen, priority = false }: Props) {
   return (
     <Link href={`/product/${product.id}`} className="prod-card-link" onClick={onOpen}>
       <article className="prod-card">
@@ -60,6 +63,7 @@ export default function ProductCard({ product, added, onAdd, onOpen }: Props) {
             fill
             sizes="(max-width: 640px) 90vw, (max-width: 1024px) 44vw, 320px"
             className="prod-img"
+            priority={priority}
           />
           <span className={`prod-category-pill ${PILL_CLASS[product.category]}`}>
             {product.category}
