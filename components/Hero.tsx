@@ -1,7 +1,7 @@
 /** @format */
 'use client'
 
-import Image from "next/image";
+import Image, { unstable_getImgProps as getImgProps } from "next/image";
 import Link from "next/link";
 import type { ProductWithDetails } from "@/lib/products";
 
@@ -9,11 +9,27 @@ import type { ProductWithDetails } from "@/lib/products";
 const FEATURED_ID = 26;
 const MINI_IDS = [30, 82];
 
+// 1×1 transparent GIF: what <picture> shows on screens where the card is hidden.
+const BLANK_PIXEL =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
 type Props = { products: ProductWithDetails[] };
 
 export default function Hero({ products }: Props) {
   const featured = products.find((p) => p.id === FEATURED_ID)!;
   const minis = MINI_IDS.map((id) => products.find((p) => p.id === id)!);
+
+  // Same <img> attributes next/image generated before (Cloudinary loader
+  // srcset, fill styles, fetchpriority=high, eager) — minus the preload link,
+  // which can't be limited to wide screens.
+  const { props: heroImg } = getImgProps({
+    src: featured.image,
+    alt: featured.name,
+    fill: true,
+    priority: true,
+    sizes: "600px",
+    style: { objectFit: "cover", objectPosition: "center top" },
+  });
 
   return (
     <section className="hero">
@@ -95,14 +111,17 @@ export default function Hero({ products }: Props) {
           {/* Main card */}
           <Link href={`/product/${featured.id}`} className="hero-main-card">
             <div className="hero-card-img">
-              <Image
-                src={featured.image}
-                alt={featured.name}
-                fill
-                priority
-                sizes="600px"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
-              />
+              {/* The whole card is display:none up to 900px (globals.css), but
+                  next/image `priority` still preloaded 148 KB there. <picture>
+                  lets the browser skip it by media query: on narrow screens it
+                  picks the inline 1×1 source (no request); wider screens get
+                  the same srcset as before with high priority. Plain markup,
+                  same on server and client — no hydration mismatch. */}
+              <picture>
+                <source media="(max-width: 900px)" srcSet={BLANK_PIXEL} />
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
+                <img {...heroImg} />
+              </picture>
               <div className="hero-bestseller">⭐ Bestseller sezonu</div>
             </div>
             <div className="hero-card-body">
