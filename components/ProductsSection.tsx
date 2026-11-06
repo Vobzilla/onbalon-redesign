@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { CATEGORIES, type Category } from '@/data/products'
 import type { ProductWithDetails } from '@/lib/products'
 import Link from 'next/link'
@@ -8,6 +8,21 @@ import ProductCard, { useAddToCart } from '@/components/ProductCard'
 import { categoryPagePath } from '@/lib/categories'
 
 const PAGE_SIZE = 6
+
+// «Wszystkie»: one product from each category in turn, in tab order (CATEGORIES),
+// round and round; within a category the products keep their sortOrder, and a
+// category that has run out is skipped. Deterministic (no randomness), so the
+// server render and the browser agree. Category tabs keep the plain order.
+function mixByCategory(products: ProductWithDetails[]): ProductWithDetails[] {
+  const queues = CATEGORIES.map(cat => products.filter(p => p.category === cat))
+  const known = new Set<string>(CATEGORIES)
+  const mixed: ProductWithDetails[] = []
+  for (let i = 0; queues.some(q => i < q.length); i++) {
+    for (const q of queues) if (i < q.length) mixed.push(q[i])
+  }
+  // Anything with a category that has no tab stays at the end, in order.
+  return mixed.concat(products.filter(p => !known.has(p.category)))
+}
 
 type Props = { products: ProductWithDetails[] }
 
@@ -39,7 +54,8 @@ export default function ProductsSection({ products }: Props) {
     sessionStorage.setItem('shop_count', String(visibleCount))
   }
 
-  const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
+  const mixed    = useMemo(() => mixByCategory(products), [products])
+  const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : mixed
   const visible  = filtered.slice(0, visibleCount)
 
   function handleFilter(cat: Category | null) {
