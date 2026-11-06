@@ -12,9 +12,13 @@ import "./globals.css";
 // adjustFontFallback (on by default) computes a size-adjusted fallback
 // face from the metrics below, so the fallback→webfont swap doesn't
 // change text width/height and doesn't shift layout.
+// Only what the site renders: no italic anywhere (every <em> is set to
+// font-style: normal — Sansita's own design is what looks slanted) and no
+// font-weight 900. Weights 500–700 resolve to 800, as they did with 900 in
+// the set. Dropping the rest removes ~330 KB of preloaded fonts.
 const sansita = Sansita({
-  weight: ["400", "800", "900"],
-  style: ["normal", "italic"],
+  weight: ["400", "800"],
+  style: ["normal"],
   subsets: ["latin", "latin-ext"],
   fallback: ["Arial", "sans-serif"],
   display: "swap",
@@ -24,7 +28,7 @@ const sansita = Sansita({
 const newsreader = Newsreader({
   weight: "variable",
   axes: ["opsz"],
-  style: ["normal", "italic"],
+  style: ["normal"],
   subsets: ["latin", "latin-ext"],
   fallback: ["Georgia", "serif"],
   display: "swap",
