@@ -1,23 +1,9 @@
 'use client'
 
-import Image from 'next/image'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { CATEGORIES, type Category } from '@/data/products'
 import type { ProductWithDetails } from '@/lib/products'
-import { useCart } from '@/context/CartContext'
-import { track, gaItems, trackMeta, metaContents } from '@/lib/track'
-
-const PILL_CLASS: Record<Category, string> = {
-  'Roczek':               'pill-roczek',
-  '18-tka':               'pill-18-ka',
-  'Dla niej':             'pill-dla-niej',
-  'Dla niego':            'pill-dla-niego',
-  'Dla dziecka':          'pill-dziecka',
-  'Dekoracje balonowe':   'pill-dekoracje',
-  'Hello Baby':           'pill-hello-baby',
-  'Małe Zestawy':         'pill-male-zestawy',
-}
+import ProductCard, { useAddToCart } from '@/components/ProductCard'
 
 const PAGE_SIZE = 6
 
@@ -26,8 +12,7 @@ type Props = { products: ProductWithDetails[] }
 export default function ProductsSection({ products }: Props) {
   const [activeFilter, setActiveFilter] = useState<Category | null>(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
-  const [added, setAdded]               = useState<number | null>(null)
-  const { addItem } = useCart()
+  const { added, handleAdd } = useAddToCart('catalog')
 
   useEffect(() => {
     const savedScroll = sessionStorage.getItem('shop_scroll')
@@ -54,16 +39,6 @@ export default function ProductsSection({ products }: Props) {
 
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : products
   const visible  = filtered.slice(0, visibleCount)
-
-  function handleAdd(e: React.MouseEvent, product: ProductWithDetails) {
-    e.preventDefault()
-    e.stopPropagation()
-    addItem(product)
-    track('add_to_cart', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]), source: 'catalog' })
-    trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price })
-    setAdded(product.id)
-    setTimeout(() => setAdded(null), 1400)
-  }
 
   function handleFilter(cat: Category | null) {
     setActiveFilter(cat)
@@ -102,47 +77,13 @@ export default function ProductsSection({ products }: Props) {
 
         <div className="prod-grid">
           {visible.map(product => (
-            <Link key={product.id} href={`/product/${product.id}`} className="prod-card-link" onClick={saveScrollState}>
-              <article className="prod-card">
-                <div className="prod-img-wrap">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 44vw, 320px"
-                    className="prod-img"
-                  />
-                  <span className={`prod-category-pill ${PILL_CLASS[product.category]}`}>
-                    {product.category}
-                  </span>
-                </div>
-                <div className="prod-body">
-                  <p className="prod-cat-label">{product.category}</p>
-                  <h3 className="prod-name">{product.name}</h3>
-                  <div className="prod-foot">
-                    <span className="prod-price">
-                      {product.category === 'Dekoracje balonowe' && <small>od </small>}
-                      {product.price} <small>zł</small>
-                    </span>
-                    <div className="prod-btns">
-                      <span className="detail-btn">Szczegóły →</span>
-                      <button
-                        data-keep-clear
-                        className={`add-cart-btn${added === product.id ? ' added' : ''}`}
-                        onClick={e => handleAdd(e, product)}
-                        title="Dodaj do koszyka"
-                        aria-label="Dodaj do koszyka"
-                      >
-                        {added === product.id
-                          ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                          : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                        }
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </Link>
+            <ProductCard
+              key={product.id}
+              product={product}
+              added={added === product.id}
+              onAdd={handleAdd}
+              onOpen={saveScrollState}
+            />
           ))}
         </div>
 
