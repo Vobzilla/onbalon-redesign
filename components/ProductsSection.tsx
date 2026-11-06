@@ -57,6 +57,7 @@ export default function ProductsSection({ products }: Props) {
   const mixed    = useMemo(() => mixByCategory(products), [products])
   const filtered = activeFilter ? products.filter(p => p.category === activeFilter) : mixed
   const visible  = filtered.slice(0, visibleCount)
+  const categoryPath = activeFilter ? categoryPagePath(activeFilter) : null
 
   function handleFilter(cat: Category | null) {
     setActiveFilter(cat)
@@ -105,20 +106,20 @@ export default function ProductsSection({ products }: Props) {
           ))}
         </div>
 
-        {/* A category tab links to that category's own page; «Wszystkie» doesn't. */}
-        {activeFilter && categoryPagePath(activeFilter) && (
-          <p className="cat-all-link-wrap">
-            <Link href={categoryPagePath(activeFilter)!} className="cat-all-link">
-              Zobacz wszystkie zestawy: {activeFilter} →
-            </Link>
-          </p>
-        )}
-
         {filtered.length === 0 && (
           <p className="no-results">Brak produktów w tej kategorii.</p>
         )}
 
-        {visibleCount < filtered.length && (
+        {/* On a category tab the button goes to that category's page instead
+            of loading more here — even when every product is already shown.
+            «Wszystkie» keeps «Pokaż więcej». */}
+        {categoryPath ? (
+          <div className="show-more-wrap">
+            <Link href={categoryPath} className="show-more-btn" data-keep-clear>
+              {`Zobacz wszystkie: ${activeFilter} (${filtered.length}) →`}
+            </Link>
+          </div>
+        ) : visibleCount < filtered.length && (
           <div className="show-more-wrap">
             <button
               className="show-more-btn"

@@ -1185,6 +1185,12 @@ a {
   transition: all var(--transition);
 }
 
+/* «Zobacz wszystkie: … →» on a category tab is a link styled like the button */
+a.show-more-btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
 .show-more-btn:hover {
   background: white;
   border-color: var(--accent);
@@ -3340,24 +3346,6 @@ a {
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
-}
-
-/* Home catalog: link under the grid when a category tab is selected */
-.cat-all-link-wrap {
-  margin-top: 28px;
-  text-align: center;
-}
-
-.cat-all-link {
-  color: var(--accent-dark);
-  font-weight: 700;
-  font-size: .95rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.cat-all-link:hover {
-  color: var(--accent);
 }
 
 /* ─── Category pages (/balony-na-roczek …) ───────────────────────────────── */
