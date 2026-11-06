@@ -1,7 +1,7 @@
 'use client'
 
 import type { ProductWithDetails } from '@/lib/products'
-import ProductCard, { useAddToCart } from '@/components/ProductCard'
+import ProductCard, { useAddToCart, CARD_SIZES_CATEGORY } from '@/components/ProductCard'
 
 // The product grid of a category page: every active product of the category,
 // same cards and cart button as the home catalog, tracked with source=category.
@@ -19,6 +19,7 @@ export default function CategoryProducts({ products }: { products: ProductWithDe
           priority={i < 2}
           added={added === product.id}
           onAdd={handleAdd}
+          sizes={CARD_SIZES_CATEGORY}
         />
       ))}
     </div>

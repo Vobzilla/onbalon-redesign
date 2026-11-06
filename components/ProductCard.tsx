@@ -23,6 +23,18 @@ const PILL_CLASS: Record<Category, string> = {
   'Małe Zestawy':         'pill-male-zestawy',
 }
 
+// `sizes` for the card photo = the card's real width at each breakpoint of
+// .prod-grid (1 column up to 580px, 2 up to 1100px, 3 above; the container
+// stops growing at ~380px per card), measured on the live pages and rounded
+// slightly up so photos never get blurry. The home catalog and the category
+// pages have different side padding, hence two strings.
+export const CARD_SIZES_HOME =
+  '(max-width: 580px) calc(100vw - 96px), (max-width: 900px) calc((100vw - 80px) / 2), ' +
+  '(max-width: 1100px) calc((100vw - 200px) / 2), (max-width: 1350px) calc((100vw - 214px) / 3), 380px'
+export const CARD_SIZES_CATEGORY =
+  '(max-width: 580px) calc(100vw - 48px), (max-width: 900px) calc((100vw - 60px) / 2), ' +
+  '(max-width: 1100px) calc((100vw - 110px) / 2), (max-width: 1300px) calc((100vw - 140px) / 3), 380px'
+
 // Adds a product to the cart and reports add_to_cart (GA4) / AddToCart (Meta)
 // with the given source; `added` drives the check mark on the button.
 export function useAddToCart(source: 'catalog' | 'category') {
@@ -50,9 +62,10 @@ type Props = {
   // Load eagerly with high priority (next/image `priority`): for the cards
   // that are the page's largest image above the fold.
   priority?: boolean
+  sizes: string
 }
 
-export default function ProductCard({ product, added, onAdd, onOpen, priority = false }: Props) {
+export default function ProductCard({ product, added, onAdd, onOpen, priority = false, sizes }: Props) {
   return (
     <Link href={`/product/${product.id}`} className="prod-card-link" onClick={onOpen}>
       <article className="prod-card">
@@ -61,7 +74,7 @@ export default function ProductCard({ product, added, onAdd, onOpen, priority = 
             src={product.image}
             alt={product.name}
             fill
-            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 44vw, 320px"
+            sizes={sizes}
             className="prod-img"
             priority={priority}
           />

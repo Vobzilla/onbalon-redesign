@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { CATEGORIES, type Category } from '@/data/products'
 import type { ProductWithDetails } from '@/lib/products'
 import Link from 'next/link'
-import ProductCard, { useAddToCart } from '@/components/ProductCard'
+import ProductCard, { useAddToCart, CARD_SIZES_HOME } from '@/components/ProductCard'
 import { categoryPagePath } from '@/lib/categories'
 
 const PAGE_SIZE = 6
@@ -102,6 +102,7 @@ export default function ProductsSection({ products }: Props) {
               added={added === product.id}
               onAdd={handleAdd}
               onOpen={saveScrollState}
+              sizes={CARD_SIZES_HOME}
             />
           ))}
         </div>
