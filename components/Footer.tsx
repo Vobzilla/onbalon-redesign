@@ -1,4 +1,6 @@
 import Image from 'next/image'
+// Same file as the header logo (see Header.tsx).
+import logo from '@/assets/logo.webp'
 
 export default function Footer() {
   return (
@@ -7,12 +9,12 @@ export default function Footer() {
         <div className="footer-brand">
           <a href="/" className="footer-logo-img-wrap">
             <Image
-              src="/logo-small.webp"
+              src={logo}
               alt="on.balon logo"
               width={98}
               height={52}
               className="footer-logo-img"
-              sizes="98px"
+              unoptimized
             />
           </a>
           <div className="footer-socials">

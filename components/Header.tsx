@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+// 200×107 WebP (2× the largest size it is shown at), ~9 KB. A static import
+// gets a hashed /_next/static/media URL with a one-year immutable cache;
+// unoptimized because the Cloudinary loader only resizes Cloudinary URLs.
+import logo from '@/assets/logo.webp'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
 
@@ -67,12 +71,12 @@ export default function Header() {
       <div className="header-inner">
         <Link href="/" className="logo">
           <Image
-            src="/logo-small.webp"
+            src={logo}
             alt="on.balon logo"
             width={90}
             height={48}
             className="logo-img"
-            sizes="90px"
+            unoptimized
             priority
           />
         </Link>
