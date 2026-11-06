@@ -2508,6 +2508,14 @@ a.show-more-btn {
   text-decoration: underline;
 }
 
+/* Paragraphs in the same type as the list items */
+.privacy-page p {
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--text-mid);
+  margin-bottom: 12px;
+}
+
 /* ─── About Page ─────────────────────────────────────────────────────────── */
 .about-hero {
   padding: 48px 0 32px;
