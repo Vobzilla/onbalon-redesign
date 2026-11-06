@@ -100,11 +100,6 @@ export default async function CategoryPage({ slug }: { slug: string }) {
 
           <CategoryProducts products={products} />
 
-          <section className="cat-about">
-            <h2 className="cat-about-title">O kategorii</h2>
-            <p>{page.body}</p>
-          </section>
-
           <section className="about-cta-box cat-cta">
             <h2 className="about-cta-title">Nie znalazłeś idealnego zestawu?</h2>
             <div className="about-cta-btns">
