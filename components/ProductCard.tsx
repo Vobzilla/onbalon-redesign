@@ -34,7 +34,7 @@ export function useAddToCart(source: 'catalog' | 'category') {
     e.stopPropagation()
     addItem(product)
     track('add_to_cart', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]), source })
-    trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price })
+    trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price, source })
     setAdded(product.id)
     setTimeout(() => setAdded(null), 1400)
   }

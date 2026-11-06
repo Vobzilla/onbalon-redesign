@@ -3342,6 +3342,24 @@ a {
   flex-wrap: wrap;
 }
 
+/* Home catalog: link under the grid when a category tab is selected */
+.cat-all-link-wrap {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.cat-all-link {
+  color: var(--accent-dark);
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cat-all-link:hover {
+  color: var(--accent);
+}
+
 /* ─── Category pages (/balony-na-roczek …) ───────────────────────────────── */
 .cat-page {
   padding: 36px 0 32px;

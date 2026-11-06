@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react'
 import { CATEGORIES, type Category } from '@/data/products'
 import type { ProductWithDetails } from '@/lib/products'
+import Link from 'next/link'
 import ProductCard, { useAddToCart } from '@/components/ProductCard'
+import { categoryPagePath } from '@/lib/categories'
 
 const PAGE_SIZE = 6
 
@@ -86,6 +88,15 @@ export default function ProductsSection({ products }: Props) {
             />
           ))}
         </div>
+
+        {/* A category tab links to that category's own page; «Wszystkie» doesn't. */}
+        {activeFilter && categoryPagePath(activeFilter) && (
+          <p className="cat-all-link-wrap">
+            <Link href={categoryPagePath(activeFilter)!} className="cat-all-link">
+              Zobacz wszystkie zestawy: {activeFilter} →
+            </Link>
+          </p>
+        )}
 
         {filtered.length === 0 && (
           <p className="no-results">Brak produktów w tej kategorii.</p>

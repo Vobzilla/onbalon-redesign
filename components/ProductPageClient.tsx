@@ -12,6 +12,7 @@ import AnnounceBanner from '@/components/AnnounceBanner'
 import ScrollToTop from '@/components/ScrollToTop'
 import Footer from '@/components/Footer'
 import { track, gaItems, trackMeta, metaContents } from '@/lib/track'
+import { categoryPagePath } from '@/lib/categories'
 
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
@@ -146,7 +147,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
           <nav className="breadcrumb">
             <Link href="/">Strona główna</Link>
             <span className="breadcrumb-sep">›</span>
-            <Link href="/#products">Katalog</Link>
+            <Link href={categoryPagePath(product.category) ?? '/#products'}>{product.category}</Link>
             <span className="breadcrumb-sep">›</span>
             <span>{product.name}</span>
           </nav>

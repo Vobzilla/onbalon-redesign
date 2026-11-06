@@ -31,12 +31,14 @@ export default function Footer() {
         <div className="footer-col">
           <p className="footer-col-title">Okazje</p>
           <ul>
-            <li><a href="/#products">Roczek</a></li>
-            <li><a href="/#products">18-tka</a></li>
-            <li><a href="/#products">Urodziny</a></li>
-            <li><a href="/#products">Dla niej</a></li>
-            <li><a href="/#products">Dla niego</a></li>
-            <li><a href="/#products">Hello Baby</a></li>
+            <li><a href="/balony-na-roczek">Roczek</a></li>
+            <li><a href="/balony-na-18">18-tka</a></li>
+            <li><a href="/balony-dla-dziecka">Urodziny</a></li>
+            <li><a href="/balony-dla-niej">Dla niej</a></li>
+            <li><a href="/balony-dla-niego">Dla niego</a></li>
+            <li><a href="/balony-na-powitanie-dziecka">Hello Baby</a></li>
+            <li><a href="/dekoracje-balonowe">Dekoracje balonowe</a></li>
+            <li><a href="/male-zestawy-balonow">Małe Zestawy</a></li>
           </ul>
         </div>
 
