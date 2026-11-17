@@ -9,6 +9,7 @@ import CategoryProducts from '@/components/CategoryProducts'
 import ContactButton from '@/components/ContactButton'
 import { CATEGORY_PAGES, getCategoryPage, type CategoryPage as CategoryPageData } from '@/lib/categories'
 import { getActiveProducts } from '@/lib/products'
+import { listCartAddons } from '@/lib/addons'
 
 // Shared by the 8 category routes (app/(site)/balony-na-roczek/page.tsx …).
 // Each route is its own folder rather than one dynamic [slug] segment: in
@@ -54,7 +55,8 @@ export function categoryMetadata(slug: string): Metadata {
 export default async function CategoryPage({ slug }: { slug: string }) {
   const page = pageFor(slug)
   // Same order as the home catalog (sortOrder), filtered to this category.
-  const products = (await getActiveProducts()).filter(p => p.category === page.category)
+  const [allProducts, addons] = await Promise.all([getActiveProducts(), listCartAddons()])
+  const products = allProducts.filter(p => p.category === page.category)
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -110,7 +112,7 @@ export default async function CategoryPage({ slug }: { slug: string }) {
       </main>
 
       <Footer />
-      <CheckoutFlow />
+      <CheckoutFlow addons={addons} />
       <ScrollToTop />
     </>
   )

@@ -63,35 +63,10 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
     setImgIndex(index)
   }
 
-  const [addonQty, setAddonQty] = useState<Record<number, number>>({})
-  function toggleAddon(id: number) {
-    setAddonQty(q => {
-      const next = { ...q }
-      if (next[id]) delete next[id]; else next[id] = 1
-      return next
-    })
-  }
-  function changeAddonQty(id: number, delta: number) {
-    setAddonQty(q => {
-      const current = q[id] ?? 0
-      const value = Math.max(0, current + delta)
-      const next = { ...q }
-      if (value === 0) delete next[id]; else next[id] = value
-      return next
-    })
-  }
-  const addonsTotal = addons.reduce((sum, a) => sum + (addonQty[a.id] ?? 0) * a.price, 0)
-
   const details = { description: product.description, contents: product.contents, includes: product.includes }
   const isDekoracja =
     product.category === 'Dekoracje balonowe' ||
     /^(Girlanda|Dekoracja|Brama|Kolumna|Ściana|Łuk|Arch)/.test(product.name)
-
-  function selectedAddonsForCart() {
-    return addons
-      .filter(a => addonQty[a.id] > 0)
-      .map(a => ({ name: a.name, price: a.price, qty: addonQty[a.id] }))
-  }
 
   function selectedColorImageForCart() {
     if (!hasColors) return undefined
@@ -99,23 +74,21 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
   }
 
   function trackAddToCart(source: 'product_page') {
-    const addonsValue = selectedAddonsForCart().reduce((s, a) => s + a.price * a.qty, 0)
     track('add_to_cart', {
       currency: 'PLN',
-      value: product.price + addonsValue,
+      value: product.price,
       items: gaItems([{ product, qty: 1, selectedColor: hasColors ? selectedColor : undefined }]),
       source,
     })
-    trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price + addonsValue })
+    trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price })
   }
 
   function handleAdd() {
     const color = hasColors ? selectedColor : undefined
     const colorImage = selectedColorImageForCart()
-    const selectedAddons = selectedAddonsForCart()
-    addItem(product, { selectedColor: color, selectedColorImage: colorImage, selectedAddons })
+    addItem(product, { selectedColor: color, selectedColorImage: colorImage })
     trackAddToCart('product_page')
-    showAddedToCart({ name: product.name, image: colorImage ?? product.image, price: product.price, color, addons: selectedAddons })
+    showAddedToCart({ name: product.name, image: colorImage ?? product.image, price: product.price, color })
   }
 
   return (
@@ -271,41 +244,6 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
                 ))}
               </ul>
 
-              {/* Add-ons */}
-              {addons.length > 0 && (
-                <>
-                  <p className="prod-page-section-label">Dodaj do zamówienia</p>
-                  <div className="prod-addons">
-                    {addons.map(addon => {
-                      const qty = addonQty[addon.id] ?? 0
-                      return (
-                        <div className="prod-addon-row" key={addon.id}>
-                          <label className="prod-addon-check">
-                            <input
-                              type="checkbox"
-                              checked={qty > 0}
-                              onChange={() => toggleAddon(addon.id)}
-                            />
-                            <span className="prod-addon-name">{addon.name}</span>
-                          </label>
-                          <span className="prod-addon-price">{addon.price} zł</span>
-                          {qty > 0 && (
-                            <div className="prod-addon-qty">
-                              <button type="button" onClick={() => changeAddonQty(addon.id, -1)} aria-label="Mniej">−</button>
-                              <span>{qty}</span>
-                              <button type="button" onClick={() => changeAddonQty(addon.id, 1)} aria-label="Więcej">+</button>
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                  {addonsTotal > 0 && (
-                    <p className="prod-addons-total">Dodatki: <strong>{addonsTotal} zł</strong></p>
-                  )}
-                </>
-              )}
-
               {/* Buttons */}
               <div className="prod-page-btns">
                 <button
@@ -325,7 +263,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
       </main>
 
       <Footer />
-      <Cart onCheckout={() => setModalOpen(true)} />
+      <Cart addons={addons} onCheckout={() => setModalOpen(true)} />
       <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source="cart" />
       <AddedToCartSheet />
       <ScrollToTop />

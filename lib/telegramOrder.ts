@@ -3,11 +3,15 @@
 
 import { isEarlierThanAllowed } from './orderTime'
 
+export type OrderAddon = { name: string; price: number; qty: number }
+
 export type OrderItem = {
   product: { name: string; price: number; image: string }
   qty: number
   selectedColor?: string
-  selectedAddons?: { name: string; price: number; qty: number }[]
+  // Old cart format only (a tab opened before add-ons moved to the cart):
+  // add-ons inside the product. parseOrderBody moves them to `addons`.
+  selectedAddons?: OrderAddon[]
 }
 
 export type OrderBody = {
@@ -23,7 +27,26 @@ export type OrderBody = {
   date: string
   notes?: string
   items: OrderItem[]
+  // Add-ons as their own lines, not tied to a product.
+  addons: OrderAddon[]
   totalPrice: number
+}
+
+function toAddons(list: unknown): OrderAddon[] {
+  if (!Array.isArray(list)) return []
+  return list.flatMap(a => {
+    if (typeof a !== 'object' || a === null) return []
+    const { name, price, qty } = a as Record<string, unknown>
+    if (typeof name !== 'string' || !name.trim()) return []
+    return [{ name: name.trim(), price: Number(price), qty: Number(qty) }]
+  })
+}
+
+// Server-side total: products × qty + add-ons × qty, the same rule as the
+// cart. NaN when a price or quantity isn't a number.
+export function computeOrderTotal(items: OrderItem[], addons: OrderAddon[]): number {
+  return items.reduce((s, i) => s + Number(i.product.price) * Number(i.qty), 0) +
+    addons.reduce((s, a) => s + a.price * a.qty, 0)
 }
 
 // Short order number shown to the customer and in Telegram, e.g. "OB-7K3FQ".
@@ -80,6 +103,17 @@ export function parseOrderBody(body: unknown): OrderBody | null {
       typeof (i as OrderItem).product === 'object' && (i as OrderItem).product !== null
   )
 
+  // New format: a top-level `addons` list. Old format: selectedAddons inside
+  // each product, summed by name (as the cart's own migration does).
+  let addons = toAddons(b.addons)
+  if (!Array.isArray(b.addons)) {
+    for (const a of items.flatMap(i => toAddons(i.selectedAddons))) {
+      const same = addons.find(x => x.name === a.name)
+      if (same) same.qty += a.qty
+      else addons = [...addons, { ...a }]
+    }
+  }
+
   return {
     name,
     contact,
@@ -91,30 +125,36 @@ export function parseOrderBody(body: unknown): OrderBody | null {
     date,
     notes: text(b.notes) || undefined,
     items,
+    addons,
     totalPrice: Number(b.totalPrice),
   }
 }
 
 export function buildOrderMessage(
-  { name, contact, deliveryType, address, recipientName, recipientPhone, date, notes, items, totalPrice }: OrderBody,
+  { name, contact, deliveryType, address, recipientName, recipientPhone, date, notes, items, addons = [], totalPrice }: OrderBody,
   orderId: string,
   now: number = Date.now()
 ): string {
   const itemLines = items.length === 0
     ? '  • (brak produktów w koszyku — zapytaj klienta)'
     : items
-      .map(({ product, qty, selectedColor, selectedAddons }) => {
+      .map(({ product, qty, selectedColor }) => {
         const imgUrl = toViewableUrl(product.image)
         const imgLine = imgUrl ? `\n    🖼 ${escapeHtml(imgUrl)}` : ''
         const colorLine = selectedColor ? `\n    🎨 Kolor: ${escapeHtml(selectedColor)}` : ''
-        const addonsLine = Array.isArray(selectedAddons) && selectedAddons.length > 0
-          ? '\n' + selectedAddons
-            .map(a => `    ➕ ${escapeHtml(a.name)}${a.qty > 1 ? ` × ${Number(a.qty)}` : ''} = ${Number(a.price) * Number(a.qty)} zł`)
-            .join('\n')
-          : ''
-        return `  • ${escapeHtml(product.name)} × ${Number(qty)} = ${Number(product.price) * Number(qty)} zł${colorLine}${addonsLine}${imgLine}`
+        return `  • ${escapeHtml(product.name)} × ${Number(qty)} = ${Number(product.price) * Number(qty)} zł${colorLine}${imgLine}`
       })
       .join('\n')
+
+  const addonLines = addons
+    .map(a => `  ➕ ${escapeHtml(a.name)} × ${a.qty} = ${a.price * a.qty} zł`)
+    .join('\n')
+
+  // The total shown is the customer's; a different server-side sum is only
+  // flagged, never a reason to reject the order.
+  const computed = computeOrderTotal(items, addons)
+  const totalMismatch = !Number.isFinite(totalPrice) || !Number.isFinite(computed) || totalPrice !== computed
+  const fmt = (n: number) => (Number.isFinite(n) ? String(n) : '?')
 
   const parsedDate = new Date(date)
   const when = Number.isNaN(parsedDate.getTime())
@@ -155,8 +195,12 @@ export function buildOrderMessage(
     '',
     '<b>Zamówione produkty:</b>',
     itemLines,
+    addonLines ? '' : null,
+    addonLines ? '<b>Dodatki:</b>' : null,
+    addonLines || null,
     '',
     `💰 <b>Łącznie: ${Number.isFinite(totalPrice) ? totalPrice : '?'} zł</b>`,
+    totalMismatch ? `⚠️ Suma się nie zgadza: klient ${fmt(totalPrice)} zł, wyliczona ${fmt(computed)} zł` : null,
   ]
     .filter(l => l !== null)
     .join('\n')

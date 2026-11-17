@@ -44,6 +44,18 @@ export const listActiveAddons = async (): Promise<Addon[]> => {
   return rows.map(toAddon);
 };
 
+// The add-ons the cart offers, for pages that don't otherwise need them (home,
+// categories). Only what the cart shows, and a failed read gives an empty list
+// so the page itself still renders.
+export async function listCartAddons(): Promise<{ id: number; name: string; price: number }[]> {
+  try {
+    return (await listActiveAddons()).map(({ id, name, price }) => ({ id, name, price }));
+  } catch (err) {
+    console.error("Could not read add-ons for the cart", err);
+    return [];
+  }
+}
+
 // Unlike the public list, the admin list includes deactivated addons.
 export async function listAllAddons(): Promise<Addon[]> {
   const rows = await prisma.addon.findMany({ orderBy: { sortOrder: "asc" } });

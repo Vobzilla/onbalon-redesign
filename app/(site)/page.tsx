@@ -7,6 +7,7 @@ import ProductsSection from "@/components/ProductsSection";
 import AnnounceBanner from "@/components/AnnounceBanner";
 import ScrollToTop from "@/components/ScrollToTop";
 import CheckoutFlow from "@/components/CheckoutFlow";
+import { listCartAddons } from "@/lib/addons";
 // Server-rendered (not ssr: false) so the FAQ text is in the HTML crawlers see.
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const products = await getActiveProducts();
+  const [products, addons] = await Promise.all([getActiveProducts(), listCartAddons()]);
 
   return (
     <>
@@ -66,7 +67,7 @@ export default async function Home() {
       </main>
 
       <Footer />
-      <CheckoutFlow />
+      <CheckoutFlow addons={addons} />
       <ScrollToTop />
     </>
   );

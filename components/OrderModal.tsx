@@ -28,7 +28,7 @@ function tooEarlyMessage(earliest: string) {
 }
 
 export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) {
-  const { items, totalPrice, clear } = useCart()
+  const { items, addons, totalPrice, clear } = useCart()
   const [sent, setSent]               = useState(false)
   const [loading, setLoading]         = useState(false)
   const [error, setError]             = useState('')
@@ -204,7 +204,11 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
       const res = await fetch('/api/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, contact, address, date, notes, deliveryType, ...recipient, items, totalPrice }),
+        body: JSON.stringify({
+          name, contact, address, date, notes, deliveryType, ...recipient, items,
+          addons: addons.map(({ name, price, qty }) => ({ name, price, qty })),
+          totalPrice,
+        }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
@@ -274,21 +278,19 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
             <p className="modal-sub">Wypełnij formularz — odezwiemy się w ciągu 15 minut, żeby potwierdzić zamówienie.</p>
 
             <div className="order-summary">
-              {items.map(({ product, qty, selectedColor, selectedAddons }) => (
-                <div key={product.id}>
-                  <div className="summary-line">
-                    <span>
-                      {product.name} × {qty}
-                      {selectedColor ? ` (${selectedColor})` : ''}
-                    </span>
-                    <span>{product.price * qty} zł</span>
-                  </div>
-                  {selectedAddons?.map((addon, i) => (
-                    <div key={i} className="summary-line summary-line-addon">
-                      <span>+ {addon.name}{addon.qty > 1 ? ` × ${addon.qty}` : ''}</span>
-                      <span>{addon.price * addon.qty} zł</span>
-                    </div>
-                  ))}
+              {items.map(({ product, qty, selectedColor }) => (
+                <div key={product.id} className="summary-line">
+                  <span>
+                    {product.name} × {qty}
+                    {selectedColor ? ` (${selectedColor})` : ''}
+                  </span>
+                  <span>{product.price * qty} zł</span>
+                </div>
+              ))}
+              {addons.map(addon => (
+                <div key={`${addon.addonId ?? ''}-${addon.name}`} className="summary-line">
+                  <span>+ {addon.name} × {addon.qty}</span>
+                  <span>{addon.price * addon.qty} zł</span>
                 </div>
               ))}
               <div className="summary-total">

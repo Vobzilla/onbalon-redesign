@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useCart, type SelectedAddon } from '@/context/CartContext'
+import { useCart } from '@/context/CartContext'
 
 // Confirmation after any «Dodaj do koszyka» (product page and catalog cards):
 // a bottom sheet on phones, the same panel centred at the bottom on wider
@@ -14,7 +14,6 @@ export type AddedToCartInfo = {
   image: string
   price: number
   color?: string
-  addons?: SelectedAddon[]
 }
 
 const EVENT = 'onbalon:added-to-cart'
@@ -81,9 +80,6 @@ export default function AddedToCartSheet() {
 
   if (!info) return null
 
-  const addons = info.addons ?? []
-  const total = info.price + addons.reduce((s, a) => s + a.price * a.qty, 0)
-
   return (
     <div className="atc-overlay" onClick={close}>
       <div
@@ -121,13 +117,8 @@ export default function AddedToCartSheet() {
           <div className="atc-info">
             <p className="atc-name">{info.name}</p>
             {info.color && <p className="atc-meta">Kolor: {info.color}</p>}
-            {addons.map((a, i) => (
-              <p className="atc-meta" key={i}>
-                + {a.name}{a.qty > 1 ? ` × ${a.qty}` : ''} — {a.price * a.qty} zł
-              </p>
-            ))}
           </div>
-          <p className="atc-price">{total} zł</p>
+          <p className="atc-price">{info.price} zł</p>
         </div>
 
         <div className="atc-actions">
