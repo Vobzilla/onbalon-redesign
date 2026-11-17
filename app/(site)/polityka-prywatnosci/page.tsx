@@ -19,7 +19,7 @@ export default function PolitykaPrywatnosci() {
         <div className="section-inner">
           <h1>Polityka prywatności i plików cookies</h1>
 
-          <p>Ostatnia aktualizacja: 6 listopada 2026</p>
+          <p>Ostatnia aktualizacja: 17 listopada 2026</p>
 
           <h2>Kto jest administratorem danych</h2>
           <p>
@@ -39,6 +39,10 @@ export default function PolitykaPrywatnosci() {
               Dane z formularza zamówienia: imię i nazwisko, numer telefonu,
               adres dostawy, data i godzina dostawy, treść uwag do zamówienia
               oraz zamówione produkty.
+            </li>
+            <li>
+              Dane odbiorcy, jeśli zamówienie odbierze inna osoba: jej imię i
+              numer telefonu, podane przez zamawiającego.
             </li>
             <li>
               Dane potrzebne do faktury, jeśli o nią poprosisz (np. nazwa firmy
@@ -62,6 +66,10 @@ export default function PolitykaPrywatnosci() {
               balonów lub odbiór osobisty — art. 6 ust. 1 lit. b RODO (umowa).
             </li>
             <li>
+              Kontakt z odbiorcą w celu doręczenia zamówienia — art. 6 ust. 1
+              lit. f RODO (nasz uzasadniony interes: realizacja dostawy).
+            </li>
+            <li>
               Wystawienie faktury i prowadzenie księgowości — art. 6 ust. 1 lit.
               c RODO (obowiązek prawny).
             </li>
@@ -83,6 +91,18 @@ export default function PolitykaPrywatnosci() {
               6 ust. 1 lit. f RODO.
             </li>
           </ul>
+
+          <h2>Dane odbiorcy zamówienia</h2>
+          <p>
+            Jeśli zamawiający wskazał Cię jako osobę, która odbierze zamówienie,
+            Twoje dane otrzymaliśmy od niego, a nie bezpośrednio od Ciebie (art.
+            14 RODO). Są to wyłącznie Twoje imię i numer telefonu, których
+            używamy do kontaktu w sprawie doręczenia. Administrator, odbiorcy
+            danych, okres przechowywania i Twoje prawa są takie same jak dla
+            danych zamawiającego — opisujemy je w sekcjach „Kto jest
+            administratorem danych”, „Komu przekazujemy dane”, „Jak długo
+            przechowujemy dane” i „Twoje prawa”.
+          </p>
 
           <h2>Komu przekazujemy dane</h2>
           <p>

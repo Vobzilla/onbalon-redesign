@@ -403,6 +403,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                             style={recipientPhoneError ? { borderColor: '#e53e3e' } : undefined}
                           />
                           {recipientPhoneError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{recipientPhoneError}</span>}
+                          <span className="form-hint">Podając dane odbiorcy, potwierdzasz, że możesz je nam przekazać w celu realizacji dostawy.</span>
                         </label>
                       </div>
                     </>
