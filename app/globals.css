@@ -35,10 +35,26 @@
   box-sizing: border-box;
 }
 
+/* overflow-x: clip, not hidden. hidden on both html and body made body a
+   scroll container of its own, so the sticky .header stuck to body (which
+   never scrolls) instead of the viewport and scrolled away. clip cuts the
+   same horizontal overflow without creating a scroll container. hidden stays
+   first as the fallback for browsers without clip (there the header simply
+   doesn't stick, as before). */
 html {
   scroll-behavior: smooth;
   font-size: 16px;
   overflow-x: hidden;
+  overflow-x: clip;
+  /* Anchors (#products, #how, #faq) land below the sticky header:
+     header height + its 1px border. */
+  scroll-padding-top: 75px;
+}
+
+@media (max-width: 860px) {
+  html {
+    scroll-padding-top: 63px;
+  }
 }
 
 body {
@@ -46,6 +62,7 @@ body {
   background-color: var(--bg);
   color: var(--text);
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
