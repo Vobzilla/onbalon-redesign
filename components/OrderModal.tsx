@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, FormEvent } from 'react'
-import { useCart } from '@/context/CartContext'
+import { useCart, lineKey } from '@/context/CartContext'
 import Confetti from './Confetti'
 import { availability } from '@/data/availability'
 import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
@@ -279,7 +279,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
 
             <div className="order-summary">
               {items.map(({ product, qty, selectedColor }) => (
-                <div key={product.id} className="summary-line">
+                <div key={lineKey({ product, selectedColor })} className="summary-line">
                   <span>
                     {product.name} × {qty}
                     {selectedColor ? ` (${selectedColor})` : ''}

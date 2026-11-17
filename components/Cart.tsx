@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Image from 'next/image'
-import { useCart, type AddonOption, type CartAddonLine } from '@/context/CartContext'
+import { useCart, lineKey, type AddonOption, type CartAddonLine } from '@/context/CartContext'
 import { track, gaItems } from '@/lib/track'
 
 type Props = { onCheckout: () => void; addons?: AddonOption[] }
@@ -56,8 +56,10 @@ export default function Cart({ onCheckout, addons: active = [] }: Props) {
             </div>
           ) : (
             <>
-              {items.map(({ product, qty, selectedColor, selectedColorImage }) => (
-                <div key={product.id} className="cart-item">
+              {items.map(({ product, qty, selectedColor, selectedColorImage }) => {
+                const key = lineKey({ product, selectedColor })
+                return (
+                <div key={key} className="cart-item">
                   <div className="ci-img-wrap">
                     <Image src={selectedColorImage ?? product.image} alt={product.name} fill className="ci-img" sizes="64px" />
                   </div>
@@ -67,12 +69,13 @@ export default function Cart({ onCheckout, addons: active = [] }: Props) {
                     <p className="ci-price">{product.price * qty} zł</p>
                   </div>
                   <div className="ci-qty">
-                    <button className="qty-btn" onClick={() => changeQty(product.id, -1)}>−</button>
+                    <button className="qty-btn" onClick={() => changeQty(key, -1)}>−</button>
                     <span className="qty-n">{qty}</span>
-                    <button className="qty-btn" onClick={() => changeQty(product.id, 1)}>+</button>
+                    <button className="qty-btn" onClick={() => changeQty(key, 1)}>+</button>
                   </div>
                 </div>
-              ))}
+                )
+              })}
 
               {/* Add-ons: hidden while there are no products, but whatever is
                   in the cart stays there. */}

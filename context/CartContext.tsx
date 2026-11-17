@@ -11,6 +11,13 @@ export type CartProductLine = {
   selectedColor?: string
   selectedColorImage?: string
 }
+// What makes a cart line: the product and its colour. The same set in another
+// colour is a line of its own; without a colour it is the product alone.
+// Computed, not stored, so the saved cart format doesn't change.
+export function lineKey(line: { product: { id: number }; selectedColor?: string }): string {
+  return `${line.product.id}|${line.selectedColor ?? ''}`
+}
+
 // addonId is null for add-ons moved over from an old cart whose name doesn't
 // match an active add-on (renamed or switched off); name and price are kept
 // as they were added.
@@ -27,7 +34,8 @@ type CartContextType = {
   // The only place the cart total is computed: products + add-ons.
   totalPrice: number
   addItem: (product: Product, options?: AddItemOptions) => void
-  changeQty: (id: number, delta: number) => void
+  // `key` is the line's lineKey().
+  changeQty: (key: string, delta: number) => void
   // Sets an add-on's quantity; 0 removes the line. Matched by addonId, or by
   // name for a line without one.
   setAddonQty: (addon: { addonId: number | null; name: string; price: number }, qty: number) => void
@@ -133,15 +141,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback((product: Product, options?: AddItemOptions) => {
     setItems(prev => {
-      const existing = prev.find(i => i.product.id === product.id)
+      const key = lineKey({ product, selectedColor: options?.selectedColor })
+      const existing = prev.find(i => lineKey(i) === key)
       if (existing) {
-        return prev.map(i => i.product.id === product.id
-          ? {
-              ...i,
-              qty: i.qty + 1,
-              selectedColor: options?.selectedColor ?? i.selectedColor,
-              selectedColorImage: options?.selectedColorImage ?? i.selectedColorImage,
-            }
+        return prev.map(i => i === existing
+          ? { ...i, qty: i.qty + 1, selectedColorImage: options?.selectedColorImage ?? i.selectedColorImage }
           : i)
       }
       return [...prev, {
@@ -153,10 +157,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  const changeQty = useCallback((id: number, delta: number) => {
+  const changeQty = useCallback((key: string, delta: number) => {
     setItems(prev =>
       prev
-        .map(i => i.product.id === id ? { ...i, qty: i.qty + delta } : i)
+        .map(i => lineKey(i) === key ? { ...i, qty: i.qty + delta } : i)
         .filter(i => i.qty > 0)
     )
   }, [])
