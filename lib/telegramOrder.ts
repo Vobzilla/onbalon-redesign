@@ -1,6 +1,8 @@
 // Builds the Telegram message for /api/order. Kept out of the route file so it
 // can be imported (and checked) on its own; route files may only export handlers.
 
+import { isEarlierThanAllowed } from './orderTime'
+
 export type OrderItem = {
   product: { name: string; price: number; image: string }
   qty: number
@@ -89,7 +91,8 @@ export function parseOrderBody(body: unknown): OrderBody | null {
 
 export function buildOrderMessage(
   { name, contact, deliveryType, address, date, notes, items, totalPrice }: OrderBody,
-  orderId: string
+  orderId: string,
+  now: number = Date.now()
 ): string {
   const itemLines = items.length === 0
     ? '  • (brak produktów w koszyku — zapytaj klienta)'
@@ -124,6 +127,11 @@ export function buildOrderMessage(
     ? '🏠 <b>Odbiór osobisty</b>'
     : address ? `📍 <b>Adres:</b> ${escapeHtml(address)}` : null
 
+  // The order is never rejected for its time, only flagged for a call.
+  const tooEarlyLine = isEarlierThanAllowed(date, pickup ? 'pickup' : 'delivery', now)
+    ? '⚠️ Termin wcześniejszy niż dopuszczalny — zadzwoń do klienta'
+    : null
+
   return [
     '🛒 <b>Nowe zamówienie!</b>',
     `🧾 <b>Nr:</b> ${escapeHtml(orderId)}`,
@@ -131,6 +139,7 @@ export function buildOrderMessage(
     `👤 <b>Klient:</b> ${escapeHtml(name)}`,
     `📱 <b>Kontakt:</b> ${escapeHtml(contact)}`,
     addressLine,
+    tooEarlyLine,
     `🕐 <b>${pickup ? 'Odbiór' : 'Dostawa'}:</b> ${escapeHtml(when)}`,
     notes ? `📝 <b>Uwagi:</b> ${escapeHtml(notes)}` : null,
     '',

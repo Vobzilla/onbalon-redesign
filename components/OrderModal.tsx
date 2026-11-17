@@ -5,6 +5,7 @@ import { useCart } from '@/context/CartContext'
 import Confetti from './Confetti'
 import { availability } from '@/data/availability'
 import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
+import { earliestOrderTime, formatShortOrderTime } from '@/lib/orderTime'
 import { track, gaItems, isTestOrder, trackMeta, metaContents } from '@/lib/track'
 
 // ─── Conversion IDs ───────────────────────────────────────────────────────────
@@ -22,11 +23,8 @@ declare global {
 type Props = { isOpen: boolean; onClose: () => void; source?: 'cart' | 'product_page' }
 type DeliveryType = 'delivery' | 'pickup'
 
-function getMinDateTime() {
-  const d = new Date(Date.now() + 5 * 60 * 60 * 1000)
-  // format: YYYY-MM-DDTHH:MM
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+function tooEarlyMessage(earliest: string) {
+  return `Najwcześniejszy możliwy termin to ${formatShortOrderTime(earliest)}. Wybierz późniejszą godzinę.`
 }
 
 export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) {
@@ -38,6 +36,37 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
   const [dateError, setDateError]     = useState('')
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('delivery')
   const [orderId, setOrderId]         = useState<string | null>(null)
+  // Date field: min and the starting value are set when the form opens and
+  // when Dostawa/Odbiór is switched, never on a plain re-render.
+  const [dateMin, setDateMin]         = useState('')
+  const [dateValue, setDateValue]     = useState('')
+
+  useEffect(() => {
+    if (!isOpen) return
+    const earliest = earliestOrderTime(deliveryType)
+    setDateMin(earliest)
+    setDateValue(earliest)
+    // Only when the form opens; switching the type has its own handler.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
+
+  function switchDeliveryType(type: DeliveryType) {
+    setDeliveryType(type)
+    const earliest = earliestOrderTime(type)
+    setDateMin(earliest)
+    // Keep the customer's choice unless it is now too early.
+    setDateValue(v => (!v || v < earliest ? earliest : v))
+    setDateError('')
+  }
+
+  // Shows our Polish message under the field and moves it to the earliest time.
+  function rejectTooEarly() {
+    const earliest = earliestOrderTime(deliveryType)
+    setDateMin(earliest)
+    setDateValue(earliest)
+    setDateError(tooEarlyMessage(earliest))
+    formError('date_too_early')
+  }
 
   useEffect(() => {
     if (!isOpen) return
@@ -122,6 +151,11 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
     if (deliveryType === 'delivery' && !address) {
       setError('Proszę podać adres dostawy.')
       formError('address_missing')
+      return
+    }
+    // Checked again at send time: the form may have been open for a while.
+    if (date < earliestOrderTime(deliveryType)) {
+      rejectTooEarly()
       return
     }
     if (deliveryType === 'delivery' && isDeliveryDateBlocked(date)) {
@@ -272,7 +306,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                   <button
                     type="button"
                     className={`delivery-opt${deliveryType === 'delivery' ? ' active' : ''}`}
-                    onClick={() => setDeliveryType('delivery')}
+                    onClick={() => switchDeliveryType('delivery')}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
@@ -282,7 +316,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                   <button
                     type="button"
                     className={`delivery-opt${deliveryType === 'pickup' ? ' active' : ''}`}
-                    onClick={() => setDeliveryType('pickup')}
+                    onClick={() => switchDeliveryType('pickup')}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
@@ -320,10 +354,16 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                   <input
                     name="date"
                     type="datetime-local"
-                    min={getMinDateTime()}
-                    defaultValue={getMinDateTime()}
+                    min={dateMin || undefined}
+                    value={dateValue}
                     required
-                    onChange={() => setDateError('')}
+                    onChange={e => { setDateValue(e.target.value); setDateError('') }}
+                    onInvalid={e => {
+                      // Too early: our own message instead of the browser's popup.
+                      if (!e.currentTarget.validity.rangeUnderflow) return
+                      e.preventDefault()
+                      rejectTooEarly()
+                    }}
                     style={dateError ? { borderColor: '#e53e3e' } : undefined}
                   />
                   {dateError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{dateError}</span>}
