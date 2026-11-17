@@ -9,6 +9,8 @@ export type OrderItem = {
   product: { name: string; price: number; image: string }
   qty: number
   selectedColor?: string
+  // The chosen colour's photo; comes from the client, see ownColorImage().
+  selectedColorImage?: string
   // Old cart format only (a tab opened before add-ons moved to the cart):
   // add-ons inside the product. parseOrderBody moves them to `addons`.
   selectedAddons?: OrderAddon[]
@@ -70,6 +72,31 @@ export function escapeHtml(value: unknown): string {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+}
+
+const CLOUDINARY_ORIGIN = 'https://res.cloudinary.com'
+const CLOUDINARY_UPLOAD_PATH = '/dnyevlhh7/image/upload/'
+
+// The colour photo is sent by the client, so it is used only when it points to
+// our own Cloudinary account: a full https://res.cloudinary.com/dnyevlhh7/
+// image/upload/… URL, or a bare public_id. Anything else gives undefined and
+// the product's main photo is used instead.
+export function ownColorImage(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  const v = value.trim()
+  if (!v) return undefined
+  if (/^[a-z][a-z0-9+.-]*:/i.test(v)) {
+    let url: URL
+    try { url = new URL(v) } catch { return undefined }
+    if (url.protocol !== 'https:' || url.hostname !== 'res.cloudinary.com' || url.port) return undefined
+    if (!url.pathname.startsWith(CLOUDINARY_UPLOAD_PATH)) return undefined
+    return CLOUDINARY_ORIGIN + url.pathname
+  }
+  // public_id: path segments of plain characters, no host, no "..".
+  if (/^[\w-]+(\/[\w.-]+)*$/.test(v) && !v.split('/').includes('..')) {
+    return CLOUDINARY_ORIGIN + CLOUDINARY_UPLOAD_PATH + v
+  }
+  return undefined
 }
 
 function toViewableUrl(url?: string): string {
@@ -138,8 +165,9 @@ export function buildOrderMessage(
   const itemLines = items.length === 0
     ? '  • (brak produktów w koszyku — zapytaj klienta)'
     : items
-      .map(({ product, qty, selectedColor }) => {
-        const imgUrl = toViewableUrl(product.image)
+      .map(({ product, qty, selectedColor, selectedColorImage }) => {
+        const colorImage = selectedColor ? ownColorImage(selectedColorImage) : undefined
+        const imgUrl = toViewableUrl(colorImage ?? product.image)
         const imgLine = imgUrl ? `\n    🖼 ${escapeHtml(imgUrl)}` : ''
         const colorLine = selectedColor ? `\n    🎨 Kolor: ${escapeHtml(selectedColor)}` : ''
         return `  • ${escapeHtml(product.name)} × ${Number(qty)} = ${Number(product.price) * Number(qty)} zł${colorLine}${imgLine}`
