@@ -2116,6 +2116,10 @@ a.show-more-btn {
   font-size: .86rem;
   color: var(--text-soft);
   margin-bottom: 18px;
+  /* No lone last word: pretty where supported, balance as the fallback,
+     plain wrapping in browsers that know neither. */
+  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .order-summary {
@@ -2132,8 +2136,30 @@ a.show-more-btn {
 .summary-line {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
   font-size: .84rem;
   color: var(--text-mid);
+}
+
+/* Name (with quantity and colour) takes the room and wraps; the price keeps
+   its width and stays on one line («245 zł» never splits). */
+.summary-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.summary-price {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.summary-variant {
+  display: block;
+  font-size: .76rem;
+  color: var(--text-soft);
+  margin-top: 1px;
 }
 
 .summary-line-addon {
@@ -2145,6 +2171,8 @@ a.show-more-btn {
 .summary-total {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
   font-weight: 700;
   font-size: .9rem;
   color: var(--text);

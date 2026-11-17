@@ -280,22 +280,22 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
             <div className="order-summary">
               {items.map(({ product, qty, selectedColor }) => (
                 <div key={lineKey({ product, selectedColor })} className="summary-line">
-                  <span>
+                  <span className="summary-name">
                     {product.name} × {qty}
-                    {selectedColor ? ` (${selectedColor})` : ''}
+                    {selectedColor && <span className="summary-variant">Kolor: {selectedColor}</span>}
                   </span>
-                  <span>{product.price * qty} zł</span>
+                  <span className="summary-price">{product.price * qty} zł</span>
                 </div>
               ))}
               {addons.map(addon => (
                 <div key={`${addon.addonId ?? ''}-${addon.name}`} className="summary-line">
-                  <span>+ {addon.name} × {addon.qty}</span>
-                  <span>{addon.price * addon.qty} zł</span>
+                  <span className="summary-name">+ {addon.name} × {addon.qty}</span>
+                  <span className="summary-price">{addon.price * addon.qty} zł</span>
                 </div>
               ))}
               <div className="summary-total">
-                <span>Razem</span>
-                <span>{totalPrice} zł</span>
+                <span className="summary-name">Razem</span>
+                <span className="summary-price">{totalPrice} zł</span>
               </div>
             </div>
 
