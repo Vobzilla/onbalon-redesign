@@ -17,6 +17,9 @@ export type OrderBody = {
   // address text, but the address is only required for delivery.
   deliveryType?: 'delivery' | 'pickup' | string
   address?: string
+  // Another person receives the delivery (optional, delivery only).
+  recipientName?: string
+  recipientPhone?: string
   date: string
   notes?: string
   items: OrderItem[]
@@ -82,6 +85,9 @@ export function parseOrderBody(body: unknown): OrderBody | null {
     contact,
     deliveryType,
     address: address || undefined,
+    // Optional: an order without them is fine. Never kept for pickup.
+    recipientName: deliveryType === 'pickup' ? undefined : text(b.recipientName) || undefined,
+    recipientPhone: deliveryType === 'pickup' ? undefined : text(b.recipientPhone) || undefined,
     date,
     notes: text(b.notes) || undefined,
     items,
@@ -90,7 +96,7 @@ export function parseOrderBody(body: unknown): OrderBody | null {
 }
 
 export function buildOrderMessage(
-  { name, contact, deliveryType, address, date, notes, items, totalPrice }: OrderBody,
+  { name, contact, deliveryType, address, recipientName, recipientPhone, date, notes, items, totalPrice }: OrderBody,
   orderId: string,
   now: number = Date.now()
 ): string {
@@ -127,6 +133,9 @@ export function buildOrderMessage(
     ? '🏠 <b>Odbiór osobisty</b>'
     : address ? `📍 <b>Adres:</b> ${escapeHtml(address)}` : null
 
+  const recipient = [recipientName, recipientPhone].filter(Boolean).map(escapeHtml).join(', ')
+  const recipientLine = !pickup && recipient ? `🎁 <b>Odbiorca:</b> ${recipient}` : null
+
   // The order is never rejected for its time, only flagged for a call.
   const tooEarlyLine = isEarlierThanAllowed(date, pickup ? 'pickup' : 'delivery', now)
     ? '⚠️ Termin wcześniejszy niż dopuszczalny — zadzwoń do klienta'
@@ -139,6 +148,7 @@ export function buildOrderMessage(
     `👤 <b>Klient:</b> ${escapeHtml(name)}`,
     `📱 <b>Kontakt:</b> ${escapeHtml(contact)}`,
     addressLine,
+    recipientLine,
     tooEarlyLine,
     `🕐 <b>${pickup ? 'Odbiór' : 'Dostawa'}:</b> ${escapeHtml(when)}`,
     notes ? `📝 <b>Uwagi:</b> ${escapeHtml(notes)}` : null,

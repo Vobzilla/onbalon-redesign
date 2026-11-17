@@ -40,6 +40,13 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
   // when Dostawa/Odbiór is switched, never on a plain re-render.
   const [dateMin, setDateMin]         = useState('')
   const [dateValue, setDateValue]     = useState('')
+  // Another person receives the delivery. Kept while switching to pickup (so
+  // switching back restores it), but only sent for delivery.
+  const [recipientOn, setRecipientOn]       = useState(false)
+  const [recipientName, setRecipientName]   = useState('')
+  const [recipientPhone, setRecipientPhone] = useState('')
+  const [recipientNameError, setRecipientNameError]   = useState('')
+  const [recipientPhoneError, setRecipientPhoneError] = useState('')
 
   useEffect(() => {
     if (!isOpen) return
@@ -127,6 +134,8 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
     setError('')
     setPhoneError('')
     setDateError('')
+    setRecipientNameError('')
+    setRecipientPhoneError('')
 
     const fd      = new FormData(e.currentTarget)
     const name    = String(fd.get('name')    || '').trim()
@@ -152,6 +161,22 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
       setError('Proszę podać adres dostawy.')
       formError('address_missing')
       return
+    }
+    const withRecipient = deliveryType === 'delivery' && recipientOn
+    const recipient: { recipientName?: string; recipientPhone?: string } = withRecipient
+      ? { recipientName: recipientName.trim(), recipientPhone: recipientPhone.trim() }
+      : {}
+    if (withRecipient) {
+      const nameMissing  = !recipient.recipientName
+      const phoneMissing = !recipient.recipientPhone
+      const phoneInvalid = !phoneMissing && !phoneRegex.test(recipient.recipientPhone ?? '')
+      if (nameMissing) setRecipientNameError('Podaj imię odbiorcy.')
+      if (phoneMissing) setRecipientPhoneError('Podaj numer telefonu odbiorcy.')
+      if (phoneInvalid) setRecipientPhoneError('Nieprawidłowy numer telefonu')
+      if (nameMissing || phoneMissing || phoneInvalid) {
+        formError(phoneInvalid && !nameMissing ? 'recipient_phone_invalid' : 'recipient_missing')
+        return
+      }
     }
     // Checked again at send time: the form may have been open for a while.
     if (date < earliestOrderTime(deliveryType)) {
@@ -179,7 +204,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
       const res = await fetch('/api/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, contact, address, date, notes, deliveryType, items, totalPrice }),
+        body: JSON.stringify({ name, contact, address, date, notes, deliveryType, ...recipient, items, totalPrice }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
@@ -210,7 +235,8 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
 
   function handleClose() {
     onClose()
-    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setDeliveryType('delivery'); setOrderId(null) }, 300)
+    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setDeliveryType('delivery'); setOrderId(null)
+      setRecipientOn(false); setRecipientName(''); setRecipientPhone(''); setRecipientNameError(''); setRecipientPhoneError('') }, 300)
   }
 
   if (!isOpen) return null
@@ -336,6 +362,52 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                     <span className="form-hint">Dostawa płatna od 20 zł — dokładny koszt podamy przy potwierdzeniu.</span>
                   </label>
                 </div>
+              )}
+
+              {/* Another person receives — only for delivery */}
+              {deliveryType === 'delivery' && (
+                <>
+                  <div className="form-row">
+                    <label className="form-checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={recipientOn}
+                        onChange={e => { setRecipientOn(e.target.checked); setRecipientNameError(''); setRecipientPhoneError('') }}
+                      />
+                      <span>Zamówienie odbierze inna osoba</span>
+                    </label>
+                  </div>
+                  {recipientOn && (
+                    <>
+                      <div className="form-row">
+                        <label>
+                          Imię odbiorcy *
+                          <input
+                            type="text"
+                            placeholder="np. Kasia"
+                            value={recipientName}
+                            onChange={e => { setRecipientName(e.target.value); setRecipientNameError('') }}
+                            style={recipientNameError ? { borderColor: '#e53e3e' } : undefined}
+                          />
+                          {recipientNameError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{recipientNameError}</span>}
+                        </label>
+                      </div>
+                      <div className="form-row">
+                        <label>
+                          Telefon odbiorcy *
+                          <input
+                            type="tel"
+                            placeholder="+48 500 123 456"
+                            value={recipientPhone}
+                            onChange={e => { setRecipientPhone(e.target.value); setRecipientPhoneError('') }}
+                            style={recipientPhoneError ? { borderColor: '#e53e3e' } : undefined}
+                          />
+                          {recipientPhoneError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{recipientPhoneError}</span>}
+                        </label>
+                      </div>
+                    </>
+                  )}
+                </>
               )}
 
               {/* Pickup info */}
