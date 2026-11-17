@@ -271,7 +271,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
         ) : (
           <>
             <h2 className="modal-title">Złóż zamówienie</h2>
-            <p className="modal-sub">Wypełnij formularz — odpiszemy w 15 minut.</p>
+            <p className="modal-sub">Wypełnij formularz — odezwiemy się w ciągu 15 minut, żeby potwierdzić zamówienie.</p>
 
             <div className="order-summary">
               {items.map(({ product, qty, selectedColor, selectedAddons }) => (
