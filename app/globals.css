@@ -3422,68 +3422,6 @@ a.show-more-btn {
   flex-shrink: 0;
 }
 
-.prod-addons {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 12px;
-}
-
-.prod-addon-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border, #ece6dc);
-}
-.prod-addon-row:last-child { border-bottom: none; }
-
-.prod-addon-check {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  flex: 1;
-  min-width: 0;
-}
-.prod-addon-check input { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
-.prod-addon-name { font-size: .9rem; color: var(--text-mid); font-weight: 500; }
-
-.prod-addon-price {
-  font-size: .88rem;
-  font-weight: 700;
-  color: var(--text);
-  flex-shrink: 0;
-}
-
-.prod-addon-qty {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.prod-addon-qty button {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid var(--border, #ddd3c4);
-  background: var(--bg);
-  color: var(--text);
-  font-size: .95rem;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.prod-addon-qty span { min-width: 16px; text-align: center; font-size: .85rem; font-weight: 600; }
-
-.prod-addons-total {
-  font-size: .88rem;
-  color: var(--text-mid);
-  margin-bottom: 20px;
-}
-
 .prod-page-btns {
   display: flex;
   gap: 12px;
