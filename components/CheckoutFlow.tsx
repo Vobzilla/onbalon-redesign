@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Cart from '@/components/Cart'
+import AddedToCartSheet from '@/components/AddedToCartSheet'
 
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
 
@@ -13,6 +14,7 @@ export default function CheckoutFlow() {
     <>
       <Cart onCheckout={() => setModalOpen(true)} />
       <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <AddedToCartSheet />
     </>
   )
 }

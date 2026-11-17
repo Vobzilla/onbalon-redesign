@@ -7,6 +7,7 @@ import type { Category } from '@/data/products'
 import type { ProductWithDetails } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 import { track, gaItems, trackMeta, metaContents } from '@/lib/track'
+import { showAddedToCart } from '@/components/AddedToCartSheet'
 
 // One catalog card with its «Dodaj do koszyka» button — shared by the home
 // page catalog (ProductsSection) and the category pages, so both look and
@@ -49,6 +50,7 @@ export function useAddToCart(source: 'catalog' | 'category') {
     trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price, source })
     setAdded(product.id)
     setTimeout(() => setAdded(null), 1400)
+    showAddedToCart({ name: product.name, image: product.image, price: product.price })
   }
 
   return { added, handleAdd }

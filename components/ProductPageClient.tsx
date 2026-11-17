@@ -13,6 +13,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import Footer from '@/components/Footer'
 import { track, gaItems, trackMeta, metaContents } from '@/lib/track'
 import { categoryPagePath } from '@/lib/categories'
+import AddedToCartSheet, { showAddedToCart } from '@/components/AddedToCartSheet'
 
 const Cart       = dynamic(() => import('@/components/Cart'),       { ssr: false })
 const OrderModal = dynamic(() => import('@/components/OrderModal'), { ssr: false })
@@ -24,11 +25,9 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
   // cart (and so the order / Telegram message) gets the product as before.
   const { seoTitle, ...product } = pageProduct
   const displayTitle = seoTitle ?? product.name
-  const [added, setAdded]         = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
-  const [checkoutSource, setCheckoutSource] = useState<'cart' | 'product_page'>('product_page')
   const [lightbox, setLightbox]   = useState(false)
-  const { addItem, items } = useCart()
+  const { addItem } = useCart()
 
   useEffect(() => {
     track('view_item', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]) })
@@ -99,7 +98,7 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
     return product.colorVariants.find(v => v.colorName === selectedColor)?.imageUrl
   }
 
-  function trackAddToCart(source: 'product_page' | 'product_page_order') {
+  function trackAddToCart(source: 'product_page') {
     const addonsValue = selectedAddonsForCart().reduce((s, a) => s + a.price * a.qty, 0)
     track('add_to_cart', {
       currency: 'PLN',
@@ -111,27 +110,12 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
   }
 
   function handleAdd() {
-    addItem(product, {
-      selectedColor: hasColors ? selectedColor : undefined,
-      selectedColorImage: selectedColorImageForCart(),
-      selectedAddons: selectedAddonsForCart(),
-    })
+    const color = hasColors ? selectedColor : undefined
+    const colorImage = selectedColorImageForCart()
+    const selectedAddons = selectedAddonsForCart()
+    addItem(product, { selectedColor: color, selectedColorImage: colorImage, selectedAddons })
     trackAddToCart('product_page')
-    setAdded(true)
-    setTimeout(() => setAdded(false), 1600)
-  }
-
-  function handleOrder() {
-    if (!items.find(i => i.product.id === product.id)) {
-      addItem(product, {
-        selectedColor: hasColors ? selectedColor : undefined,
-        selectedColorImage: selectedColorImageForCart(),
-        selectedAddons: selectedAddonsForCart(),
-      })
-      trackAddToCart('product_page_order')
-    }
-    setCheckoutSource('product_page')
-    setModalOpen(true)
+    showAddedToCart({ name: product.name, image: colorImage ?? product.image, price: product.price, color, addons: selectedAddons })
   }
 
   return (
@@ -328,28 +312,10 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
                   className="btn-primary"
                   data-keep-clear
                   onClick={handleAdd}
-                  style={added ? { background: '#2d7a3a', flex: 1 } : { flex: 1 }}
+                  style={{ flex: 1, justifyContent: 'center' }}
                 >
-                  {added ? (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      Dodano do koszyka!
-                    </>
-                  ) : (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                      Dodaj do koszyka
-                    </>
-                  )}
-                </button>
-                <button
-                  className="btn-secondary"
-                  data-keep-clear
-                  style={{ flex: 1 }}
-                  onClick={handleOrder}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                  Złóż zamówienie
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  Dodaj do koszyka
                 </button>
               </div>
             </div>
@@ -359,8 +325,9 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
       </main>
 
       <Footer />
-      <Cart onCheckout={() => { setCheckoutSource('cart'); setModalOpen(true) }} />
-      <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source={checkoutSource} />
+      <Cart onCheckout={() => setModalOpen(true)} />
+      <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source="cart" />
+      <AddedToCartSheet />
       <ScrollToTop />
     </>
   )

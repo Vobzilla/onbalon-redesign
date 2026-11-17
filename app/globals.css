@@ -1890,6 +1890,130 @@ a.show-more-btn {
   color: var(--text);
 }
 
+/* ─── Added-to-cart sheet ────────────────────────────────────────────────── */
+/* Above the header (100), the cookie banner (150) and the cart (200/201,
+   which it opens after closing), below the order modal (300). */
+.atc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(67, 5, 80, .5);
+  z-index: 250;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: atc-fade .2s ease;
+}
+
+.atc-sheet {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: #f5e8ff;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 10px 20px calc(20px + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow-lg);
+  outline: none;
+  transition: transform .2s ease;
+  animation: atc-up .22s cubic-bezier(.25, .46, .45, .94);
+}
+
+.atc-grip {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-dark);
+  margin: 0 auto 12px;
+}
+
+.atc-sheet .atc-close {
+  top: 16px;
+  right: 16px;
+}
+
+.atc-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 14px;
+  padding-right: 44px;
+}
+
+.atc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.atc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.atc-name {
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.atc-meta {
+  font-size: .78rem;
+  color: var(--text-soft);
+  margin-bottom: 2px;
+}
+
+.atc-price {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.atc-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (min-width: 600px) {
+  .atc-overlay {
+    padding: 0 24px 24px;
+  }
+
+  .atc-sheet {
+    border-bottom: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding-bottom: 24px;
+  }
+}
+
+@keyframes atc-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes atc-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atc-overlay,
+  .atc-sheet {
+    animation: none;
+    transition: none;
+  }
+}
+
 /* ─── Order Modal ────────────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
