@@ -103,101 +103,53 @@ function sendConsentPageView() {
   }
 }
 
-// The banner steps aside (fades out) while any [data-keep-clear] button is in
-// the strip of the screen it covers, so it can never sit on top of «Dodaj do
-// koszyka» and the like. It comes back only after that strip has been clear
-// for a moment, so slow scrolling past a button doesn't make it flicker.
-const SHOW_AGAIN_DELAY_MS = 400
-const ZONE_EXTRA_PX = 8
+// The banner never hides while it waits for an answer. Instead, the page gets
+// room for it: a spacer of the banner's real height (+ its bottom offset and
+// a small gap) at the end of the page, so any button — «Dodaj do koszyka»
+// included — can be scrolled above it, and --cookie-banner-space, which lifts
+// the fixed scroll-to-top button over it. Both go away with the banner.
+const BANNER_GAP_PX = 8
 
-function useKeepClear(banner: React.RefObject<HTMLDivElement>, active: boolean) {
-  const [clearing, setClearing] = useState(false)
+function useBannerSpace(banner: React.RefObject<HTMLDivElement>, visible: boolean) {
+  const [space, setSpace] = useState(0)
 
   useEffect(() => {
-    if (!active) {
-      setClearing(false)
+    const root = document.documentElement
+    if (!visible) {
+      setSpace(0)
       return
     }
-    if (typeof IntersectionObserver === 'undefined' || typeof MutationObserver === 'undefined') return
-
-    const behind = new Set<Element>()
-    const observed = new WeakSet<Element>()
-    let io: IntersectionObserver | null = null
-    let mo: MutationObserver | null = null
-    let showTimer: ReturnType<typeof setTimeout> | null = null
-    let resizeTimer: ReturnType<typeof setTimeout> | null = null
-
-    const update = () => {
-      if (behind.size > 0) {
-        if (showTimer) { clearTimeout(showTimer); showTimer = null }
-        setClearing(true)
-      } else if (!showTimer) {
-        showTimer = setTimeout(() => { showTimer = null; setClearing(false) }, SHOW_AGAIN_DELAY_MS)
+    // offsetHeight + bottom, not getBoundingClientRect: layout size, so the
+    // slide-in animation's transform doesn't skew it.
+    const measure = () => {
+      try {
+        const b = banner.current
+        if (!b) return
+        const px = Math.ceil(b.offsetHeight + (parseFloat(getComputedStyle(b).bottom) || 0)) + BANNER_GAP_PX
+        setSpace(px)
+        root.style.setProperty('--cookie-banner-space', `${px}px`)
+      } catch {
+        // without a measurement the banner simply has no spacer
       }
     }
-
-    const observeNew = () => {
-      document.querySelectorAll('[data-keep-clear]').forEach(el => {
-        if (!observed.has(el)) { observed.add(el); io?.observe(el) }
-      })
-      // Buttons removed from the page (navigation, re-render) can't hold
-      // the banner hidden.
-      let changed = false
-      behind.forEach(el => { if (!el.isConnected) { behind.delete(el); io?.unobserve(el); changed = true } })
-      if (changed) update()
-    }
-
-    // The observer's root is the viewport cut down to the banner's strip at
-    // the bottom: banner height + its bottom offset + a small margin.
-    const build = () => {
-      io?.disconnect()
-      behind.clear()
-      const b = banner.current
-      if (!b) return
-      const zone = b.offsetHeight + (parseFloat(getComputedStyle(b).bottom) || 0) + ZONE_EXTRA_PX
-      const top = Math.max(0, window.innerHeight - zone)
-      io = new IntersectionObserver(entries => {
-        for (const e of entries) {
-          if (e.isIntersecting) behind.add(e.target)
-          else behind.delete(e.target)
-        }
-        update()
-      }, { rootMargin: `-${top}px 0px 0px 0px` })
-      document.querySelectorAll('[data-keep-clear]').forEach(el => { observed.add(el); io!.observe(el) })
-    }
-
-    const onResize = () => {
-      if (resizeTimer) clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(() => {
-        try { build() } catch { }
-      }, 150)
-    }
-
-    try {
-      build()
-      mo = new MutationObserver(() => { try { observeNew() } catch { } })
-      mo.observe(document.body, { childList: true, subtree: true })
-      window.addEventListener('resize', onResize)
-    } catch {
-      // without the observers the banner simply stays put
-    }
-
+    measure()
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null
+    if (ro && banner.current) ro.observe(banner.current)
+    window.addEventListener('resize', measure)
     return () => {
-      io?.disconnect()
-      mo?.disconnect()
-      window.removeEventListener('resize', onResize)
-      if (showTimer) clearTimeout(showTimer)
-      if (resizeTimer) clearTimeout(resizeTimer)
+      ro?.disconnect()
+      window.removeEventListener('resize', measure)
+      root.style.removeProperty('--cookie-banner-space')
     }
-  }, [active, banner])
+  }, [visible, banner])
 
-  return clearing
+  return space
 }
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false)
   const bannerRef = useRef<HTMLDivElement>(null)
-  const clearing = useKeepClear(bannerRef, visible)
+  const space = useBannerSpace(bannerRef, visible)
 
   useEffect(() => {
     const choice = readChoice()
@@ -242,19 +194,19 @@ export default function CookieBanner() {
   if (!visible) return null
 
   return (
-    <div
-      ref={bannerRef}
-      className={`cookie-banner${clearing ? ' is-clearing' : ''}`}
-      aria-hidden={clearing || undefined}
-    >
-      <p className="cookie-text">
-        Używamy plików cookie, aby poprawić jakość korzystania z serwisu. Więcej informacji w{' '}
-        <Link href="/polityka-prywatnosci">Polityce prywatności</Link>.
-      </p>
-      <div className="cookie-actions">
-        <button className="cookie-btn-decline" onClick={decline}>Odrzuć</button>
-        <button className="cookie-btn-accept" onClick={accept}>Akceptuję</button>
+    <>
+      {space > 0 && <div className="cookie-banner-spacer" aria-hidden="true" style={{ height: space }} />}
+      <div ref={bannerRef} className="cookie-banner">
+        <p className="cookie-text">
+          Używamy cookies do analizy ruchu i reklam (Google, Meta).{' '}
+          <Link href="/polityka-prywatnosci">Szczegóły</Link>
+        </p>
+        {/* Same size and colour for both; «Odrzuć» first. */}
+        <div className="cookie-actions">
+          <button className="cookie-btn-decline" onClick={decline}>Odrzuć</button>
+          <button className="cookie-btn-accept" onClick={accept}>Akceptuję</button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
