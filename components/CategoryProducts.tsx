@@ -4,7 +4,7 @@ import type { ProductWithDetails } from '@/lib/products'
 import ProductCard, { useAddToCart, CARD_SIZES_CATEGORY } from '@/components/ProductCard'
 
 // The product grid of a category page: every active product of the category,
-// same cards and cart button as the home catalog, tracked with source=category.
+// same cards and cart button as the home catalog, tracked with item_list_name=category.
 export default function CategoryProducts({ products }: { products: ProductWithDetails[] }) {
   const { added, handleAdd } = useAddToCart('category')
 

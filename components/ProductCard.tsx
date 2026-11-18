@@ -46,7 +46,8 @@ export function useAddToCart(source: 'catalog' | 'category') {
     e.preventDefault()
     e.stopPropagation()
     addItem(product)
-    track('add_to_cart', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]), source })
+    // item_list_name, not `source`: GA4 reads `source` as the session's traffic source.
+    track('add_to_cart', { currency: 'PLN', value: product.price, items: gaItems([{ product, qty: 1 }]), item_list_name: source })
     trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price, source })
     setAdded(product.id)
     setTimeout(() => setAdded(null), 1400)

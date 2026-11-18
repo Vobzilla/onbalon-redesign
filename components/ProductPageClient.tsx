@@ -78,7 +78,8 @@ export default function ProductPageClient({ product: pageProduct, addons = [] }:
       currency: 'PLN',
       value: product.price,
       items: gaItems([{ product, qty: 1, selectedColor: hasColors ? selectedColor : undefined }]),
-      source,
+      // Not `source`: GA4 reads that event param as the session's traffic source.
+      item_list_name: source,
     })
     trackMeta('AddToCart', { ...metaContents([{ product, qty: 1 }]), content_name: product.name, currency: 'PLN', value: product.price })
   }

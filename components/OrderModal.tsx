@@ -19,7 +19,8 @@ declare global {
   }
 }
 
-// `source` only labels the begin_checkout event: where the form was opened from.
+// `source` only labels the begin_checkout event (sent as item_list_name):
+// where the form was opened from.
 type Props = { isOpen: boolean; onClose: () => void; source?: 'cart' | 'product_page' }
 type DeliveryType = 'delivery' | 'pickup'
 
@@ -77,7 +78,8 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
 
   useEffect(() => {
     if (!isOpen) return
-    track('begin_checkout', { currency: 'PLN', value: totalPrice, items: gaItems(items), source })
+    // item_list_name, not `source`: GA4 reads `source` as the session's traffic source.
+    track('begin_checkout', { currency: 'PLN', value: totalPrice, items: gaItems(items), item_list_name: source })
     trackMeta('InitiateCheckout', { ...metaContents(items), currency: 'PLN', value: totalPrice })
     // Only when the form opens, not on every cart change while it is open.
     // eslint-disable-next-line react-hooks/exhaustive-deps
