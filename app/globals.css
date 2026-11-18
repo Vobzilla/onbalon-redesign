@@ -2233,6 +2233,41 @@ a.show-more-btn {
   resize: vertical;
 }
 
+/* Date/time pickers: as wide as the other fields. iOS Safari gives them an
+   intrinsic min-width (wider than the form on phones) and centres the
+   value; this resets both. */
+.form-row input[type="datetime-local"],
+.form-row input[type="date"],
+.form-row input[type="time"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+  text-align: left;
+}
+
+.form-row input[type="datetime-local"]::-webkit-date-and-time-value,
+.form-row input[type="date"]::-webkit-date-and-time-value,
+.form-row input[type="time"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+/* iOS Safari zooms the page into any field with text under 16px and doesn't
+   zoom back; 16px on phones keeps the page still. Slightly less vertical
+   padding keeps the fields about as tall as before. */
+@media (max-width: 860px) {
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    font-size: 16px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+}
+
 /* Delivery toggle */
 .form-label {
   display: block;
