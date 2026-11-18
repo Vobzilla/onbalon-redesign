@@ -53,6 +53,37 @@ function applyConsent(granted: boolean) {
 let loadedGranted: boolean | null = null
 let consentPageViewSent = false
 
+// Ad/campaign params of the landing URL, read on the same first mount and
+// kept in memory only: before consent nothing may be written to the device.
+// Client-side navigation drops them from the URL, so a visitor who accepts on
+// a later page would otherwise send a page_view without gclid/utm and lose
+// the google / cpc attribution.
+const LANDING_PARAM_KEYS = ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
+let landingParams: [string, string][] | null = null
+
+function readLandingParams(): [string, string][] {
+  try {
+    return Array.from(new URLSearchParams(window.location.search).entries())
+      .filter(([k, v]) => LANDING_PARAM_KEYS.includes(k) && v !== '')
+  } catch {
+    return []
+  }
+}
+
+// Current URL (current path) plus the landing params it doesn't already have.
+function consentPageLocation(): string {
+  try {
+    if (!landingParams || landingParams.length === 0) return window.location.href
+    const url = new URL(window.location.href)
+    for (const [k, v] of landingParams) {
+      if (!url.searchParams.has(k)) url.searchParams.append(k, v)
+    }
+    return url.toString()
+  } catch {
+    return window.location.href
+  }
+}
+
 // The page_view our gtag config sent at load went out as a cookieless ping
 // (denied), so after a fresh «Akceptuję» GA4 has no cookie session with the
 // landing URL (gclid/utm). Send one page_view now, right after the consent
@@ -66,7 +97,7 @@ function sendConsentPageView() {
     if (loadedGranted !== false || consentPageViewSent) return
     if (w.__obGtagReady !== true || typeof w.gtag !== 'function') return
     consentPageViewSent = true
-    w.gtag('event', 'page_view', { page_location: window.location.href, page_title: document.title })
+    w.gtag('event', 'page_view', { page_location: consentPageLocation(), page_title: document.title })
   } catch {
     // never let consent handling surface an error
   }
@@ -171,6 +202,7 @@ export default function CookieBanner() {
   useEffect(() => {
     const choice = readChoice()
     if (loadedGranted === null) loadedGranted = choice === 'accepted'
+    if (landingParams === null) landingParams = readLandingParams()
     if (!choice) {
       setVisible(true)
     }
