@@ -2720,6 +2720,15 @@ a.show-more-btn {
   box-shadow: var(--shadow-lg);
 }
 
+/* On phones the lifted button would cover «Dodaj do koszyka» above the
+   cookie banner, so it stays hidden until the visitor answers the banner;
+   then it is back at its usual place. */
+@media (max-width: 600px) {
+  html:has(.cookie-banner) .scroll-top-btn {
+    display: none;
+  }
+}
+
 /* ─── Privacy Page ───────────────────────────────────────────────────────── */
 .privacy-page {
   padding: 120px 0 80px;
