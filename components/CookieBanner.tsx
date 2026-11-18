@@ -7,6 +7,7 @@ type ConsentWindow = Window & {
   gtag?: (...args: unknown[]) => void
   dataLayer?: unknown[]
   fbq?: (...args: unknown[]) => void
+  __obGtagReady?: boolean
 }
 
 const CONSENT_KEY = 'cookie_consent'
@@ -42,6 +43,32 @@ function applyConsent(granted: boolean) {
     if (typeof w.fbq === 'function') w.fbq('consent', granted ? 'grant' : 'revoke')
   } catch {
     // ditto
+  }
+}
+
+// Whether consent was already granted when this page was loaded (a saved
+// 'accepted' is applied in <head> before our gtag config). Read once, on the
+// banner's first mount; the banner lives in the (site) layout, so it stays
+// mounted across client-side navigation.
+let loadedGranted: boolean | null = null
+let consentPageViewSent = false
+
+// The page_view our gtag config sent at load went out as a cookieless ping
+// (denied), so after a fresh «Akceptuję» GA4 has no cookie session with the
+// landing URL (gclid/utm). Send one page_view now, right after the consent
+// update. Not when consent was already granted at load (that config page_view
+// was a full one), not twice per page load, and not before our config has
+// run: then config is still queued behind the update and sends a granted
+// page_view itself.
+function sendConsentPageView() {
+  try {
+    const w = window as ConsentWindow
+    if (loadedGranted !== false || consentPageViewSent) return
+    if (w.__obGtagReady !== true || typeof w.gtag !== 'function') return
+    consentPageViewSent = true
+    w.gtag('event', 'page_view', { page_location: window.location.href, page_title: document.title })
+  } catch {
+    // never let consent handling surface an error
   }
 }
 
@@ -142,7 +169,9 @@ export default function CookieBanner() {
   const clearing = useKeepClear(bannerRef, visible)
 
   useEffect(() => {
-    if (!readChoice()) {
+    const choice = readChoice()
+    if (loadedGranted === null) loadedGranted = choice === 'accepted'
+    if (!choice) {
       setVisible(true)
     }
 
@@ -165,6 +194,7 @@ export default function CookieBanner() {
   function accept() {
     try { localStorage.setItem(CONSENT_KEY, 'accepted') } catch { }
     applyConsent(true)
+    sendConsentPageView()
     setVisible(false)
   }
 
