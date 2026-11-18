@@ -6,6 +6,15 @@ import { track, debugMode } from '@/lib/track'
 // Google Ads conversion action «Kontakt - onbalon.pl».
 const ADS_CONTACT_CONVERSION = 'AW-16531023419/RxYnCJerg7sdELvMzco9'
 
+// Only links that start a conversation count as an Ads «Kontakt» conversion:
+// phone, e-mail, Telegram, WhatsApp, Messenger (m.me) and Instagram Direct
+// (ig.me). Links to the Facebook/Instagram profiles get contact_click only.
+function isDirectContact(href: string): boolean {
+  return href.startsWith('tel:')
+    || href.startsWith('mailto:')
+    || /^https?:\/\/(www\.)?(t\.me|wa\.me|api\.whatsapp\.com|m\.me|ig\.me)\//.test(href)
+}
+
 // One delegated listener instead of an onClick on every contact link (header
 // dropdown, footer, About page, policy pages). Customers who call or message
 // instead of using the form show up as contact_click in GA4.
@@ -35,11 +44,12 @@ export default function ContactClickTracker() {
         // tracking must not affect the click
       }
       try {
-        // Google Ads «Kontakt - onbalon.pl» conversion, fired with every
-        // contact_click. No value/currency: the conversion action has its own.
-        // Beacon, because tel:/messenger links take the visitor off the page.
+        // Google Ads «Kontakt - onbalon.pl» conversion, for direct contact
+        // channels only (see isDirectContact). No value/currency: the
+        // conversion action has its own. Beacon, because tel:/messenger links
+        // take the visitor off the page.
         const link = (e.target as Element | null)?.closest?.('a[href]')
-        if (!link || !contactMethod(link.getAttribute('href') ?? '')) return
+        if (!link || !isDirectContact(link.getAttribute('href') ?? '')) return
         const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
         if (typeof gtag !== 'function') return
         gtag('event', 'conversion', { send_to: ADS_CONTACT_CONVERSION, transport_type: 'beacon' })
