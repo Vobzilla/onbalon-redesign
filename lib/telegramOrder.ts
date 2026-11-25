@@ -23,6 +23,9 @@ export type OrderBody = {
   // address text, but the address is only required for delivery.
   deliveryType?: 'delivery' | 'pickup' | string
   address?: string
+  // Delivery only. "70-001" when valid, otherwise exactly as the customer
+  // typed it; never a reason to reject the order, only flagged in Telegram.
+  postalCode?: string
   // Another person receives the delivery (optional, delivery only).
   recipientName?: string
   recipientPhone?: string
@@ -106,6 +109,17 @@ function toViewableUrl(url?: string): string {
     .replace(/(\.[a-z]+)?$/i, '.jpg')
 }
 
+const POSTAL_CODE = /^\d{2}-\d{3}$/
+
+// "70001", "70 001" and " 70-001 " all become "70-001". Anything that still
+// doesn't match XX-XXX is returned trimmed, as the customer typed it.
+export function normalizePostalCode(value: unknown): string {
+  if (typeof value !== 'string') return ''
+  const compact = value.replace(/\s+/g, '')
+  if (/^\d{5}$/.test(compact)) return `${compact.slice(0, 2)}-${compact.slice(2)}`
+  return POSTAL_CODE.test(compact) ? compact : value.trim()
+}
+
 // Checks exactly what the order form itself requires (name, phone, date, and
 // an address only for delivery) — never more, so an order the form lets
 // through is not rejected here. Returns null when a required field is missing.
@@ -146,6 +160,8 @@ export function parseOrderBody(body: unknown): OrderBody | null {
     contact,
     deliveryType,
     address: address || undefined,
+    // Never required: a missing or malformed code is only flagged in Telegram.
+    postalCode: deliveryType === 'pickup' ? undefined : normalizePostalCode(b.postalCode) || undefined,
     // Optional: an order without them is fine. Never kept for pickup.
     recipientName: deliveryType === 'pickup' ? undefined : text(b.recipientName) || undefined,
     recipientPhone: deliveryType === 'pickup' ? undefined : text(b.recipientPhone) || undefined,
@@ -158,7 +174,7 @@ export function parseOrderBody(body: unknown): OrderBody | null {
 }
 
 export function buildOrderMessage(
-  { name, contact, deliveryType, address, recipientName, recipientPhone, date, notes, items, addons = [], totalPrice }: OrderBody,
+  { name, contact, deliveryType, address, postalCode, recipientName, recipientPhone, date, notes, items, addons = [], totalPrice }: OrderBody,
   orderId: string,
   now: number = Date.now()
 ): string {
@@ -197,9 +213,22 @@ export function buildOrderMessage(
     })
 
   const pickup = deliveryType === 'pickup'
+  const addressText = [address, postalCode].filter(Boolean).map(escapeHtml).join(', ')
   const addressLine = pickup
     ? '🏠 <b>Odbiór osobisty</b>'
-    : address ? `📍 <b>Adres:</b> ${escapeHtml(address)}` : null
+    : addressText ? `📍 <b>Adres:</b> ${addressText}` : null
+
+  // Same street names exist in different parts of Szczecin, so the postal
+  // code is what tells them apart. Flagged only, the order always goes through.
+  const postalCodeLine = pickup
+    ? null
+    : !postalCode
+      ? '⚠️ Brak kodu pocztowego — zadzwoń do klienta'
+      : !POSTAL_CODE.test(postalCode)
+        ? '⚠️ Nieprawidłowy kod pocztowy — sprawdź adres'
+        : !/^7[01]-/.test(postalCode)
+          ? '⚠️ Kod spoza Szczecina — sprawdź adres'
+          : null
 
   const recipient = [recipientName, recipientPhone].filter(Boolean).map(escapeHtml).join(', ')
   const recipientLine = !pickup && recipient ? `🎁 <b>Odbiorca:</b> ${recipient}` : null
@@ -216,6 +245,7 @@ export function buildOrderMessage(
     `👤 <b>Klient:</b> ${escapeHtml(name)}`,
     `📱 <b>Kontakt:</b> ${escapeHtml(contact)}`,
     addressLine,
+    postalCodeLine,
     recipientLine,
     tooEarlyLine,
     `🕐 <b>${pickup ? 'Odbiór' : 'Dostawa'}:</b> ${escapeHtml(when)}`,
