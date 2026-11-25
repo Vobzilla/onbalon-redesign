@@ -7,6 +7,11 @@ import { availability } from '@/data/availability'
 import { ORDER_FAILED_MESSAGE } from '@/lib/orderMessages'
 import { earliestOrderTime, formatShortOrderTime } from '@/lib/orderTime'
 import { track, gaItems, isTestOrder, trackMeta, metaContents } from '@/lib/track'
+// Same normalization as the server ("70001", "70 001" → "70-001").
+import { normalizePostalCode } from '@/lib/telegramOrder'
+
+const POSTAL_CODE = /^\d{2}-\d{3}$/
+const POSTAL_CODE_ERROR = 'Podaj kod pocztowy w formacie XX-XXX'
 
 // ─── Conversion IDs ───────────────────────────────────────────────────────────
 // Після КРОКУ 1: замінити на реальні значення з Google Ads
@@ -35,6 +40,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
   const [error, setError]             = useState('')
   const [phoneError, setPhoneError]   = useState('')
   const [dateError, setDateError]     = useState('')
+  const [postalError, setPostalError] = useState('')
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('delivery')
   const [orderId, setOrderId]         = useState<string | null>(null)
   // Date field: min and the starting value are set when the form opens and
@@ -136,6 +142,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
     setError('')
     setPhoneError('')
     setDateError('')
+    setPostalError('')
     setRecipientNameError('')
     setRecipientPhoneError('')
 
@@ -145,6 +152,10 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
     const address = deliveryType === 'delivery'
       ? String(fd.get('address') || '').trim()
       : 'Odbior osobisty'
+    // Delivery only: same street names exist in different parts of Szczecin.
+    const postalCode = deliveryType === 'delivery'
+      ? normalizePostalCode(String(fd.get('postalCode') || ''))
+      : ''
     const date    = String(fd.get('date')    || '').trim()
     const notes   = String(fd.get('notes')   || '').trim()
 
@@ -162,6 +173,13 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
     if (deliveryType === 'delivery' && !address) {
       setError('Proszę podać adres dostawy.')
       formError('address_missing')
+      return
+    }
+    // Only the format is checked: codes outside 70-/71- (nearby towns) go
+    // through and the server flags them in Telegram.
+    if (deliveryType === 'delivery' && !POSTAL_CODE.test(postalCode)) {
+      setPostalError(POSTAL_CODE_ERROR)
+      formError('postal_code_invalid')
       return
     }
     const withRecipient = deliveryType === 'delivery' && recipientOn
@@ -207,7 +225,8 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name, contact, address, date, notes, deliveryType, ...recipient, items,
+          name, contact, address, ...(deliveryType === 'delivery' ? { postalCode } : {}),
+          date, notes, deliveryType, ...recipient, items,
           addons: addons.map(({ name, price, qty }) => ({ name, price, qty })),
           totalPrice,
         }),
@@ -241,7 +260,7 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
 
   function handleClose() {
     onClose()
-    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setDeliveryType('delivery'); setOrderId(null)
+    setTimeout(() => { setSent(false); setError(''); setPhoneError(''); setDateError(''); setPostalError(''); setDeliveryType('delivery'); setOrderId(null)
       setRecipientOn(false); setRecipientName(''); setRecipientPhone(''); setRecipientNameError(''); setRecipientPhoneError('') }, 300)
   }
 
@@ -362,8 +381,32 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                 <div className="form-row">
                   <label>
                     Adres dostawy *
-                    <input name="address" type="text" placeholder="ul. Przykładowa 1, Szczecin" required />
+                    <input name="address" type="text" placeholder="ul. Przykładowa 1/2" autoComplete="street-address" required />
                     <span className="form-hint">Dostawa płatna od 20 zł — dokładny koszt podamy przy potwierdzeniu.</span>
+                  </label>
+                </div>
+              )}
+
+              {/* Postal code — only for delivery. Checked in handleSubmit
+                  (after normalizing "70001" → "70-001"), so an empty field
+                  shows our message, not the browser's popup. */}
+              {deliveryType === 'delivery' && (
+                <div className="form-row">
+                  <label>
+                    Kod pocztowy *
+                    <input
+                      name="postalCode"
+                      type="text"
+                      placeholder="70-001"
+                      inputMode="numeric"
+                      autoComplete="postal-code"
+                      maxLength={6}
+                      aria-required="true"
+                      aria-invalid={postalError ? true : undefined}
+                      onChange={() => setPostalError('')}
+                      style={{ maxWidth: '140px', ...(postalError ? { borderColor: '#e53e3e' } : {}) }}
+                    />
+                    {postalError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{postalError}</span>}
                   </label>
                 </div>
               )}
