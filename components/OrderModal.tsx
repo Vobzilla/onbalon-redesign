@@ -404,7 +404,8 @@ export default function OrderModal({ isOpen, onClose, source = 'cart' }: Props) 
                       aria-required="true"
                       aria-invalid={postalError ? true : undefined}
                       onChange={() => setPostalError('')}
-                      style={{ maxWidth: '140px', ...(postalError ? { borderColor: '#e53e3e' } : {}) }}
+                      // display: block keeps the narrow field under its label, like the others.
+                      style={{ display: 'block', maxWidth: '140px', ...(postalError ? { borderColor: '#e53e3e' } : {}) }}
                     />
                     {postalError && <span style={{ color: '#e53e3e', fontSize: '12px', marginTop: '4px', display: 'block' }}>{postalError}</span>}
                   </label>
